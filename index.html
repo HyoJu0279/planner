@@ -8,7 +8,7 @@
 <meta name="apple-mobile-web-app-title" content="학습 플래너">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <meta name="theme-color" content="#F7F6F1">
-<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png?v=3">
 <title>효주 학습 플래너</title>
 <style>
 :root{color-scheme:light;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
@@ -167,6 +167,8 @@ main{min-width:0;padding-block:28px 72px;padding-left:max(16px,env(safe-area-ins
 /* 주간 카드 */
 .week{display:flex;gap:12px;overflow-x:auto;scroll-snap-type:x proximity;padding-bottom:8px;-webkit-overflow-scrolling:touch}
 .week .daycard{flex:1 0 214px;max-width:300px;min-height:min(72vh,660px);scroll-snap-align:start}
+.week .dcol{flex:1 0 214px;max-width:300px;display:flex;flex-direction:column;gap:8px;scroll-snap-align:start;min-width:0}
+.week .dcol .daycard{flex:1;max-width:none}
 .week.scroll .daycard{flex:0 0 220px;min-height:380px}
 .daycard{background:var(--card);border-radius:var(--r);box-shadow:var(--shadow);padding:14px 12px 10px 14px;min-height:220px;display:flex;flex-direction:column;border:1.5px solid transparent;min-width:0}
 .daycard.today{border-color:var(--accent)}
@@ -396,6 +398,130 @@ textarea{min-height:88px;resize:vertical;line-height:1.5}
 .calf button{flex:none;display:inline-flex;align-items:center;gap:6px;border:1px solid var(--line2);background:var(--card);border-radius:999px;min-height:38px;padding:0 13px;font-size:13.5px;color:var(--ink2)}
 .calf button[aria-pressed="true"]{background:var(--accent);color:var(--accent-ink);border-color:var(--accent)}
 .cdot{width:8px;height:8px;border-radius:50%;display:inline-block}
+
+/* v3 */
+.hidden-file{position:absolute;width:1px;height:1px;opacity:0;pointer-events:none}
+.home2{display:grid;grid-template-columns:minmax(0,7fr) minmax(0,5fr);gap:16px;align-items:start}
+.hcol{display:flex;flex-direction:column;gap:16px;min-width:0}
+@media (max-width:760px){.home2{grid-template-columns:minmax(0,1fr)}}
+.today-study{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;margin-top:14px;padding-top:14px;border-top:1px solid var(--line)}
+.today-study b{display:block;font-size:22px;letter-spacing:-.01em}
+.wsday{display:grid;grid-template-columns:68px minmax(0,1fr);gap:8px;padding:8px 0;border-top:1px solid var(--line)}
+.wsday:first-of-type{border-top:0}
+.wsday.today .wsd{color:var(--ink);font-weight:700}
+.wsd{font-size:13px;color:var(--ink3);padding-top:6px}
+.wsitems{display:flex;flex-direction:column;gap:4px;min-width:0}
+.wsi{display:flex;align-items:center;flex-wrap:wrap;gap:4px;padding:6px 8px;border-radius:10px;background:var(--sunk);border:0;text-align:left;font-size:14px;width:100%;color:var(--ink)}
+button.wsi:hover{filter:brightness(.98)}
+.wsi time{color:var(--ink2);font-weight:600;font-size:13px}
+.dtop{height:40px}
+.dorm{height:40px;display:flex;align-items:center;justify-content:space-between;gap:8px;padding:0 14px;border-radius:12px;border:1px solid var(--line);background:var(--sunk);color:var(--ink2);font-size:14px}
+.dorm:hover{background:var(--card)}
+.dlist{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:2px}
+.dlist li{display:flex;align-items:center;gap:6px;border-radius:10px}
+.dlist li .dtext{flex:1;min-width:0;overflow-wrap:anywhere}
+.dlist li.done .chk i{background:var(--accent);border-color:var(--accent)}
+.dlist li.done .chk svg{opacity:1}
+.dlist li.done .dtext{text-decoration:line-through;color:var(--ink3)}
+.task.selmode .chk i{border-radius:50%}
+.task.picked{background:var(--accent-soft)}
+.task.picked .chk i{background:var(--accent);border-color:var(--accent)}
+.task.picked .chk svg{opacity:1}
+.task.selmode.done .tmain{opacity:.55}
+.selbar{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(16px + env(safe-area-inset-bottom,0px));z-index:50;display:flex;align-items:center;gap:8px;flex-wrap:wrap;background:var(--card);border:1px solid var(--line2);box-shadow:0 10px 30px rgba(0,0,0,.14);border-radius:16px;padding:10px 12px;width:min(calc(100vw - 32px),640px)}
+.btn:disabled{opacity:.45;cursor:default}
+.calfilters{display:flex;flex-direction:column;gap:8px}
+.calf button:disabled{opacity:.4}
+.daystudy{margin-top:14px;padding-top:12px;border-top:1px solid var(--line);display:flex;flex-direction:column;gap:8px}
+.flist{display:flex;flex-direction:column;gap:4px}
+.frow{display:flex;align-items:center;gap:8px;padding:6px 8px;border-radius:10px;background:var(--sunk);font-size:14px;flex-wrap:wrap}
+.frow .ftime{font-size:12.5px;color:var(--ink2);min-width:84px}
+.frow .ftitle{flex:1;min-width:120px;overflow-wrap:anywhere}
+.catgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(110px,1fr));gap:8px}
+.catbtn{min-height:52px;border-radius:12px;border:1px solid var(--line2);background:var(--card);display:flex;align-items:center;gap:8px;padding:0 14px;font-size:15px;font-weight:600}
+.catbtn i,.cs i,.pie-leg i{width:10px;height:10px;border-radius:50%;display:inline-block;flex:none}
+.catbtn.on{border-color:var(--accent);background:var(--accent-soft)}
+.picklist{display:flex;flex-direction:column;gap:6px;max-height:46vh;overflow:auto}
+.pick{border:1px solid var(--line);background:var(--card);border-radius:12px;padding:10px 12px;text-align:left;min-height:48px}
+.pick.on{border-color:var(--accent);background:var(--accent-soft)}
+.pick.pdone .tline{opacity:.55}
+.st-top{display:flex;flex-direction:column;gap:12px}
+.streak{font-size:15px;color:var(--ink2)}
+.streak b{font-size:34px;color:var(--ink);letter-spacing:-.02em;margin-right:4px}
+.catsum{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:8px}
+.cs{background:var(--sunk);border-radius:12px;padding:10px 12px;display:flex;flex-direction:column;gap:2px}
+.cs span{display:flex;align-items:center;gap:6px;font-size:13px;color:var(--ink2)}
+.cs b{font-size:17px}
+.goal{display:flex;flex-direction:column;gap:6px}
+.goal-top{display:flex;align-items:baseline;justify-content:space-between;gap:8px;flex-wrap:wrap}
+.goal-top b{font-size:26px;letter-spacing:-.02em}
+.goalbar{height:16px;border-radius:999px;background:var(--sunk);overflow:hidden}
+.goalbar i{display:block;height:100%;border-radius:999px;background:var(--accent)}
+.kpi5s{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:8px}
+@media (max-width:700px){.kpi5s{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.kpi5{border:1px solid var(--line);border-radius:14px;padding:12px;display:flex;flex-direction:column;gap:6px;min-height:84px;justify-content:space-between}
+.kpi5 span{font-size:12.5px;color:var(--ink3)}
+.kpi5 b{font-size:18px;letter-spacing:-.01em;overflow-wrap:anywhere}
+.kpi5 small{font-size:12px;color:var(--ink3);font-weight:500}
+.l-line{fill:none;stroke:var(--accent);stroke-width:2.5;stroke-linejoin:round;stroke-linecap:round}
+.l-area{fill:var(--accent-soft)}
+.l-dot{fill:var(--card);stroke:var(--accent);stroke-width:2}
+.l-dot.end{fill:var(--accent)}
+.pie{display:flex;align-items:center;gap:18px;flex-wrap:wrap}
+.pie svg{flex:none;max-width:100%}
+.pie-sl{stroke:var(--card);stroke-width:1.5}
+.pie-leg{display:flex;flex-direction:column;gap:6px;min-width:0;flex:1}
+.pie-leg{min-width:180px}
+.pie-leg div{display:grid;grid-template-columns:12px auto 1fr auto;gap:8px;align-items:center;font-size:13.5px}
+.pie-leg b{white-space:nowrap;text-align:right}
+.c-ana .pie{flex-direction:column;align-items:stretch}
+.c-ana .pie svg{align-self:center}
+.hm{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:5px;max-width:520px}
+.hm-wd{font-size:11.5px;color:var(--ink3);text-align:center;font-weight:600}
+.hm-cell{aspect-ratio:1;max-width:100%;border-radius:9px;border:0;display:flex;align-items:flex-start;justify-content:flex-start;padding:5px 6px;font-size:12px;color:var(--ink2)}
+.hm-cell.blank{background:transparent}
+.hm-cell.today{outline:2px solid var(--ink2);outline-offset:-2px}
+.hm0{background:var(--sunk)}
+.hm1{background:color-mix(in srgb,var(--accent) 16%,var(--card))}
+.hm2{background:color-mix(in srgb,var(--accent) 34%,var(--card))}
+.hm3{background:color-mix(in srgb,var(--accent) 54%,var(--card))}
+.hm4{background:color-mix(in srgb,var(--accent) 74%,var(--card))}
+.hm5{background:var(--accent)}
+.hm3,.hm4,.hm5{color:var(--accent-ink)}
+.hm-leg{display:flex;align-items:center;gap:4px;font-size:12px;color:var(--ink3);margin-top:10px;flex-wrap:wrap}
+.hm-leg i{width:14px;height:14px;border-radius:4px;display:inline-block}
+.atts{display:flex;flex-wrap:wrap;gap:6px}
+.att{display:inline-flex;align-items:center;gap:6px;border:1px solid var(--line2);background:var(--card);border-radius:10px;padding:6px 10px;font-size:13.5px;max-width:100%;overflow-wrap:anywhere;text-align:left}
+.att-k{font-size:11px;font-weight:700;color:var(--ink2);background:var(--sunk);border-radius:5px;padding:1px 5px}
+.pdfview{width:100%;height:70vh;border:1px solid var(--line);border-radius:12px;background:#fff}
+.imgview{display:block;max-width:100%;border-radius:12px;margin:0 auto}
+a.btn{text-decoration:none}
+/* 집중 타이머 */
+html.tm-on,html.tm-on body{overflow:hidden}
+.tm{position:fixed;inset:0;z-index:300;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:28px;padding:env(safe-area-inset-top,0px) max(16px,env(safe-area-inset-right,0px)) env(safe-area-inset-bottom,0px) max(16px,env(safe-area-inset-left,0px));font-family:var(--font)}
+.tm.focus{background:#141518;color:#FFFFFF}
+.tm.brk{background:#FFFFFF;color:#111214}
+.tm.res{background:var(--bg);color:var(--ink);overflow:auto;justify-content:flex-start;padding-top:max(40px,env(safe-area-inset-top,0px));padding-bottom:max(40px,env(safe-area-inset-bottom,0px))}
+.tm-head{display:flex;flex-direction:column;align-items:center;gap:4px;text-align:center;max-width:min(680px,90vw)}
+.tm-cat{font-size:15px;font-weight:600;opacity:.75;letter-spacing:.02em}
+.tm-title{font-size:15px;opacity:.6;overflow-wrap:anywhere}
+.tm-num{font-size:clamp(96px,22vw,240px);font-weight:800;line-height:1;letter-spacing:-.03em;font-variant-numeric:tabular-nums}
+.tm-btns{position:absolute;bottom:calc(44px + env(safe-area-inset-bottom,0px));left:0;right:0;display:flex;justify-content:center;gap:32px}
+.tm-btn{width:80px;height:80px;border-radius:50%;border:0;display:flex;align-items:center;justify-content:center}
+.tm-btn svg{width:34px;height:34px}
+.tm.focus .tm-btn{background:rgba(255,255,255,.13)}
+.tm.focus .tm-btn svg{fill:#FFFFFF}
+.tm.brk .tm-btn{background:#EEEEEC}
+.tm.brk .tm-btn svg{fill:#111214}
+.tm-btn:focus-visible{outline:3px solid currentColor;outline-offset:3px}
+.res-card{background:var(--card);border-radius:22px;box-shadow:var(--shadow);padding:26px 24px;width:min(480px,100%);display:flex;flex-direction:column;gap:12px}
+.res-label{font-size:14px;color:var(--ink3);font-weight:600}
+.res-big{font-size:40px;font-weight:800;letter-spacing:-.02em}
+.res-rows{margin:6px 0 4px;display:flex;flex-direction:column}
+.res-rows div{display:flex;justify-content:space-between;gap:12px;padding:9px 0;border-top:1px solid var(--line);font-size:14.5px}
+.res-rows dt{color:var(--ink3)}
+.res-rows dd{margin:0;text-align:right;overflow-wrap:anywhere}
+.res-done{min-height:50px;font-size:16px}
 </style>
 </head>
 <body>
@@ -405,17 +531,19 @@ textarea{min-height:88px;resize:vertical;line-height:1.5}
 <script>var STANDALONE = true;</script>
 <script>
 /* ===== 학습 플래너: 순수 로직 (날짜, 과목, 시간표, 차시) ===== */
-var START = '2026-10-21';
+var START = '2026-11-01';
+var START_LABEL = '11월 1일';
 var EXAM_START = '2026-12-07', EXAM_END = '2026-12-11';
 
-var REV = {
-  kor: ['Claude 필기노트 제작','필기 정리','백지노트','ebsi','Claude 서술형 연습','Claude 한장정리노트','Claude 기출유사','다원국어 파이널 자료'],
-  dawon: ['강의시청','복습','시험대비'],
-  math: ['학교프린트 복습','도전문제 복습','도전문제 회독'],
-  eng: ['필기 정리','회독','질문 정리','포스트잇 정리','백지노트','Claude 서술형 연습','Claude 한장정리노트','Claude 기출유사'],
-  sci: ['필기 정리','회독','질문 정리','백지노트','완자','오투','기출 PICK','하이탑','Claude 서술형 연습','Claude 한장정리노트','Claude 기출유사'],
-  soc: ['필기정리','회독','질문 정리','포스트잇 정리','백지 노트','자이스토리','ebsi','수능특강','Claude 플래시카드','Claude 서술형 연습','Claude 한장정리노트','Claude 기출유사'],
-  his: ['타이핑 정리','회독','질문 정리','백지노트','기출 PICK','ebsi','Claude 플래시카드','Claude 서술형 연습','Claude 한장정리노트','Claude 기출유사']
+/* 과목별 복습 단계: [단계 이름, 항목들] */
+var REV_ROUNDS = {
+  kor: [['1차 복습',['Claude 필기노트 제작','필기 정리']],['2차 복습',['백지노트','EBSi']],['3차 복습',['Claude 서술형 연습','Claude 한장정리노트','Claude 기출유사']]],
+  eng: [['1차 복습',['필기 정리','회독','질문 정리','포스트잇 정리']],['2차 복습',['백지노트','Claude 서술형 연습']],['3차 복습',['Claude 한장정리노트','Claude 기출유사']]],
+  math: [['복습',['학교프린트 복습','도전문제 복습','도전문제 회독']]],
+  soc: [['1차 복습',['필기 정리','회독','질문 정리','포스트잇 정리']],['2차 복습',['백지 노트','Claude 플래시카드','자이스토리','EBSi']],['시험 대비',['수능특강','Claude 서술형 연습','Claude 한장정리노트','Claude 기출유사']]],
+  sci: [['1차 복습',['필기 정리','회독','질문 정리']],['2차 복습',['백지노트','완자','오투','기출 PICK']],['3차 복습',['하이탑','Claude 서술형 연습','Claude 한장정리노트','Claude 기출유사']]],
+  his: [['1차 복습',['타이핑 정리','회독','질문 정리']],['2차 복습',['백지노트','Claude 플래시카드','기출 PICK','EBSi']],['3차 복습',['Claude 서술형 연습','Claude 한장정리노트','Claude 기출유사']]],
+  dawon: [['복습',['강의 시청','복습','시험 대비']]]
 };
 
 var SUBJECTS = [
@@ -434,13 +562,15 @@ var NO_CHASI = new Set(['체육','미술','회화','실험e','수학과외','다
 var FLEX = new Set(['다원국어','수학과외']);
 var HW_OPTS = { '다원국어': ['워크북','추가문제집'], '수학과외': ['개념원리','쎈','고쟁이','오답 정리','추가문제'] };
 
-/* 10월 21일부터 처음 진행되는 수업의 차시 */
+/* 11월 1일 이후 처음 진행되는 수업의 차시 */
 var ANCHOR = {
-  '사회A':3,'국어A':3,'과학C':1,'수학B':2,'역사B':2,'사회B':3,'영어A':1,'수학A':3,'과학B':3,
-  '영어B':2,'수학Be':2,'사회C':2,'역사A':3,'국어B':3,'과학D':2,'과학A':2,'영어C':2,'역사C':3
+  '수학Be':3,'사회C':3,'역사A':4,'국어B':5,'과학D':3,
+  '과학A':3,'수학A':6,'영어C':3,'역사C':4,
+  '사회A':7,'국어A':7,'과학C':3,
+  '수학B':4,'역사B':4,'사회B':5,'영어A':2,
+  '과학B':5,'영어B':4
 };
-/* 10/22 영어A는 수행평가일이라 차시를 세지 않음 */
-var DEFAULT_SESSION_STATUS = { '2026-10-22_thu5': 'assess' };
+var DEFAULT_SESSION_STATUS = {};
 
 function slots(day, rows) { return rows.map(function (r) { return { id: day + r[0], p: r[1], s: r[2] }; }); }
 var DEFAULT_SETTINGS = {
@@ -460,7 +590,34 @@ var DEFAULT_SETTINGS = {
 };
 
 function famOf(n) { var s = SUBJ.get(n); return s ? s.fam : 'gy'; }
-function revOf(n) { var s = SUBJ.get(n); return s && s.rev ? REV[s.rev] : []; }
+function roundsOf(n) { var s = SUBJ.get(n); return s && s.rev ? REV_ROUNDS[s.rev].map(function (r) { return { label: r[0], items: r[1] }; }) : []; }
+function revOf(n) { var out = []; roundsOf(n).forEach(function (r) { out = out.concat(r.items); }); return out; }
+/* 공부 시간 묶음 */
+var CATS = ['국어','영어','수학','과학','사회','역사','기타'];
+var CAT_FAM = { '국어':'kr','영어':'en','수학':'ma','과학':'sc','사회':'so','역사':'hi','기타':'gy' };
+function catOf(n) {
+  if (!n) return '기타';
+  if (/^국어|^다원국어/.test(n)) return '국어';
+  if (/^영어|^회화/.test(n)) return '영어';
+  if (/^수학/.test(n)) return '수학';
+  if (/^과학|^실험e/.test(n)) return '과학';
+  if (/^사회/.test(n)) return '사회';
+  if (/^역사/.test(n)) return '역사';
+  return '기타';
+}
+/* 오전 6시 전 공부는 전날 공부로 */
+var DAY_SHIFT = 6 * 3600 * 1000;
+function studyDayOf(ms) { return ds(new Date(ms - DAY_SHIFT)); }
+function studyToday() { return studyDayOf(Date.now()); }
+function fmtHMS(sec) {
+  sec = Math.max(0, Math.round(sec || 0));
+  var h = Math.floor(sec / 3600), m = Math.floor(sec % 3600 / 60), s2 = sec % 60;
+  if (h) return h + 'H ' + m + 'M ' + s2 + 'S';
+  if (m) return m + 'M ' + s2 + 'S';
+  return s2 + 'S';
+}
+function fmtClock(ms) { var d = new Date(ms); return pad(d.getHours()) + ':' + pad(d.getMinutes()); }
+function fmtMMSS(ms) { var t = Math.max(0, Math.floor(ms / 1000)); return pad(Math.floor(t / 60)) + ':' + pad(t % 60); }
 function hasChasi(n) { return !!n && !NO_CHASI.has(n); }
 
 /* ---- 날짜 ---- */
@@ -486,7 +643,7 @@ function fmtMin(m) {
 }
 
 /* ---- 데이터 저장소(메모리) ---- */
-var data = { tasks: new Map(), sessions: new Map(), events: new Map(), study: new Map(), meta: new Map() };
+var data = { tasks: new Map(), sessions: new Map(), events: new Map(), focus: new Map(), meta: new Map() };
 var idx = { tasksByDate: new Map(), sessionsByDate: new Map(), eventsByDate: new Map() };
 
 function reindex(col) {
@@ -676,12 +833,13 @@ function toast(msg, action) {
 }
 
 /* ---------- 저장소 ---------- */
-var COLS = ['tasks', 'sessions', 'events', 'study', 'meta'];
+var COLS = ['tasks', 'sessions', 'events', 'focus', 'meta'];
 var backend = 'pending';
 var DB = null;
 var loaded = {};
 var readOnly = false;
-var LS_KEY = 'hyojoo-planner-local-v1';
+var LS_KEY = 'hyojoo-planner-v2';
+var OLD_KEY = 'hyojoo-planner-local-v1';
 var SOLO = typeof STANDALONE !== 'undefined' && STANDALONE;
 var queues = new Map();
 
@@ -698,6 +856,19 @@ function saveLocal() {
 }
 function loadLocal() {
   var raw = lsGet(LS_KEY);
+  if (!raw) {
+    /* 11월 1일 새 출발: 예전 기록은 버리고 설정(시험 과목, 알림, 바꾼 시간표)만 이어받아요 */
+    var old = lsGet(OLD_KEY);
+    if (old) {
+      try {
+        var oo = JSON.parse(old);
+        var set = (oo.meta || []).filter(function (x) { return x && x.id === 'settings'; });
+        raw = JSON.stringify({ tasks: [], sessions: [], events: [], focus: [], meta: set });
+        lsSet(LS_KEY, raw);
+      } catch (e) {}
+      try { localStorage.removeItem(OLD_KEY); localStorage.removeItem('planner-seeded'); localStorage.removeItem('planner-last-backup'); } catch (e) {}
+    }
+  }
   if (raw) {
     try {
       var o = JSON.parse(raw);
@@ -729,6 +900,7 @@ function enqueue(path, fn) {
 }
 function afterChange(col) {
   reindex(col);
+  if (col === 'focus') FA = null;
   if (col === 'sessions' || col === 'meta') invalidateTL();
   scheduleRender();
 }
@@ -758,7 +930,6 @@ async function initStore() {
   if (!db) {
     backend = 'local'; loadLocal();
     if (SOLO) {
-      if (!lsGet(LS_KEY) && !lsGet('planner-seeded')) seedSolo();
       try { if (navigator.storage && navigator.storage.persist) navigator.storage.persist(); } catch (e) {}
     }
     render(); return;
@@ -777,17 +948,11 @@ async function initStore() {
   });
   render();
 }
-function seedSolo() {
-  lsSet('planner-seeded', '1');
-  var now = nowISO();
-  put('tasks', 'as_eng-a-1022', { kind: 'assess', subject: '영어A', title: '수행평가', date: '2026-10-22', memo: '', sessionKey: '2026-10-22_thu5', onlyAssess: true, markedKey: null, done: false, doneAt: null, order: 1, createdAt: now });
-  put('tasks', 'prep_as_eng-a-1022', { kind: 'prep', subject: '영어A', title: '수행평가 대비', date: '2026-10-21', assessId: 'as_eng-a-1022', auto: true, memo: '', done: false, doneAt: null, order: 1, createdAt: now });
-}
 function backupAgeDays() {
   var b = lsGet('planner-last-backup');
   return b ? diffDays(b, todayS()) : null;
 }
-function hasAnyData() { return data.tasks.size + data.sessions.size + data.study.size + data.events.size > 2; }
+function hasAnyData() { return data.tasks.size + data.sessions.size + data.focus.size + data.events.size > 0; }
 function allLoaded() { return COLS.every(function (c) { return loaded[c]; }); }
 
 /* ---------- 화면 상태 ---------- */
@@ -795,16 +960,20 @@ var T0 = todayS();
 var ui = {
   view: lsGet('planner-view') || 'home',
   week: weekStartOf(T0),
-  ttWeek: weekStartOf(T0 < START ? START : T0),
+  ttWeek: weekStartOf(T0 < START ? (dow(START) === 0 ? addDays(START, 1) : START) : T0),
   month: T0.slice(0, 7),
   day: T0,
-  stats: { preset: '7d', from: addDays(T0, -6), to: T0 },
+  stats: { preset: '7d', from: addDays(T0, -6), to: T0, day: null, week: null, month: null },
   hwFilter: 'open',
-  calFilter: 'all'
+  calKind: 'all',
+  calSubj: 'all',
+  selMode: false,
+  sel: new Set()
 };
 var VIEWS = [
   ['home', '홈', '<path d="M3 10.5L12 4l9 6.5V20a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"/>'],
   ['timetable', '시간표·복습', '<rect x="3" y="4" width="18" height="17" rx="2"/><path d="M3 10h18M9 4v17"/>'],
+  ['timer', '집중 타이머', '<circle cx="12" cy="13" r="8"/><path d="M12 9v4l2.5 2M9.5 2.5h5"/>'],
   ['week', '주간 할 일', '<rect x="3" y="5" width="18" height="15" rx="2"/><path d="M8 5v15M13 5v15M18 5v15"/>'],
   ['calendar', '월간 캘린더', '<rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/>'],
   ['assign', '과제·수행평가', '<path d="M8 4h8M9 4v3h6V4"/><rect x="5" y="6" width="14" height="15" rx="2"/><path d="M9 13l2 2 4-4"/>'],
@@ -857,7 +1026,10 @@ function render() {
     var fn = { home: vHome, timetable: vTimetable, week: vWeek, calendar: vCalendar, day: vDay, assign: vAssign, other: vOther, stats: vStats, settings: vSettings }[ui.view] || vHome;
     var ban = '';
     if (backend === 'local' && !SOLO) ban = '<div class="banner">claude.ai 저장소에 연결하지 못해서 지금은 이 기기의 브라우저에만 저장돼요. claude.ai에 로그인한 상태로 이 페이지를 열면 모든 기기에서 같은 기록이 보여요.</div>';
-    if (SOLO && ui.view === 'home' && hasAnyData()) { var ba = backupAgeDays(); if (ba == null || ba >= 7) ban = '<div class="banner row"><span class="spacer">' + (ba == null ? '아직 백업한 적이 없어요.' : '마지막 백업이 ' + ba + '일 전이에요.') + ' 기록은 이 아이패드의 Safari에만 있어서, 가끔 백업 파일을 저장해 두면 안전해요.</span><button class="btn sm" data-act="backup">지금 백업</button></div>'; }
+    if (SOLO && ui.view === 'home' && hasAnyData()) {
+      var ba = backupAgeDays(), dis = lsGet('planner-backup-dismiss');
+      if ((ba == null || ba >= 7) && !(dis && diffDays(dis, todayS()) < 7)) ban = '<div class="banner row"><span class="spacer">' + (ba == null ? '아직 백업한 적이 없어요.' : '마지막 백업이 ' + ba + '일 전이에요.') + ' 기록은 이 아이패드의 Safari에만 있어서, 가끔 백업 파일을 저장해 두면 안전해요.</span><button class="btn sm" data-act="backup">지금 백업</button><button class="icon-btn sm" data-act="backup-dismiss" aria-label="백업 안내 닫기">×</button></div>';
+    }
     html = '<div class="wrap">' + ban + fn() + '</div>';
   }
   main.innerHTML = html;
@@ -892,9 +1064,19 @@ function taskRow(t, opt) {
   if (opt.showDate) meta.push(fmtMD(t.date));
   if (t.range) meta.push(t.range);
   if (t.kind === 'hw') { var du = effDue(t); if (du && (opt.showDate || du !== t.date)) meta.push('마감 ' + fmtMD(du)); }
+  var fsec = focusAgg().byTask[t.id];
+  if (fsec) meta.push('공부 ' + fmtHMS(fsec.sec));
   if (t.memo) meta.push('메모 있음');
   if (t.sourceId) meta.push('다시 하기');
+  if ((t.attachments || []).length) meta.push('첨부 ' + t.attachments.length);
   var kl = KIND_LABEL[t.kind];
+  if (opt.sel) {
+    var on = ui.sel.has(t.id);
+    return '<li class="task selmode' + (t.done ? ' done' : '') + (on ? ' picked' : '') + '" data-id="' + esc(t.id) + '">' +
+      '<button class="chk selbox" data-act="sel" aria-label="선택" aria-pressed="' + on + '"><i>' + CHECK_SVG + '</i></button>' +
+      '<button class="tmain" data-act="sel"><span class="tline">' + tagHTML(t) + (kl ? '<span class="kind k-' + t.kind + '">' + kl + '</span>' : '') +
+      '<span class="ttl">' + esc(t.title) + '</span></span>' + (meta.length ? '<span class="tmeta">' + esc(meta.join(' · ')) + '</span>' : '') + '</button></li>';
+  }
   return '<li class="task' + (t.done ? ' done' : '') + '" data-id="' + esc(t.id) + '">' +
     '<button class="chk" data-act="toggle" aria-label="' + (t.done ? '완료 취소' : '완료') + '" aria-pressed="' + !!t.done + '"><i>' + CHECK_SVG + '</i></button>' +
     '<button class="tmain" data-act="open"><span class="tline">' + tagHTML(t) + (kl ? '<span class="kind k-' + t.kind + '">' + kl + '</span>' : '') +
@@ -913,7 +1095,7 @@ function dayList(d, opt) {
     '<ul class="tlist" data-date="' + d + '">' + ts.map(function (t) { return taskRow(t, opt); }).join('') + '</ul>' +
     (!ts.length && !evs.length ? '<div class="empty small">할 일이 없어요</div>' : '');
 }
-function dayCard(d, compact) {
+function dayCard(d, opt) {
   var T = todayS();
   var dt = pd(d);
   var ts = dayTasks(d);
@@ -921,7 +1103,7 @@ function dayCard(d, compact) {
   return '<section class="daycard' + (d === T ? ' today' : '') + (d < T ? ' past' : '') + '">' +
     '<div class="dhead"><div><div class="dnum num">' + dt.getDate() + '</div><div class="dname">' + WK_EN[dt.getDay()] + '</div></div>' +
     '<div class="dbadges">' + (d === T ? '<span class="today-badge">오늘</span>' : '') + (isExam(d) ? '<span class="exam-badge">★ 시험</span>' : '') + '</div></div>' +
-    dayList(d) +
+    dayList(d, opt) +
     '<div class="dfoot"><span class="count num">' + (ts.length ? done + ' / ' + ts.length + ' 완료' : '') + '</span>' +
     '<span class="row" style="gap:2px"><button class="add-mini" data-act="goday" data-date="' + d + '">자세히</button><button class="add-mini" data-act="addfor" data-date="' + d + '">+ 추가</button></span></div>' +
     '</section>';
@@ -944,26 +1126,6 @@ function cardDday() {
   return '<section class="card c-dday"><div class="dday-top">' + top +
     '<button class="btn sm" data-act="exam-edit">시험 과목 입력</button></div>' +
     '<div class="dday-range">12월 7일 월요일 ~ 12월 11일 금요일</div><div class="dday-days">' + days + '</div></section>';
-}
-function studyInputs(d, idp) {
-  var rec = data.study.get(d);
-  var m = rec ? rec.minutes : null;
-  return '<div class="studyrow"><label for="' + idp + 'h">' + (d === todayS() ? '오늘 공부 시간' : '공부 시간') + '</label>' +
-    '<span class="hm"><input type="number" inputmode="numeric" min="0" max="24" id="' + idp + 'h" placeholder="0" value="' + (m != null ? Math.floor(m / 60) : '') + '"><span class="small muted">H</span>' +
-    '<input type="number" inputmode="numeric" min="0" max="59" id="' + idp + 'm" placeholder="0" value="' + (m != null ? m % 60 : '') + '"><span class="small muted">M</span></span>' +
-    '<button class="btn sm" data-act="study-save" data-date="' + d + '" data-idp="' + idp + '">저장</button>' +
-    (rec ? '<button class="btn sm ghost" data-act="study-clear" data-date="' + d + '">기록 지우기</button>' : '') +
-    '<span class="small muted">' + (rec ? '기록됨: ' + fmtMin(m) : '아직 기록하지 않음') + '</span></div>';
-}
-function cardSummary() {
-  var T = todayS();
-  var ts = dayTasks(T);
-  var done = ts.filter(function (t) { return t.done; }).length;
-  var pct = ts.length ? Math.round(done / ts.length * 100) : 0;
-  return '<section class="card c-sum"><div class="chead"><h2>오늘 요약</h2><span class="sub">' + fmtLong(T) + '</span></div>' +
-    '<div class="sumgrid"><div class="stat"><b class="num">' + done + '</b><span>완료한 할 일</span></div><div class="stat"><b class="num">' + (ts.length - done) + '</b><span>남은 할 일</span></div></div>' +
-    '<div class="pbar" aria-label="오늘 완료율 ' + pct + '%"><i style="width:' + pct + '%"></i></div>' +
-    studyInputs(T, 'hs') + '</section>';
 }
 function alertItems(T) {
   var s = getSettings().alerts;
@@ -1002,14 +1164,6 @@ function cardAlerts() {
   }).join('') : '<div class="empty small">오늘과 내일 챙길 마감이나 수행평가가 없어요</div>';
   return '<section class="card c-alert"><div class="chead"><h2>오늘 챙길 것</h2><span class="sub">복습 · 과제 마감 · 수행평가</span></div><div class="alerts">' + body + '</div></section>';
 }
-function cardQuick() {
-  return '<section class="card c-quick"><div class="chead"><h2>빠른 추가</h2></div><div class="quick">' +
-    '<button data-act="new-hw"><b>과제</b><span>과목 · 마감일</span></button>' +
-    '<button data-act="new-assess"><b>수행평가</b><span>날짜 · 내용</span></button>' +
-    '<button data-act="new-other"><b>기타 할 일</b><span>동아리 · 방과후 · 개인</span></button>' +
-    '<button data-act="new-event"><b>일정</b><span>날짜 · 시간</span></button>' +
-    '</div></section>';
-}
 function cardToday() {
   var T = todayS();
   var od = [];
@@ -1022,36 +1176,56 @@ function cardToday() {
     }).join('') + '</div>' : '') +
     '</section>';
 }
-function cardProgress() {
+function cardSummary() {
   var T = todayS();
-  var items = [];
-  for (var i = 6; i >= 0; i--) {
-    var d = addDays(T, -i);
-    var r = data.study.get(d);
-    items.push({ label: fmtMD(d).replace(/\(.\)/, ''), v: r ? r.minutes : null });
-  }
-  var rec = items.filter(function (x) { return x.v != null; });
-  var total = rec.reduce(function (s, x) { return s + x.v; }, 0);
-  var r7 = rate(addDays(T, -6), T);
-  return '<section class="card c-prog"><div class="chead"><h2>학습 진행</h2><button class="btn sm ghost" data-act="nav" data-view="stats">통계 보기</button></div>' +
-    '<div class="sumgrid"><div class="stat"><b class="num">' + (rec.length ? fmtMin(total) : '–') + '</b><span>최근 7일 공부 시간</span></div>' +
-    '<div class="stat"><b class="num">' + (r7.total ? Math.round(r7.done / r7.total * 100) + '%' : '–') + '</b><span>최근 7일 완료율</span></div></div>' +
-    (rec.length ? barSVG(items, { fmt: fmtMin, minutes: true, compact: true }) : '<div class="empty small">공부 시간을 기록하면 여기에 그래프가 나와요</div>') +
-    '</section>';
+  var ts = dayTasks(T);
+  var done = ts.filter(function (t) { return t.done; }).length;
+  var pct = ts.length ? Math.round(done / ts.length * 100) : 0;
+  return '<section class="card c-sum"><div class="chead"><h2>오늘 요약</h2><span class="sub">' + fmtLong(T) + '</span></div>' +
+    '<div class="sumgrid"><div class="stat"><b class="num">' + done + '</b><span>완료한 할 일</span></div><div class="stat"><b class="num">' + (ts.length - done) + '</b><span>남은 할 일</span></div></div>' +
+    '<div class="pbar" aria-label="오늘 완료율 ' + pct + '%"><i style="width:' + pct + '%"></i></div>' +
+    '<div class="today-study"><div><span class="small muted">오늘 공부 시간</span><b class="num">' + fmtHMS(daySec(studyToday())) + '</b></div>' +
+    '<div class="row"><button class="btn primary" data-act="timer-open">집중 시작</button><button class="btn" data-act="manual-add">직접 입력</button></div></div></section>';
 }
-function weekStrip(ws, scroll) {
+function cardWeekSched() {
+  var T = todayS(), ws = weekStartOf(T), s = getSettings();
+  var rows = weekDays(ws).map(function (d) {
+    var items = '';
+    if (isExam(d)) items += '<div class="wsi"><span class="exam-badge">★ 시험</span><span>' + esc(s.examSubjects[d] || '과목 미입력') + '</span></div>';
+    (idx.tasksByDate.get(d) || []).filter(function (t) { return t.kind === 'assess'; }).forEach(function (t) {
+      items += '<button class="wsi" data-act="opentask" data-id="' + esc(t.id) + '">' + tagHTML(t) + '<span class="kind k-assess">수행평가</span>' + esc(t.title) + ((t.attachments || []).length ? ' <span class="st-chip">첨부 ' + t.attachments.length + '</span>' : '') + '</button>';
+    });
+    dayEvents(d).forEach(function (e) {
+      items += '<button class="wsi" data-act="event" data-id="' + esc(e.id) + '"><span class="kind">일정</span>' + (e.start ? '<time>' + esc(e.start) + '</time> ' : '') + esc(e.title) + '</button>';
+    });
+    return items ? '<div class="wsday' + (d === T ? ' today' : '') + '"><span class="wsd num">' + fmtMD(d) + '</span><div class="wsitems">' + items + '</div></div>' : '';
+  }).join('');
+  return '<section class="card c-week"><div class="chead"><h2>이번 주 일정</h2><span class="sub">수행평가 · 시험 · 일정</span></div>' +
+    (rows || '<div class="empty small">이번 주에는 수행평가, 시험, 일정이 없어요</div>') + '</section>';
+}
+function cardAnalysis() {
+  var k = getSettings().homeChart || 'daily';
+  return '<section class="card c-ana"><div class="chead"><h2>분석</h2><select id="home-chart" aria-label="보여줄 차트" style="width:auto;min-height:38px;font-size:14px">' +
+    HOME_CHARTS.map(function (c) { return '<option value="' + c[0] + '"' + (c[0] === k ? ' selected' : '') + '>' + c[1] + '</option>'; }).join('') + '</select></div>' +
+    homeChartHTML(k) + '<div class="row" style="margin-top:8px"><span class="spacer"></span><button class="btn sm ghost" data-act="nav" data-view="stats">통계 보기</button></div></section>';
+}
+function weekStrip(ws, scroll, opt) {
+  opt = opt || {};
   var html = '';
-  for (var i = 0; i < 7; i++) html += dayCard(addDays(ws, i));
+  for (var i = 0; i < 7; i++) {
+    var d = addDays(ws, i);
+    html += opt.dorm ? '<div class="dcol">' + (i === 6 ? dormBtn(ws) : '<div class="dtop" aria-hidden="true"></div>') + dayCard(d, opt) + '</div>' : dayCard(d, opt);
+  }
   return '<div class="week' + (scroll ? ' scroll' : '') + '">' + html + '</div>';
 }
 function vHome() {
   var T = todayS();
   var ws = weekStartOf(T);
   return '<div class="phead"><div><h1>오늘</h1><p>' + fmtLong(T) + '</p></div></div>' +
-    '<div class="home">' + cardDday() + cardSummary() + cardAlerts() + cardQuick() + cardToday() + cardProgress() +
+    '<div class="home2"><div class="hcol">' + cardDday() + cardWeekSched() + cardAlerts() + cardToday() + '</div>' +
+    '<div class="hcol">' + cardSummary() + cardAnalysis() + '</div></div>' +
     '<section class="card"><div class="chead"><h2>이번 주 할 일</h2><button class="btn sm ghost" data-act="nav" data-view="week">주간 화면</button></div>' + weekStrip(ws, true) + '</section>' +
-    '<section class="card"><div class="chead"><h2>' + (+T.slice(5, 7)) + '월</h2><button class="btn sm ghost" data-act="nav" data-view="calendar">캘린더 열기</button></div>' + calGrid(T.slice(0, 7), true) + '</section>' +
-    '</div>';
+    '<section class="card"><div class="chead"><h2>' + (+T.slice(5, 7)) + '월</h2><button class="btn sm ghost" data-act="nav" data-view="calendar">캘린더 열기</button></div>' + calGrid(T.slice(0, 7), true) + '</section>';
 }
 
 /* ---------- 주간 ---------- */
@@ -1062,9 +1236,11 @@ function weekLabel(ws) {
 }
 function vWeek() {
   return '<div class="phead"><div><h1>주간 할 일</h1><p>' + weekLabel(ui.week) + (ui.week === weekStartOf(todayS()) ? ' · 이번 주' : '') + '</p></div>' +
-    '<div class="row"><button class="icon-btn" data-act="week-prev" aria-label="이전 주">‹</button><button class="btn" data-act="week-now">이번 주</button><button class="icon-btn" data-act="week-next" aria-label="다음 주">›</button></div></div>' +
-    weekStrip(ui.week, false) +
-    '<p class="note">체크하면 완료로 바뀌고 카드 아래쪽으로 내려가요. ⋮⋮를 끌면 순서를 바꿀 수 있고, 항목을 누르면 넘기기·이동·내일 또 하기를 고를 수 있어요.</p>';
+    '<div class="row"><button class="btn' + (ui.selMode ? ' primary' : '') + '" data-act="selmode">' + (ui.selMode ? '선택 끝내기' : '여러 개 선택') + '</button>' +
+    '<button class="icon-btn" data-act="week-prev" aria-label="이전 주">‹</button><button class="btn" data-act="week-now">이번 주</button><button class="icon-btn" data-act="week-next" aria-label="다음 주">›</button></div></div>' +
+    weekStrip(ui.week, false, { dorm: true, sel: ui.selMode }) +
+    (ui.selMode ? '<p class="note">할 일을 눌러 고른 뒤 아래에서 날짜 이동, 완료, 삭제를 한꺼번에 할 수 있어요.</p>' + selBar()
+      : '<p class="note">체크하면 완료로 바뀌고 카드 아래쪽으로 내려가요. ⋮⋮를 끌면 순서를 바꿀 수 있고, 항목을 누르면 넘기기·이동·내일 또 하기를 고를 수 있어요.</p>');
 }
 
 /* ---------- 시간표 ---------- */
@@ -1100,27 +1276,33 @@ function vTimetable() {
     var subj = exam ? getSettings().examSubjects[x.d] : '';
     return '<div class="ttday' + (x.d === T ? ' today' : '') + '"><h3>' + WK[dt.getDay()] + '요일 <span class="num">' + (dt.getMonth() + 1) + '/' + dt.getDate() + (exam ? ' ★' : '') + '</span></h3>' +
       (exam ? '<div class="note">시험 기간 · 정규 수업은 수업 안 함으로 처리돼요' + (subj ? '<br>시험: ' + esc(subj) : '') + '</div>' : '') +
-      (x.d < START ? '<div class="note">기록은 10월 21일부터 시작해요</div>' : x.list.map(classBtn).join('') +
+      (x.d < START ? '<div class="note">기록은 ' + START_LABEL + '부터 시작해요</div>' : x.list.map(classBtn).join('') +
       '<button class="add-mini" data-act="add-class" data-date="' + x.d + '">+ 수업 추가</button>') + '</div>';
   }).join('');
   return '<div class="phead"><div><h1>시간표 · 차시별 복습</h1><p>' + weekLabel(ws) + '</p></div>' +
     '<div class="row"><button class="icon-btn" data-act="tt-prev" aria-label="이전 주">‹</button><button class="btn" data-act="tt-now">이번 주</button><button class="icon-btn" data-act="tt-next" aria-label="다음 주">›</button></div></div>' +
     '<div class="tt" style="--cols:' + days.length + '">' + cols + '</div>' +
-    '<p class="note">수업을 누르면 배운 내용, 복습 방법과 날짜, 과제, 수행평가를 기록할 수 있어요. 수업 안 함이나 과목 변경은 그 날짜에만 적용되고, 기본 시간표는 설정에서 바꿀 수 있어요.</p>';
+    '<p class="note">수업을 누르면 수업 내용, 복습 방법과 날짜, 과제를 기록할 수 있어요. 수업 안 함이나 과목 변경은 그 날짜에만 적용되고, 기본 시간표는 설정에서 바꿀 수 있어요.</p>';
 }
 
 /* ---------- 캘린더 ---------- */
-function calItems(d, f) {
-  f = f || 'all';
-  var evs = (f === 'all' || f === 'event' ? dayEvents(d) : []).map(function (e) { return { evt: true, text: (e.start ? e.start + ' ' : '') + e.title, fam: 'gy' }; });
-  var ts = (f === 'event' ? [] : dayTasks(d).filter(function (t) { return f === 'all' || (f === 'assess' ? (t.kind === 'assess' || t.kind === 'prep') : (t.subject === f && t.kind !== 'other')); })).map(function (t) {
+function calItems(d, kind, subj) {
+  kind = kind || 'all'; subj = subj || 'all';
+  var evs = ((kind === 'all' || kind === 'event') && subj === 'all' ? dayEvents(d) : []).map(function (e) { return { evt: true, text: (e.start ? e.start + ' ' : '') + e.title, fam: 'gy' }; });
+  var ts = kind === 'event' ? [] : dayTasks(d).filter(function (t) {
+    if (kind === 'hw' && t.kind !== 'hw') return false;
+    if (kind === 'review' && t.kind !== 'review') return false;
+    if (kind === 'assess' && t.kind !== 'assess' && t.kind !== 'prep') return false;
+    if (subj !== 'all' && (t.kind === 'other' || t.subject !== subj)) return false;
+    return true;
+  });
+  return evs.concat(ts.map(function (t) {
     var c = taskChasi(t);
     var tag = t.kind === 'other' ? (t.label || '기타') : t.subject + (c ? ' ' + c : '');
     return { text: '[' + tag + '] ' + (KIND_LABEL[t.kind] ? KIND_LABEL[t.kind] + ' ' : '') + t.title, fam: t.kind === 'other' ? 'gy' : famOf(t.subject), done: t.done };
-  });
-  return evs.concat(ts);
+  }));
 }
-function calGrid(month, mini, f) {
+function calGrid(month, mini, kind, subj) {
   var first = month + '-01';
   var start = weekStartOf(first);
   var T = todayS();
@@ -1129,7 +1311,7 @@ function calGrid(month, mini, f) {
   for (var i = 0; i < 42; i++) {
     var d = addDays(start, i);
     if (i >= 35 && d.slice(0, 7) !== month) break;
-    var items = calItems(d, f);
+    var items = calItems(d, kind, subj);
     var exam = isExam(d);
     var show = items.slice(0, 3);
     html += '<div class="cell' + (d.slice(0, 7) !== month ? ' other' : '') + (d === T ? ' today' : '') + (exam ? ' exam' : '') + '" role="button" tabindex="0" data-act="goday" data-date="' + d + '">' +
@@ -1142,11 +1324,20 @@ function calGrid(month, mini, f) {
   }
   return '<div class="cal' + (mini ? ' mini' : '') + '">' + html + '</div>';
 }
+var CAL_KINDS = [['all', '전체'], ['hw', '과제'], ['review', '복습'], ['assess', '수행평가'], ['event', '일정']];
 function calFilterRow() {
-  var f = ui.calFilter;
-  var b = function (v, label, fam) { return '<button type="button" data-act="calf" data-v="' + esc(v) + '" aria-pressed="' + (f === v) + '">' + (fam ? '<i class="cdot" style="background:var(--' + fam + '-fg)"></i>' : '') + esc(label) + '</button>'; };
-  return '<div class="calf" role="group" aria-label="캘린더 필터">' + b('all', '전체') + b('event', '일정') + b('assess', '수행평가') +
+  var k = ui.calKind, sj = ui.calSubj;
+  var kinds = '<div class="seg" role="group" aria-label="종류">' + CAL_KINDS.map(function (x) { return '<button type="button" data-act="calk" data-v="' + x[0] + '" aria-pressed="' + (k === x[0]) + '">' + x[1] + '</button>'; }).join('') + '</div>';
+  var b = function (v, label, fam) { return '<button type="button" data-act="cals" data-v="' + esc(v) + '" aria-pressed="' + (sj === v) + '"' + (k === 'event' && v !== 'all' ? ' disabled' : '') + '>' + (fam ? '<i class="cdot" style="background:var(--' + fam + '-fg)"></i>' : '') + esc(label) + '</button>'; };
+  var subs = '<div class="calf" role="group" aria-label="과목">' + b('all', '모든 과목') +
     SUBJECTS.filter(function (s) { return s.name !== '체육' && s.name !== '미술'; }).map(function (s) { return b(s.name, s.name, s.fam); }).join('') + '</div>';
+  return '<div class="calfilters">' + kinds + subs + '</div>';
+}
+function calFilterNote() {
+  var k = ui.calKind, sj = ui.calSubj;
+  if (k === 'all' && sj === 'all') return '';
+  var kl = { all: '모든 항목', hw: '과제', review: '복습', assess: '수행평가와 대비', event: '일정' }[k];
+  return '<p class="note" style="margin:10px 0 0">' + (sj !== 'all' && k !== 'event' ? esc(sj) + ' ' : '') + kl + '만 보고 있어요.</p>';
 }
 function vCalendar() {
   var m = ui.month;
@@ -1155,8 +1346,8 @@ function vCalendar() {
     '<div class="row"><button class="icon-btn" data-act="month-prev" aria-label="이전 달">‹</button><button class="btn" data-act="month-now">이번 달</button><button class="icon-btn" data-act="month-next" aria-label="다음 달">›</button>' +
     '<input type="month" id="month-pick" value="' + m + '" style="width:auto" aria-label="월 선택"></div></div>' +
     calFilterRow() +
-    '<section class="card">' + calGrid(m, false, ui.calFilter) +
-    (ui.calFilter !== 'all' ? '<p class="note" style="margin:10px 0 0">' + (ui.calFilter === 'event' ? '일정만' : ui.calFilter === 'assess' ? '수행평가와 수행평가 대비만' : esc(ui.calFilter) + '의 과제, 복습, 수행평가만') + ' 보고 있어요.</p>' : '') + '<div class="legend" style="margin-top:12px"><span class="tag f-kr">국어</span><span class="tag f-ma">수학</span><span class="tag f-en">영어</span><span class="tag f-so">사회</span><span class="tag f-sc">과학</span><span class="tag f-hi">역사</span><span class="tag f-gy">기타</span><span class="kind">일정</span><span class="exam-badge">★ 시험 기간</span></div></section>';
+    '<section class="card">' + calGrid(m, false, ui.calKind, ui.calSubj) + calFilterNote() +
+    '<div class="legend" style="margin-top:12px"><span class="tag f-kr">국어</span><span class="tag f-ma">수학</span><span class="tag f-en">영어</span><span class="tag f-so">사회</span><span class="tag f-sc">과학</span><span class="tag f-hi">역사</span><span class="tag f-gy">기타</span><span class="kind">일정</span><span class="exam-badge">★ 시험 기간</span></div></section>';
 }
 
 /* ---------- 하루 ---------- */
@@ -1171,9 +1362,9 @@ function vDay() {
     '<div class="cols">' +
     '<section class="card"><div class="chead"><h2>할 일 · 일정</h2><button class="btn sm" data-act="addfor" data-date="' + d + '">+ 추가</button></div>' + dayList(d) + '</section>' +
     '<section class="card"><div class="chead"><h2>수업</h2><span class="sub">누르면 기록 화면이 열려요</span></div>' +
-    (d < START ? '<div class="empty small">기록은 10월 21일부터 시작해요</div>' : '<div style="display:flex;flex-direction:column;gap:6px">' + (list.length ? list.map(classBtn).join('') : '<div class="empty small">수업이 없는 날이에요</div>') +
+    (d < START ? '<div class="empty small">기록은 ' + START_LABEL + '부터 시작해요</div>' : '<div style="display:flex;flex-direction:column;gap:6px">' + (list.length ? list.map(classBtn).join('') : '<div class="empty small">수업이 없는 날이에요</div>') +
     '<button class="add-mini" data-act="add-class" data-date="' + d + '">+ 수업 추가</button></div>') +
-    '<div style="margin-top:14px;padding-top:12px;border-top:1px solid var(--line)">' + studyInputs(d, 'ds') + '</div></section>' +
+    '<div class="daystudy"><div class="row"><span>이날 공부 시간 <b class="num">' + fmtHMS(daySec(d)) + '</b></span><span class="spacer"></span><button class="btn sm" data-act="manual-add" data-date="' + d + '">직접 입력</button></div>' + focusListHTML(d) + '</div></section>' +
     '</div>';
 }
 
@@ -1232,7 +1423,7 @@ function niceMax(v, minutes) {
 function barSVG(items, opt) {
   var n = items.length;
   if (!n) return '';
-  var bw = n > 20 ? 14 : n > 10 ? 20 : 30, gap = n > 20 ? 7 : 12, padL = 42, padB = 32, padT = 18, h = opt.compact ? 100 : 150;
+  var bw = n > 20 ? 14 : n > 10 ? 20 : n > 8 ? 30 : 46, gap = n > 20 ? 7 : n > 8 ? 12 : 26, padL = 42, padB = 32, padT = 18, h = opt.compact ? 100 : 150;
   var W = padL + n * (bw + gap) + gap, H = padT + h + padB;
   var mxRaw = 0;
   items.forEach(function (x) { mxRaw = Math.max(mxRaw, x.v || 0, x.total || 0); });
@@ -1240,8 +1431,9 @@ function barSVG(items, opt) {
   var y = function (v) { return padT + h - (v / mx) * h; };
   var g = '';
   [0, mx / 2, mx].forEach(function (t) {
+    if (!opt.minutes && t % 1) return;
     g += '<line class="gl" x1="' + padL + '" x2="' + (W - 4) + '" y1="' + y(t) + '" y2="' + y(t) + '"/>' +
-      '<text class="ax" x="' + (padL - 6) + '" y="' + (y(t) + 4) + '" text-anchor="end">' + (opt.minutes ? (t / 60) + 'H' : Math.round(t)) + '</text>';
+      '<text class="ax" x="' + (padL - 6) + '" y="' + (y(t) + 4) + '" text-anchor="end">' + (opt.minutes ? axisLab(t) : Math.round(t)) + '</text>';
   });
   var step = n > 20 ? Math.ceil(n / 12) : 1;
   items.forEach(function (x, i) {
@@ -1264,7 +1456,7 @@ function barSVG(items, opt) {
     }
     if (i % step === 0) g += '<text class="ax" x="' + (bx + bw / 2) + '" y="' + (padT + h + 18) + '" text-anchor="middle">' + esc(x.label) + '</text>';
   });
-  return '<div class="chart-wrap"><svg viewBox="0 0 ' + W + ' ' + H + '" style="width:100%;min-width:' + Math.min(W, 1200) + 'px;max-width:' + Math.max(W * 1.5, 360) + 'px" role="img" aria-label="' + esc(opt.label || '그래프') + '">' + g + '</svg></div>';
+  return '<div class="chart-wrap"><svg viewBox="0 0 ' + W + ' ' + H + '" style="width:100%;min-width:' + (n > 8 ? Math.min(W, 1200) : 300) + 'px;max-width:' + Math.max(n > 8 ? W * 1.5 : W * 1.1, 360) + 'px" role="img" aria-label="' + esc(opt.label || '그래프') + '">' + g + '</svg></div>';
 }
 function rate(from, to) {
   var T = todayS();
@@ -1286,37 +1478,29 @@ function rangeFromPreset(p) {
 }
 function pctTxt(r) { return r.total ? Math.round(r.done / r.total * 100) + '%' : '–'; }
 function vStats() {
-  var T = todayS();
+  var T = todayS(), ST = studyToday();
+  var a = focusAgg();
+  var daysOn = Object.keys(a.byDay).filter(function (d) { return d >= START && a.byDay[d] >= 1; }).length;
+  var cats = {};
+  Object.keys(a.byDayCat).forEach(function (d) { if (d < START) return; var c = a.byDayCat[d]; Object.keys(c).forEach(function (k) { cats[k] = (cats[k] || 0) + c[k]; }); });
+  var dd = ui.stats.day || ST, sw = ui.stats.week || weekStartOf(ST), sm = ui.stats.month || ST.slice(0, 7);
+  // 일간 다섯 칸
+  var dTasks = (idx.tasksByDate.get(dd) || []).filter(function (t) { return t.kind !== 'assess'; });
+  var dDone = dTasks.filter(function (t) { return t.done; }).length;
+  var box = function (label, val) { return '<div class="kpi5"><span>' + label + '</span><b class="num">' + val + '</b></div>'; };
+  var daily = '<div class="kpi5s">' +
+    box('총 공부 시간', fmtHMS(a.byDay[dd] || 0)) +
+    box('최대 집중 시간', a.longest[dd] ? fmtHMS(a.longest[dd]) : '–') +
+    box('공부 시작', a.first[dd] ? fmtClock(a.first[dd]) : '–') +
+    box('공부 종료', a.last[dd] ? fmtClock(a.last[dd]) : '–') +
+    box('할 일 완료율', dTasks.length ? Math.round(dDone / dTasks.length * 100) + '% <small>(' + dDone + '/' + dTasks.length + ')</small>' : '–') + '</div>';
+  // 할 일 수행 (기존)
   var rg = rangeFromPreset(ui.stats.preset);
   var from = rg[0], to = rg[1];
   if (to < from) { var tmp = from; from = to; to = tmp; }
   var days = [];
   for (var d = from; d <= to && days.length < 400; d = addDays(d, 1)) days.push(d);
   var lab = function (d) { var x = pd(d); return (x.getMonth() + 1) + '/' + x.getDate(); };
-  // 공부 시간
-  var sItems = days.map(function (d) { var r = data.study.get(d); return { label: lab(d), v: d > T ? null : (r ? r.minutes : null), future: d > T }; });
-  var recDays = sItems.filter(function (x) { return !x.future && x.v != null; });
-  var sTotal = recDays.reduce(function (s, x) { return s + x.v; }, 0);
-  var pastDays = sItems.filter(function (x) { return !x.future; }).length;
-  // 주간 변화(8주)
-  var wk = [];
-  var cw = weekStartOf(T);
-  for (var i = 7; i >= 0; i--) {
-    var ws = addDays(cw, -7 * i), tot = 0, cnt = 0;
-    for (var j = 0; j < 7; j++) { var r = data.study.get(addDays(ws, j)); if (r) { tot += r.minutes; cnt++; } }
-    wk.push({ label: lab(ws) + '주', v: cnt ? tot : null });
-  }
-  // 월간 변화
-  var mo = [];
-  var mStart = START.slice(0, 7), mCur = T.slice(0, 7);
-  if (mCur < mStart) mCur = mStart;
-  for (var m = mStart; m <= mCur;) {
-    var tot2 = 0, cnt2 = 0;
-    data.study.forEach(function (r) { if (r.id.slice(0, 7) === m) { tot2 += r.minutes; cnt2++; } });
-    mo.push({ label: (+m.slice(5)) + '월', v: cnt2 ? tot2 : null });
-    var nx = pd(m + '-01'); nx.setMonth(nx.getMonth() + 1); m = ds(nx).slice(0, 7);
-  }
-  // 할 일
   var tItems = days.map(function (d) {
     if (d > T) return { label: lab(d), future: true };
     var ts = (idx.tasksByDate.get(d) || []).filter(function (t) { return t.kind !== 'assess'; });
@@ -1340,18 +1524,26 @@ function vStats() {
     var x = subj[s.name]; var p = Math.round(x[0] / x[1] * 100);
     return '<div class="hbar"><span class="tag f-' + s.fam + '">' + esc(s.name) + '</span><span class="track"><i style="width:' + p + '%;background:var(--' + s.fam + '-fg)"></i></span><span class="num small">' + x[0] + '/' + x[1] + '</span></div>';
   }).join('');
-  return '<div class="phead"><div><h1>학습 기록 · 통계</h1><p>' + fmtMD(from) + ' ~ ' + fmtMD(to) + '</p></div>' +
-    '<div class="row"><div class="seg">' + seg('7d', '최근 7일') + seg('week', '이번 주') + seg('month', '이번 달') + seg('30d', '30일') + seg('all', '전체') + seg('custom', '직접') + '</div>' +
-    (ui.stats.preset === 'custom' ? '<input type="date" id="st-from" value="' + ui.stats.from + '" style="width:auto" aria-label="시작일"><input type="date" id="st-to" value="' + ui.stats.to + '" style="width:auto" aria-label="종료일">' : '') + '</div></div>' +
-    '<section class="card"><div class="chead"><h2>공부 시간</h2><button class="btn sm" data-act="study-edit">날짜별 기록</button></div>' +
-    '<div class="kpis"><div class="kpi"><b class="num">' + (recDays.length ? fmtMin(sTotal) : '–') + '</b><span>기간 총 공부 시간</span></div>' +
-    '<div class="kpi"><b class="num">' + (recDays.length ? fmtMin(Math.round(sTotal / recDays.length)) : '–') + '</b><span>일평균 (기록한 날 기준)</span></div>' +
-    '<div class="kpi"><b class="num">' + recDays.length + ' / ' + pastDays + '일</b><span>기록한 날 / 지난 날</span></div></div>' +
-    (recDays.length ? barSVG(sItems, { fmt: fmtMin, minutes: true, label: '날짜별 공부 시간' }) : '<div class="empty">이 기간에 기록한 공부 시간이 없어요</div>') +
-    '<p class="def">점선 칸은 기록하지 않은 날이고, 0은 0분으로 기록한 날이에요. 공부 시간은 직접 입력한 값만으로 계산해요.</p>' +
-    '<div class="cols" style="margin-top:14px"><div><div class="group-title">주간 변화 (최근 8주)</div>' + (wk.some(function (x) { return x.v != null; }) ? barSVG(wk, { fmt: fmtMin, minutes: true, label: '주간 공부 시간' }) : '<div class="empty small">기록이 쌓이면 나타나요</div>') + '</div>' +
-    '<div><div class="group-title">월간 변화</div>' + (mo.some(function (x) { return x.v != null; }) ? barSVG(mo, { fmt: fmtMin, minutes: true, label: '월간 공부 시간' }) : '<div class="empty small">기록이 쌓이면 나타나요</div>') + '</div></div></section>' +
-    '<section class="card"><div class="chead"><h2>할 일 수행</h2></div>' +
+  var mY = +sm.slice(0, 4), mM = +sm.slice(5, 7), mSum = 0;
+  Object.keys(a.byDay).forEach(function (d) { if (d.slice(0, 7) === sm) mSum += a.byDay[d]; });
+  return '<div class="phead"><div><h1>학습 기록 · 통계</h1><p>' + START_LABEL + '부터 쌓인 기록이에요</p></div>' +
+    '<div class="row"><button class="btn" data-act="manual-add">직접 입력</button><button class="btn primary" data-act="timer-open">집중 시작</button></div></div>' +
+    '<section class="card st-top"><div class="streak"><b class="num">' + daysOn + '일</b> 집중 중</div>' +
+    '<div class="catsum">' + ['국어', '수학', '영어', '사회', '과학', '역사'].map(function (c) {
+      return '<div class="cs"><span><i style="background:var(--' + CAT_FAM[c] + '-fg)"></i>' + c + '</span><b class="num">' + fmtHMS(cats[c] || 0) + '</b></div>';
+    }).join('') + '</div>' +
+    '<p class="def">과목별 시간은 ' + START_LABEL + '부터 지금까지 누적이에요. 다원국어는 국어, 수학과외는 수학, 회화는 영어, 실험e는 과학에 들어가요.</p>' +
+    '<div class="group-title">이번 주 목표 35H</div>' + chartGoal(weekStartOf(ST)) + '</section>' +
+    '<section class="card"><div class="chead"><h2>일간 통계</h2><div class="row"><button class="icon-btn" data-act="sd-prev" aria-label="이전 날">‹</button><b class="num" style="min-width:92px;text-align:center">' + fmtMD(dd) + '</b><button class="icon-btn" data-act="sd-next" aria-label="다음 날">›</button><button class="btn sm" data-act="sd-today">오늘</button></div></div>' +
+    daily + '<div class="group-title">이날 공부 기록</div>' + focusListHTML(dd) +
+    '<p class="def">기록을 지우면 할 일 옆 공부 시간과 모든 통계에서 함께 빠져요. 오전 6시 전 공부는 전날로 계산해요.</p></section>' +
+    '<section class="card"><div class="chead"><h2>주간 통계</h2><div class="row"><button class="icon-btn" data-act="sw-prev" aria-label="이전 주">‹</button><b class="num" style="min-width:120px;text-align:center">' + fmtMD(sw) + ' – ' + fmtMD(addDays(sw, 6)) + '</b><button class="icon-btn" data-act="sw-next" aria-label="다음 주">›</button><button class="btn sm" data-act="sw-now">이번 주</button></div></div>' +
+    '<div class="cols"><div><div class="group-title">일간 공부 시간</div>' + chartDaily(sw) + '</div><div><div class="group-title">시간대별 공부 시간</div>' + chartHourly(sw) + '</div>' +
+    '<div><div class="group-title">누적 공부 시간</div>' + chartCumulative(sw) + '</div><div><div class="group-title">과목별 공부 시간</div>' + chartCategory(weekDays(sw)) + '</div></div></section>' +
+    '<section class="card"><div class="chead"><h2>월간 통계</h2><div class="row"><button class="icon-btn" data-act="sm-prev" aria-label="이전 달">‹</button><b class="num" style="min-width:92px;text-align:center">' + mY + '년 ' + mM + '월</b><button class="icon-btn" data-act="sm-next" aria-label="다음 달">›</button></div></div>' +
+    '<div class="small muted" style="margin-bottom:10px">이 달 공부 시간 <b class="num">' + fmtHMS(mSum) + '</b> · 날짜를 누르면 일간 통계가 그날로 바뀌어요</div>' + chartHeatmap(sm, 'stat-day') + '</section>' +
+    '<section class="card"><div class="chead"><h2>할 일 수행</h2><div class="seg">' + seg('7d', '최근 7일') + seg('week', '이번 주') + seg('month', '이번 달') + seg('30d', '30일') + seg('all', '전체') + seg('custom', '직접') + '</div></div>' +
+    (ui.stats.preset === 'custom' ? '<div class="row" style="margin-bottom:10px"><input type="date" id="st-from" value="' + ui.stats.from + '" style="width:auto" aria-label="시작일"><input type="date" id="st-to" value="' + ui.stats.to + '" style="width:auto" aria-label="종료일"></div>' : '') +
     '<div class="kpis"><div class="kpi"><b class="num">' + pctTxt(rr) + '</b><span>기간 완료율 (' + rr.done + '/' + rr.total + ')</span></div>' +
     '<div class="kpi"><b class="num">' + pctTxt(rw) + '</b><span>이번 주 완료율</span></div><div class="kpi"><b class="num">' + pctTxt(rm) + '</b><span>이번 달 완료율</span></div>' +
     '<div class="kpi"><b class="num">' + kinds.review[0] + '/' + kinds.review[1] + '</b><span>복습 완료</span></div>' +
@@ -1361,8 +1553,8 @@ function vStats() {
     '<div class="kpi"><b class="num">' + overdue + '</b><span>지난 날짜 미완료 (전체)</span></div>' +
     '<div class="kpi"><b class="num">' + upcoming + '</b><span>앞으로 할 일 (전체)</span></div></div>' +
     (tItems.some(function (x) { return x.total; }) ? barSVG(tItems, { stack: true, label: '날짜별 완료 수와 전체 수' }) : '<div class="empty">이 기간에 날짜가 지난 할 일이 없어요</div>') +
-    '<p class="def">막대의 연한 부분은 그날의 전체 할 일, 진한 부분은 완료한 할 일이에요. 완료율 = 기간 안에서 날짜가 오늘까지인 할 일 중 완료한 수 ÷ 그런 할 일의 수. 아직 날짜가 오지 않은 할 일과 수행평가 당일 항목은 빼고, 삭제한 항목은 어디에도 세지 않아요. 수업 안 함으로 처리한 수업에는 복습이 생기지 않으니 미완료로 세지 않아요. 날짜를 옮긴 할 일은 옮긴 날짜로 세요.</p></section>' +
-    '<section class="card"><div class="chead"><h2>과목별 복습 완료</h2><span class="sub">기간 안, 오늘까지</span></div>' + (subjRows || '<div class="empty small">이 기간에 복습 기록이 없어요</div>') + '</section>';
+    '<p class="def">막대의 연한 부분은 그날의 전체 할 일, 진한 부분은 완료한 할 일이에요. 완료율 = 기간 안에서 날짜가 오늘까지인 할 일 중 완료한 수 ÷ 그런 할 일의 수. 아직 날짜가 오지 않은 할 일과 수행평가 당일 항목은 빼고, 삭제한 항목은 어디에도 세지 않아요.</p></section>' +
+    '<section class="card"><div class="chead"><h2>과목별 복습 완료</h2><span class="sub">위 기간 안, 오늘까지</span></div>' + (subjRows || '<div class="empty small">이 기간에 복습 기록이 없어요</div>') + '</section>';
 }
 
 /* ---------- 설정 ---------- */
@@ -1391,7 +1583,7 @@ function vSettings() {
     '<p class="small">' + (backend === 'db' ? '모든 기록이 claude.ai 저장소에 저장돼요. 같은 계정으로 로그인한 아이패드, 휴대전화, 컴퓨터에서 같은 내용이 보여요.' : SOLO ? '기록은 이 아이패드의 Safari에 저장돼요. Safari의 방문 기록과 웹사이트 데이터를 지우면 기록도 지워지니, 가끔 백업 파일을 저장해 두세요.' : '지금은 이 기기의 브라우저에만 저장되고 있어요.') + '</p>' +
     (SOLO ? '<p class="small muted">' + (backupAgeDays() == null ? '아직 백업한 적이 없어요.' : '마지막 백업: ' + (backupAgeDays() === 0 ? '오늘' : backupAgeDays() + '일 전')) + '</p>' : '') +
     '<div class="row"><button class="btn" data-act="backup">백업 파일 저장 (.json)</button>' + (SOLO ? '<label class="btn" for="restore-in">백업 파일 불러오기</label><input type="file" id="restore-in" accept=".json,application/json" style="position:absolute;width:1px;height:1px;opacity:0;pointer-events:none">' : '') + '</div>' +
-    '<p class="def">할 일 ' + data.tasks.size + '개 · 수업 기록 ' + data.sessions.size + '개 · 일정 ' + data.events.size + '개 · 공부 시간 ' + data.study.size + '일</p></section>' +
+    '<p class="def">할 일 ' + data.tasks.size + '개 · 수업 기록 ' + data.sessions.size + '개 · 일정 ' + data.events.size + '개 · 공부 기록 ' + data.focus.size + '개 · 백업 파일에는 첨부 자료도 함께 들어가요</p></section>' +
     '</div>';
 }
 
@@ -1446,20 +1638,20 @@ function toggleDone(id) {
 }
 function copyFields(t) {
   var c = {};
-  ['kind', 'subject', 'title', 'memo', 'sessionKey', 'chasi', 'method', 'label', 'dueDate', 'assessId'].forEach(function (k) { if (t[k] != null) c[k] = t[k]; });
+  ['kind', 'subject', 'title', 'memo', 'sessionKey', 'chasi', 'method', 'label', 'dueDate', 'assessId', 'round', 'range'].forEach(function (k) { if (t[k] != null) c[k] = t[k]; });
   if (c.kind === 'assess') c.kind = 'prep';
   c.sourceId = t.id; c.rootId = t.rootId || t.id;
   return c;
 }
-function moveTask(t, nd) {
+function moveTask(t, nd, quiet) {
   if (!nd || nd === t.date) return;
-  if (t.kind === 'assess') return changeAssessDate(t, nd);
+  if (t.kind === 'assess') return changeAssessDate(t, nd, quiet);
   if (t.done) {
     createTask(Object.assign(copyFields(t), { date: nd }));
-    toast('완료 기록은 그대로 두고 ' + fmtMD(nd) + '에 새로 추가했어요.');
+    if (!quiet) toast('완료 기록은 그대로 두고 ' + fmtMD(nd) + '에 새로 추가했어요.');
   } else {
     patch('tasks', t.id, { date: nd, order: Date.now() });
-    toast(fmtMD(nd) + '로 옮겼어요.');
+    if (!quiet) toast(fmtMD(nd) + '로 옮겼어요.');
   }
 }
 function againTomorrow(t) {
@@ -1469,12 +1661,19 @@ function againTomorrow(t) {
   createTask(Object.assign(copyFields(t), { date: nd }));
   toast(fmtMD(nd) + '에 같은 할 일을 하나 더 만들었어요.');
 }
+function prepTitle(a) { return '수행평가 대비' + (a.partCount > 1 ? ' (' + a.part + ')' : ''); }
 function syncPrep(a) {
   var id = 'prep_' + a.id;
   var ex = data.tasks.get(id);
   var pdate = addDays(a.date, -1);
-  if (!ex) createTask({ id: id, kind: 'prep', subject: a.subject, title: '수행평가 대비', date: pdate, assessId: a.id, auto: true });
-  else if (!ex.done && (ex.date !== pdate || ex.subject !== a.subject)) patch('tasks', id, { date: pdate, subject: a.subject, assessId: a.id });
+  if (!ex) createTask({ id: id, kind: 'prep', subject: a.subject, title: prepTitle(a), date: pdate, assessId: a.id, auto: true });
+  else {
+    var p = {};
+    if (!ex.done && ex.date !== pdate) p.date = pdate;
+    if (ex.subject !== a.subject) p.subject = a.subject;
+    if (ex.auto && ex.title !== prepTitle(a)) p.title = prepTitle(a);
+    if (Object.keys(p).length) patch('tasks', id, p);
+  }
 }
 function docBase(s) { return { date: s.date, slotId: s.slotId, p: s.p, baseSubject: s.baseSubject, extra: !!s.extra }; }
 function markSessionForAssess(a) {
@@ -1491,27 +1690,50 @@ function unmarkSession(a) {
   var sdoc = data.sessions.get(a.markedKey);
   if (sdoc && sdoc.assessId === a.id) { var c = Object.assign({}, sdoc); delete c.status; delete c.assessId; delete c.id; put('sessions', a.markedKey, c); }
 }
-function createAssessment(f) {
+function assessParts(t) {
+  if (!t.groupId) return [t];
+  var out = [];
+  data.tasks.forEach(function (x) { if (x.kind === 'assess' && x.groupId === t.groupId) out.push(x); });
+  return out.sort(function (a, b) { return a.date.localeCompare(b.date) || (a.part || 0) - (b.part || 0); });
+}
+function renumberAssess(t) {
+  var parts = assessParts(t), n = parts.length;
+  parts.forEach(function (p, k) {
+    var base = p.baseTitle || p.title;
+    var title = base + (n > 1 ? ' (' + (k + 1) + ')' : '');
+    var np = p;
+    if (p.title !== title || p.part !== k + 1 || p.partCount !== n) np = patch('tasks', p.id, { title: title, baseTitle: base, part: k + 1, partCount: n });
+    syncPrep(np);
+  });
+}
+function addAssessPart(f, date) {
   var id = newId('as');
-  var a = createTask({ id: id, kind: 'assess', subject: f.subject, title: f.title, date: f.date, memo: f.memo || '', sessionKey: f.sessionKey || null, onlyAssess: !!f.onlyAssess });
+  var a = createTask({ id: id, kind: 'assess', subject: f.subject, baseTitle: f.baseTitle, title: f.baseTitle, groupId: f.groupId, part: 1, partCount: 1,
+    date: date, memo: f.memo || '', onlyAssess: !!f.onlyAssess, attachments: f.attachments || [] });
   var key = f.onlyAssess ? markSessionForAssess(a) : null;
   if (key) a = patch('tasks', id, { markedKey: key });
-  syncPrep(a);
   return a;
 }
-function changeAssessDate(a, nd) {
+function createAssessmentGroup(f) {
+  var g = newId('ag');
+  var dates = f.dates.slice().sort();
+  var first = null;
+  dates.forEach(function (d) { var a = addAssessPart(Object.assign({}, f, { groupId: g }), d); if (!first) first = a; });
+  renumberAssess(first);
+  return first;
+}
+function changeAssessDate(a, nd, quiet) {
   unmarkSession(a);
   var na = patch('tasks', a.id, { date: nd, markedKey: null });
   if (na.onlyAssess) { var k = markSessionForAssess(na); if (k) na = patch('tasks', a.id, { markedKey: k }); }
   syncPrep(na);
-  toast('수행평가 날짜를 ' + fmtMD(nd) + '로 바꿨어요. 대비 할 일도 전날로 옮겼어요.');
+  renumberAssess(na);
+  if (!quiet) toast('수행평가 날짜를 ' + fmtMD(nd) + '로 바꿨어요. 대비 할 일도 전날로 옮겼어요.');
 }
-async function deleteTask(t) {
-  var extra = '';
-  if (t.kind === 'assess') extra = '\n연결된 수행평가 대비 할 일도 정리돼요. 메모를 적었거나 완료한 대비 할 일은 남겨 둬요.';
-  var ok = await confirmBox('삭제할까요?', '"' + t.title + '"을(를) 삭제하면 되돌릴 수 없어요. 완료 처리와는 달리 통계에서도 빠져요.' + extra,
-    [{ label: '취소', value: false, cls: 'ghost' }, { label: '삭제', value: true, cls: 'danger' }]);
-  if (!ok) return false;
+function cleanupFiles(list) {
+  (list || []).forEach(function (a) { if (!attachmentInUse(a.id)) FDB.del(a.id).catch(function () {}); });
+}
+function doDeleteTask(t) {
   if (t.kind === 'assess') {
     unmarkSession(t);
     data.tasks.forEach(function (p) {
@@ -1521,55 +1743,116 @@ async function deleteTask(t) {
       }
     });
   }
+  var rest = t.kind === 'assess' && t.groupId ? assessParts(t).filter(function (x) { return x.id !== t.id; }) : [];
   del('tasks', t.id);
+  if (rest.length) renumberAssess(rest[0]);
+  if (t.kind === 'assess') cleanupFiles(t.attachments);
+}
+async function deleteTask(t) {
+  var extra = '';
+  if (t.kind === 'assess') extra = '\n이 날짜의 대비 할 일도 정리돼요. 메모를 적었거나 완료한 대비 할 일은 남겨 둬요.' + (t.partCount > 1 ? '\n같은 수행평가의 다른 날짜는 그대로 남아요.' : '');
+  var ok = await confirmBox('삭제할까요?', '"' + t.title + '"을(를) 삭제하면 되돌릴 수 없어요. 완료 처리와는 달리 할 일 통계에서도 빠져요. 이 할 일로 공부한 시간은 공부 통계에 남아요.' + extra,
+    [{ label: '취소', value: false, cls: 'ghost' }, { label: '삭제', value: true, cls: 'danger' }]);
+  if (!ok) return false;
+  doDeleteTask(t);
   toast('삭제했어요.');
   return true;
 }
+function setGroupAttachments(t, list) { assessParts(t).forEach(function (p) { patch('tasks', p.id, { attachments: list }); }); }
 
 function openTask(id) {
   var t = data.tasks.get(id);
   if (!t) return;
-  var T = todayS();
   var info = [];
   info.push('<div><span class="small muted">날짜</span><br>' + fmtLong(t.date) + '</div>');
   if (t.kind === 'hw') info.push('<div><span class="small muted">마감일' + (t.dueAuto ? ' · 다음 수업 기준' : '') + '</span><br>' + fmtLong(effDue(t)) + '</div>');
   if (t.range) info.push('<div><span class="small muted">범위</span><br>' + esc(t.range) + '</div>');
   if (t.done && t.doneAt) { var dd = new Date(t.doneAt); info.push('<div><span class="small muted">완료한 때</span><br>' + (dd.getMonth() + 1) + '/' + dd.getDate() + ' ' + pad(dd.getHours()) + ':' + pad(dd.getMinutes()) + '</div>'); }
+  var bt = focusAgg().byTask[t.id];
+  if (t.kind !== 'assess') info.push('<div><span class="small muted">공부한 시간</span><br><span class="num">' + (bt ? fmtHMS(bt.sec) + ' · ' + bt.n + '번' : '아직 없어요') + '</span></div>');
   var sess = t.sessionKey ? data.sessions.get(t.sessionKey) : null;
   var learned = sess && sess.learned ? sess.learned : '';
   var src = t.sourceId ? data.tasks.get(t.sourceId) : null;
   var linkAs = t.assessId ? data.tasks.get(t.assessId) : null;
+  var asSec = '';
+  if (t.kind === 'assess') {
+    var parts = assessParts(t);
+    asSec = '<div class="sec"><h3>이 수행평가를 보는 날</h3><div class="linked">' + parts.map(function (p) {
+      return '<div class="li"><span style="flex:1">' + fmtLong(p.date) + (p.partCount > 1 ? ' · (' + p.part + ')' : '') + (p.id === t.id ? ' <span class="st-chip">지금 보는 날</span>' : '') + '</span>' +
+        (p.id !== t.id ? '<button class="btn sm ghost" data-a="goto" data-tid="' + esc(p.id) + '">열기</button>' : '') + '</div>';
+    }).join('') + '</div><div><button class="btn sm" data-a="as-add">+ 날짜 추가</button></div><p class="def">날짜마다 전날에 대비 할 일이 생기고, 그날 이 과목 수업은 차시를 세지 않아요.</p></div>' +
+      '<div class="sec"><h3>안내 자료</h3>' + ((t.attachments || []).length ? '<div class="atts">' + attChips(t.attachments) + '</div>' : '<div class="small muted">첨부한 자료가 없어요</div>') +
+      '<div><label class="btn sm" for="att-add">+ PDF · 사진 첨부</label><input type="file" id="att-add" accept="application/pdf,image/*" multiple class="hidden-file"></div></div>';
+  }
   var body =
     '<div class="tline" style="font-size:16px">' + tagHTML(t) + (KIND_LABEL[t.kind] ? '<span class="kind k-' + t.kind + '">' + KIND_LABEL[t.kind] + '</span>' : '') + '<b>' + esc(t.title) + '</b>' + (t.done ? ' <span class="st-chip">완료</span>' : '') + '</div>' +
     '<div class="grid2">' + info.join('') + '</div>' +
-    (t.memo ? '<div class="sec"><h3>상세 메모</h3><div class="learned-box">' + esc(t.memo) + '</div></div>' : '') +
-    (t.sessionKey ? '<div class="sec"><h3>이 수업에서 배운 내용 · ' + fmtMD(t.sessionKey.slice(0, 10)) + '</h3><div class="learned-box">' + (learned ? esc(learned) : '<span class="muted">아직 적지 않았어요</span>') + '</div>' +
+    (t.memo ? '<div class="sec"><h3>' + (t.kind === 'assess' ? '준비 메모' : '상세 메모') + '</h3><div class="learned-box">' + esc(t.memo) + '</div></div>' : '') +
+    asSec +
+    (t.sessionKey ? '<div class="sec"><h3>수업 내용 · ' + fmtMD(t.sessionKey.slice(0, 10)) + '</h3><div class="learned-box">' + (learned ? esc(learned) : '<span class="muted">아직 적지 않았어요</span>') + '</div>' +
       '<div><button class="btn sm" data-a="session">수업 기록 열기</button></div></div>' : '') +
     (linkAs ? '<div class="note">연결된 수행평가: ' + fmtMD(linkAs.date) + ' ' + esc(linkAs.title) + '</div>' : '') +
     (src ? '<div class="note">원래 할 일: ' + fmtMD(src.date) + (src.done ? ' (완료)' : '') + '</div>' : '') +
     '<div class="acts">' +
-    '<button class="btn' + (t.done ? '' : ' primary') + '" data-a="toggle">' + (t.done ? '완료 취소' : '완료') + '</button>' +
+    (t.kind !== 'assess' ? '<button class="btn primary" data-a="focus">이 할 일로 집중</button>' : '<button class="btn primary" data-a="ical">Apple 캘린더에 추가</button>') +
+    '<button class="btn" data-a="toggle">' + (t.done ? '완료 취소' : '완료') + '</button>' +
     (t.kind !== 'assess' ? '<button class="btn" data-a="next">다음 날로 넘기기</button><button class="btn" data-a="move">원하는 날짜로 이동</button><button class="btn" data-a="again">내일 또 하기</button>' : '') +
-    '<button class="btn" data-a="change">' + (t.kind === 'hw' ? '마감일 변경' : t.kind === 'assess' ? '수행평가 날짜 변경' : '날짜 변경') + '</button>' +
+    '<button class="btn" data-a="change">' + (t.kind === 'hw' ? '마감일 변경' : t.kind === 'assess' ? '이 날짜 변경' : '날짜 변경') + '</button>' +
     (t.kind !== 'assess' ? '<button class="btn" data-a="repeat">다시 하기 · 반복</button>' : '') +
     '<button class="btn" data-a="edit">수정</button>' +
-    '<button class="btn danger" data-a="delete">삭제</button></div>' +
+    '<button class="btn danger" data-a="delete">' + (t.kind === 'assess' && t.partCount > 1 ? '이 날짜 삭제' : '삭제') + '</button></div>' +
     (t.done && t.kind !== 'assess' ? '<p class="note">완료한 항목을 옮기거나 반복하면 완료 기록은 그대로 두고 새 할 일이 생겨요.</p>' : '');
   var m = openModal('할 일', body, '');
+  m.el.addEventListener('change', async function (e) {
+    if (e.target.id !== 'att-add' || !e.target.files || !e.target.files.length) return;
+    var files = Array.from(e.target.files); e.target.value = '';
+    try {
+      var metas = await storeFiles(files);
+      var cur = data.tasks.get(id); if (!cur) return;
+      setGroupAttachments(cur, (cur.attachments || []).concat(metas));
+      toast('자료 ' + metas.length + '개를 첨부했어요.');
+      m.close(); openTask(id);
+    } catch (x) { toast('첨부하지 못했어요. 아이패드 저장 공간을 확인해 주세요.'); }
+  });
   m.el.addEventListener('click', async function (e) {
+    var att = e.target.closest('[data-att]');
+    if (att) {
+      var fid = att.dataset.att;
+      viewAttachment(fid, function () {
+        var cur0 = data.tasks.get(id); if (!cur0) return;
+        setGroupAttachments(cur0, (cur0.attachments || []).filter(function (x) { return x.id !== fid; }));
+        cleanupFiles([{ id: fid }]);
+        toast('첨부를 지웠어요.'); m.close(); openTask(id);
+      });
+      return;
+    }
     var b = e.target.closest('[data-a]'); if (!b) return;
     var a = b.dataset.a;
     var cur = data.tasks.get(id); if (!cur) { m.close(); return; }
     if (a === 'toggle') { toggleDone(id); m.close(); }
+    else if (a === 'focus') { m.close(); openTimerSetup(id); }
+    else if (a === 'ical') openAddToCalendar(assessCalEvent(cur));
+    else if (a === 'goto') { m.close(); openTask(b.dataset.tid); }
+    else if (a === 'as-add') {
+      var ndA = await pickDate('수행평가를 보는 날 추가', addDays(cur.date, 7));
+      if (ndA) {
+        var g = cur.groupId;
+        if (!g) { g = newId('ag'); cur = patch('tasks', id, { groupId: g, baseTitle: cur.baseTitle || cur.title }); }
+        var np = addAssessPart({ subject: cur.subject, baseTitle: cur.baseTitle || cur.title, groupId: g, memo: cur.memo, onlyAssess: cur.onlyAssess, attachments: cur.attachments }, ndA);
+        renumberAssess(np);
+        toast(fmtMD(ndA) + '을 추가했어요. 전날 대비 할 일도 생겼어요.');
+        m.close(); openTask(id);
+      }
+    }
     else if (a === 'next') { m.close(); moveTask(cur, addDays(cur.date, 1)); }
-    else if (a === 'move') { var nd = await pickDate('어느 날로 옮길까요?', cur.date, cur.date); if (nd) { m.close(); moveTask(cur, nd); } }
+    else if (a === 'move') { var nd = await pickDate('어느 날로 옮길까요?', cur.date); if (nd) { m.close(); moveTask(cur, nd); } }
     else if (a === 'again') { m.close(); againTomorrow(cur); }
     else if (a === 'change') {
       if (cur.kind === 'hw') {
         var nd2 = await pickDate('새 마감일', effDue(cur));
         if (nd2) { var p = { dueDate: nd2, dueAuto: false }; if (!cur.done && cur.date === cur.dueDate) p.date = nd2; patch('tasks', id, p); toast('마감일을 ' + fmtMD(nd2) + '로 바꿨어요.'); m.close(); }
       } else {
-        var nd3 = await pickDate(cur.kind === 'assess' ? '새 수행평가 날짜' : '새 날짜', cur.date, cur.date);
+        var nd3 = await pickDate(cur.kind === 'assess' ? '새 수행평가 날짜' : '새 날짜', cur.date);
         if (nd3) { m.close(); moveTask(cur, nd3); }
       }
     }
@@ -1602,27 +1885,32 @@ function openEditTask(t) {
   var f = '';
   if (k === 'other') f += '<label class="field"><span>과목명 또는 활동명</span><input type="text" id="et-label" value="' + esc(t.label || '') + '" list="labels"></label>';
   if (k === 'hw' || k === 'assess' || k === 'prep') f += '<label class="field"><span>과목</span><select id="et-subj">' + subjectOptions(t.subject) + '</select></label>';
-  f += '<label class="field"><span>' + (k === 'hw' ? '과제 내용' : k === 'assess' ? '수행평가 내용' : k === 'review' ? '복습 방법' : '할 일 내용') + '</span><input type="text" id="et-title" value="' + esc(t.title) + '"' + (k === 'review' ? ' readonly' : '') + '></label>';
+  f += '<label class="field"><span>' + (k === 'hw' ? '과제 내용' : k === 'assess' ? '수행평가 내용 · 모든 날짜에 적용' : k === 'review' ? '복습 방법' : '할 일 내용') + '</span><input type="text" id="et-title" value="' + esc(k === 'assess' ? (t.baseTitle || t.title) : t.title) + '"' + (k === 'review' ? ' readonly' : '') + '></label>';
   f += '<div class="grid2">';
   if (k === 'hw') f += '<label class="field"><span>마감 날짜</span><input type="date" id="et-due" value="' + esc(effDue(t)) + '"></label>';
-  if (t.range != null && k !== 'other') f += '<label class="field"><span>범위</span><input type="text" id="et-range" value="' + esc(t.range || '') + '"></label>';
-  f += '<label class="field"><span>' + (k === 'assess' ? '수행평가 날짜' : k === 'hw' ? '할 날짜 (목록에 표시)' : k === 'other' ? '마감 날짜' : '날짜') + '</span><input type="date" id="et-date" value="' + esc(t.date) + '"></label></div>';
+  if (t.range != null && k !== 'other' && k !== 'assess') f += '<label class="field"><span>범위</span><input type="text" id="et-range" value="' + esc(t.range || '') + '"></label>';
+  f += '<label class="field"><span>' + (k === 'assess' ? '이 날짜' : k === 'hw' ? '할 날짜 (목록에 표시)' : k === 'other' ? '마감 날짜' : '날짜') + '</span><input type="date" id="et-date" value="' + esc(t.date) + '"></label></div>';
   f += '<label class="field"><span>' + (k === 'assess' ? '준비 메모' : '상세 메모') + '</span><textarea id="et-memo" placeholder="페이지, 교재명, 문제 번호, 추가 설명">' + esc(t.memo || '') + '</textarea></label>';
   f += labelDatalist();
   var m = openModal('수정', f, '<button class="btn ghost" data-mclose>취소</button><button class="btn primary" data-ok>저장</button>');
   m.el.addEventListener('click', function (e) {
     if (!e.target.closest('[data-ok]')) return;
     var cur = data.tasks.get(t.id); if (!cur) { m.close(); return; }
-    var p = { title: $('#et-title', m.el).value.trim() || cur.title, memo: $('#et-memo', m.el).value };
+    var title = $('#et-title', m.el).value.trim();
+    var p = { memo: $('#et-memo', m.el).value };
     if ($('#et-label', m.el)) p.label = $('#et-label', m.el).value.trim() || '기타';
     if ($('#et-subj', m.el)) p.subject = $('#et-subj', m.el).value;
     if ($('#et-due', m.el)) { var nd0 = $('#et-due', m.el).value; if (nd0 && nd0 !== effDue(cur)) { p.dueDate = nd0; p.dueAuto = false; } }
     if ($('#et-range', m.el)) p.range = $('#et-range', m.el).value;
     var nd = $('#et-date', m.el).value || cur.date;
     if (k === 'assess') {
-      var na = patch('tasks', t.id, p);
-      if (nd !== cur.date) changeAssessDate(na, nd); else syncPrep(na);
+      var gp = { baseTitle: title || cur.baseTitle || cur.title, subject: p.subject || cur.subject, memo: p.memo };
+      assessParts(cur).forEach(function (x) { patch('tasks', x.id, gp); });
+      var na = data.tasks.get(cur.id);
+      renumberAssess(na);
+      if (nd !== cur.date) changeAssessDate(data.tasks.get(cur.id), nd);
     } else {
+      p.title = title || cur.title;
       if (nd !== cur.date) { p.date = nd; p.order = Date.now(); }
       patch('tasks', t.id, p);
     }
@@ -1662,20 +1950,48 @@ function openNewHw(date) {
   });
 }
 function openNewAssess(date) {
-  var body = '<label class="field"><span>과목</span><select id="na-s">' + subjectOptions('', true).replace(/<option>(다원국어|수학과외)<\/option>/g, '') + '</select></label>' +
-    '<label class="field"><span>수행평가 날짜</span><input type="date" id="na-d" value="' + (date || '') + '"></label>' +
-    '<label class="field"><span>수행평가 내용</span><input type="text" id="na-t" placeholder="예: 논술형 평가"></label>' +
-    '<label class="field"><span>준비 메모 (선택)</span><textarea id="na-m"></textarea></label>' +
-    '<label class="cb on"><input type="checkbox" id="na-o" checked> 그날 이 과목 수업 대신 수행평가를 봐요 · 차시를 세지 않아요</label>' +
-    '<p class="note">전날 할 일 목록에 "수행평가 대비"가 자동으로 생겨요.</p>';
-  var m = openModal('수행평가 추가', body, '<button class="btn ghost" data-mclose>취소</button><button class="btn primary" data-ok>추가</button>');
-  m.el.addEventListener('change', function (e) { if (e.target.id === 'na-o') e.target.closest('.cb').classList.toggle('on', e.target.checked); });
-  m.el.addEventListener('click', function (e) {
-    if (!e.target.closest('[data-ok]')) return;
-    var s = $('#na-s', m.el).value, d = $('#na-d', m.el).value, t = $('#na-t', m.el).value.trim();
-    if (!s || !d || !t) { toast('과목, 날짜, 내용을 모두 넣어 주세요.'); return; }
-    createAssessment({ subject: s, date: d, title: t, memo: $('#na-m', m.el).value, onlyAssess: $('#na-o', m.el).checked });
-    toast(fmtMD(d) + ' 수행평가를 추가했어요.');
+  var st = { subject: '', title: '', memo: '', only: true, dates: [date || ''], files: [] };
+  var m = openModal('수행평가 추가', '<div id="na"></div>', '<button class="btn ghost" data-mclose>취소</button><button class="btn primary" data-ok>추가</button>');
+  var box = $('#na', m.el); box.style.display = 'contents';
+  function draw() {
+    box.innerHTML = '<label class="field"><span>과목</span><select id="na-s">' + subjectOptions(st.subject, true).replace(/<option>(다원국어|수학과외)<\/option>/g, '') + '</select></label>' +
+      '<label class="field"><span>수행평가 내용</span><input type="text" id="na-t" value="' + esc(st.title) + '" placeholder="예: 논술형 평가"></label>' +
+      '<div class="field"><span>수행평가를 보는 날 · 여러 날에 걸쳐 보면 날짜 추가</span><div class="parts">' + st.dates.map(function (d, k) {
+        return '<div class="part">' + (st.dates.length > 1 ? '<span class="pn">(' + (k + 1) + ')</span>' : '') + dateBtn('data-nad="' + k + '"', d) +
+          (st.dates.length > 1 ? '<button type="button" class="icon-btn sm" data-narm="' + k + '" aria-label="이 날짜 빼기">×</button>' : '') + '</div>';
+      }).join('') + '<div><button type="button" class="add-mini" data-naadd>+ 날짜 추가</button></div></div></div>' +
+      '<label class="field"><span>준비 메모 (선택)</span><textarea id="na-m">' + esc(st.memo) + '</textarea></label>' +
+      '<div class="field"><span>안내 자료 (선택)</span><div class="atts">' + st.files.map(function (f, i) {
+        return '<span class="att"><span class="att-k">' + (/pdf/i.test(f.type) ? 'PDF' : '사진') + '</span>' + esc(f.name) + ' <span class="muted small">' + fileSize(f.size) + '</span><button type="button" class="icon-btn sm" data-nafrm="' + i + '" aria-label="빼기">×</button></span>';
+      }).join('') + '</div><div><label class="btn sm" for="na-f">+ PDF · 사진 첨부</label><input type="file" id="na-f" accept="application/pdf,image/*" multiple class="hidden-file"></div></div>' +
+      '<label class="cb' + (st.only ? ' on' : '') + '"><input type="checkbox" id="na-o"' + (st.only ? ' checked' : '') + '> 그날 이 과목 수업 대신 수행평가를 봐요 · 차시를 세지 않아요</label>' +
+      '<p class="note">날짜마다 전날 할 일 목록에 "수행평가 대비"가 자동으로 생겨요.</p>';
+  }
+  draw();
+  m.el.addEventListener('input', function (e) { if (e.target.id === 'na-t') st.title = e.target.value; if (e.target.id === 'na-m') st.memo = e.target.value; });
+  m.el.addEventListener('change', function (e) {
+    var el = e.target;
+    if (el.id === 'na-s') st.subject = el.value;
+    else if (el.id === 'na-o') { st.only = el.checked; el.closest('.cb').classList.toggle('on', el.checked); }
+    else if (el.id === 'na-f' && el.files) { st.files = st.files.concat(Array.from(el.files)); el.value = ''; draw(); }
+  });
+  m.el.addEventListener('click', async function (e) {
+    var b = e.target.closest('button'); if (!b) return;
+    if (b.dataset.nad != null) { var k = +b.dataset.nad; var v = await openDayPicker('수행평가 날짜', st.dates[k] || todayS()); if (v) { st.dates[k] = v; draw(); } return; }
+    if (b.hasAttribute('data-naadd')) { st.dates.push(''); draw(); return; }
+    if (b.dataset.narm != null) { st.dates.splice(+b.dataset.narm, 1); draw(); return; }
+    if (b.dataset.nafrm != null) { st.files.splice(+b.dataset.nafrm, 1); draw(); return; }
+    if (!b.hasAttribute('data-ok')) return;
+    var t = st.title.trim();
+    if (!st.subject || !t) { toast('과목과 수행평가 내용을 넣어 주세요.'); return; }
+    if (st.dates.some(function (d) { return !d; })) { toast('수행평가 날짜를 모두 골라 주세요.'); return; }
+    b.disabled = true;
+    var metas = [];
+    if (st.files.length) {
+      try { metas = await storeFiles(st.files); } catch (x) { b.disabled = false; toast('자료를 첨부하지 못했어요. 아이패드 저장 공간을 확인해 주세요.'); return; }
+    }
+    createAssessmentGroup({ subject: st.subject, baseTitle: t, dates: st.dates, memo: st.memo, onlyAssess: st.only, attachments: metas });
+    toast('수행평가를 추가했어요' + (st.dates.length > 1 ? ' · ' + st.dates.length + '일' : '') + '.');
     m.close();
   });
 }
@@ -1701,9 +2017,10 @@ function openEvent(id, date) {
     '<div class="grid2"><label class="field"><span>시작 시간 (선택)</span><input type="time" id="ne-s" value="' + esc(e0 && e0.start || '') + '"></label>' +
     '<label class="field"><span>종료 시간 (선택)</span><input type="time" id="ne-e" value="' + esc(e0 && e0.end || '') + '"></label></div>' +
     '<label class="field"><span>상세 설명 (선택)</span><textarea id="ne-m">' + esc(e0 && e0.desc || '') + '</textarea></label>';
-  var foot = (e0 ? '<button class="btn danger" data-del>삭제</button><span class="spacer"></span>' : '') + '<button class="btn ghost" data-mclose>취소</button><button class="btn primary" data-ok>' + (e0 ? '저장' : '추가') + '</button>';
+  var foot = (e0 ? '<button class="btn danger" data-del>삭제</button><button class="btn" data-ical>Apple 캘린더에 추가</button><span class="spacer"></span>' : '') + '<button class="btn ghost" data-mclose>취소</button><button class="btn primary" data-ok>' + (e0 ? '저장' : '추가') + '</button>';
   var m = openModal(e0 ? '일정' : '일정 추가', body, foot);
   m.el.addEventListener('click', async function (e) {
+    if (e.target.closest('[data-ical]')) { var cur = data.events.get(e0.id) || e0; openAddToCalendar({ uid: cur.id, title: cur.title, date: cur.date, start: cur.start, end: cur.end, desc: cur.desc, fileName: '일정-' + cur.date }); return; }
     if (e.target.closest('[data-del]')) {
       var ok = await confirmBox('일정을 삭제할까요?', '"' + e0.title + '" 일정을 삭제해요.', [{ label: '취소', value: false, cls: 'ghost' }, { label: '삭제', value: true, cls: 'danger' }]);
       if (ok) { del('events', e0.id); toast('삭제했어요.'); m.close(); }
@@ -1719,14 +2036,14 @@ function openEvent(id, date) {
   });
 }
 function openAddFor(date) {
-  var body = '<p class="note" style="margin:0">' + fmtLong(date) + '에 추가할 항목을 골라요. 복습은 시간표에서 수업을 눌러 만들어요.</p>' +
-    '<div class="quick"><button data-k="hw"><b>과제</b><span>이 날 마감</span></button><button data-k="other"><b>기타 할 일</b><span>동아리 · 개인</span></button>' +
+  var body = '<p class="note" style="margin:0">' + fmtLong(date) + '에 추가할 항목을 골라요.</p>' +
+    '<div class="quick"><button data-k="review"><b>복습</b><span>과목 · 복습 방법</span></button><button data-k="hw"><b>과제</b><span>이 날 할 과제</span></button><button data-k="other"><b>기타 할 일</b><span>동아리 · 개인</span></button>' +
     '<button data-k="event"><b>일정</b><span>시간 있는 약속</span></button><button data-k="assess"><b>수행평가</b><span>이 날 시행</span></button></div>';
   var m = openModal('추가', body, '');
   m.el.addEventListener('click', function (e) {
     var b = e.target.closest('[data-k]'); if (!b) return;
     m.close();
-    ({ hw: openNewHw, other: openNewOther, event: function (d) { openEvent(null, d); }, assess: openNewAssess })[b.dataset.k](date);
+    ({ review: openNewReview, hw: openNewHw, other: openNewOther, event: function (d) { openEvent(null, d); }, assess: openNewAssess })[b.dataset.k](date);
   });
 }
 
@@ -1856,7 +2173,7 @@ function openMoveSession(s) {
     if (b.hasAttribute('data-mvd')) { openDayPicker('옮길 날짜', st.date).then(function (v) { if (v) { st.date = v; draw(); } }); return; }
     if (!b.hasAttribute('data-ok')) return;
     if (!st.date || !st.time) { toast('날짜와 시간을 모두 정해 주세요.'); return; }
-    if (st.date < START) { toast('10월 21일 이후로 골라 주세요.'); return; }
+    if (st.date < START) { toast(START_LABEL + ' 이후로 골라 주세요.'); return; }
     moveSession(s, st.date, st.time);
     m.close();
     var parent = modalStack[modalStack.length - 1];
@@ -1864,6 +2181,17 @@ function openMoveSession(s) {
   });
 }
 
+function prevLearned(subject, key, date) {
+  var best = null;
+  data.sessions.forEach(function (x) {
+    if (x.id === key || !x.learned || !x.learned.trim()) return;
+    var subj = x.subject || x.baseSubject;
+    if (subj !== subject) return;
+    if (!(x.date < date || (x.date === date && x.id < key))) return;
+    if (!best || x.date > best.date || (x.date === best.date && x.id > best.id)) best = x;
+  });
+  return best;
+}
 function openSession(key) {
   var s = sessionByKey(key);
   if (!s) { toast('이 수업을 찾지 못했어요. 시간표가 바뀌었을 수 있어요.'); return; }
@@ -1872,17 +2200,18 @@ function openSession(key) {
   var st = {
     subject: s.subject, status: flex ? 'held' : s.status, learned: doc.learned || '', reason: doc.cancelReason || '',
     chasiOverride: doc.chasiOverride != null ? String(doc.chasiOverride) : '',
-    rounds: [{}, {}, {}], removed: [], hw: [], as: [], cancelReviews: 'keep'
+    rounds: [], removed: [], hw: [], cancelReviews: 'keep'
   };
+  if (st.status === 'cont' && st.subject !== '영어A') st.status = 'held';
   function loadReviews() {
-    st.rounds = [{}, {}, {}]; st.removed = [];
-    var revs = revOf(st.subject);
+    var rs = roundsOf(st.subject);
+    st.rounds = rs.map(function () { return {}; }); st.removed = [];
     data.tasks.forEach(function (t) {
       if (t.sessionKey !== key || t.kind !== 'review') return;
-      var mi = revs.indexOf(t.method);
-      if (mi < 0) return;
-      var r = Math.min(3, Math.max(1, t.round || 1)) - 1;
-      var mm = st.rounds[r][mi] || (st.rounds[r][mi] = { on: true, memo: t.memo || '', parts: [] });
+      var r = (t.round || 1) - 1, mi = rs[r] ? rs[r].items.indexOf(t.method) : -1;
+      if (mi < 0) { r = -1; rs.forEach(function (x, ri) { if (r < 0 && x.items.indexOf(t.method) >= 0) { r = ri; mi = x.items.indexOf(t.method); } }); }
+      if (r < 0) return;
+      var mm = st.rounds[r][mi] || (st.rounds[r][mi] = { on: true, parts: [] });
       mm.parts.push({ date: t.date, range: t.range || '', taskId: t.id, done: !!t.done, part: t.part || 1 });
     });
     st.rounds.forEach(function (rd) { Object.keys(rd).forEach(function (i) { rd[i].parts.sort(function (a, b) { return a.part - b.part; }); }); });
@@ -1906,7 +2235,7 @@ function openSession(key) {
   function draw() {
     var subj = st.subject;
     var fam = famOf(subj);
-    var revs = revOf(subj);
+    var rs = roundsOf(subj);
     var numbered = hasChasi(subj);
     var tl = sessionByKey(key);
     var chasiShown = tl && tl.chasi;
@@ -1918,9 +2247,9 @@ function openSession(key) {
     if (flex) {
       h += '<div class="row"><button type="button" class="btn sm" data-move>다른 날·시간으로 옮기기</button></div>';
     } else {
-      h += '<div class="seg status-seg">' + statusBtn('held', '수업 진행') + statusBtn('cancel', '수업 안 함') + statusBtn('assess', '수행평가') + (numbered ? statusBtn('cont', '앞 수업과 같은 차시') : '') + '</div>' +
-        '<div class="grid2"><label class="field"><span>실제로 진행한 과목' + (st.subject !== s.baseSubject ? ' · 원래 ' + esc(s.baseSubject) : '') + '</span><select id="ss-subj">' + subjectOptions(subj).replace(/<option>(다원국어|수학과외)<\/option>/g, '') + '</select></label>' +
-        (numbered && active ? '<label class="field"><span>차시 직접 수정 · 비우면 자동</span><input type="number" inputmode="numeric" min="1" id="ss-chasi" value="' + esc(st.chasiOverride) + '" placeholder="자동' + (chasiShown && !st.chasiOverride ? ': ' + chasiShown + '차시' : '') + '"></label>' : '') +
+      h += '<div class="seg status-seg">' + statusBtn('held', '수업 진행') + statusBtn('cancel', '수업 안 함') + statusBtn('assess', '수행평가') + (subj === '영어A' ? statusBtn('cont', '앞 수업과 같은 차시') : '') + '</div>' +
+        '<div class="grid2"><label class="field"><span>과목' + (st.subject !== s.baseSubject ? ' · 원래 ' + esc(s.baseSubject) : '') + '</span><select id="ss-subj">' + subjectOptions(subj).replace(/<option>(다원국어|수학과외)<\/option>/g, '') + '</select></label>' +
+        (numbered && active ? '<label class="field"><span>차시</span><input type="number" inputmode="numeric" min="1" id="ss-chasi" value="' + esc(st.chasiOverride) + '" placeholder="자동' + (chasiShown && !st.chasiOverride ? ': ' + chasiShown + '차시' : '') + '"></label>' : '') +
         '</div>' + (isExam(s.date) && !doc.status ? '<p class="note">시험 기간이라 기본으로 수업 안 함 처리돼 있어요.</p>' : '');
     }
     h += '</div>';
@@ -1929,53 +2258,41 @@ function openSession(key) {
       h += '<div class="sec"><h3><span class="n">' + (n++) + '</span>수업을 안 한 이유</h3><textarea data-bind="reason" placeholder="예: 학교 행사, 자습">' + esc(st.reason) + '</textarea></div>';
       if (undoneReviews().length) h += '<div class="warnbox"><b>이 수업에 연결된 미완료 복습이 ' + undoneReviews().length + '개 있어요.</b>' +
         '<label class="radio"><input type="radio" name="ss-cr" value="keep"' + (st.cancelReviews === 'keep' ? ' checked' : '') + '> 그대로 두기</label>' +
-        '<label class="radio"><input type="radio" name="ss-cr" value="delete"' + (st.cancelReviews === 'delete' ? ' checked' : '') + '> 미완료 복습 삭제 · 배운 내용 기록은 남아요</label></div>';
+        '<label class="radio"><input type="radio" name="ss-cr" value="delete"' + (st.cancelReviews === 'delete' ? ' checked' : '') + '> 미완료 복습 삭제 · 수업 내용 기록은 남아요</label></div>';
       bodyEl.innerHTML = h; return;
     }
-    if (st.status !== 'assess') {
-      h += '<div class="sec"><h3><span class="n">' + (n++) + '</span>오늘 이 차시에서 배운 것</h3><textarea data-bind="learned" placeholder="단원, 개념">' + esc(st.learned) + '</textarea></div>';
-      if (revs.length) {
-        h += '<div class="sec"><h3><span class="n">' + (n++) + '</span>복습</h3>' + [0, 1, 2].map(function (r) {
-          var rd = st.rounds[r];
-          var on = revs.map(function (x, i) { return rd[i] && rd[i].on ? i : -1; }).filter(function (i) { return i >= 0; });
-          return '<div class="round"><h4>' + (r + 1) + '차 복습</h4><div class="checks">' + revs.map(function (name, i) {
-            var mm = rd[i];
-            var locked = mm && mm.parts.some(function (p) { return p.done; });
-            return '<label class="cb' + (mm && mm.on ? ' on' : '') + (locked ? ' locked' : '') + '"><input type="checkbox" data-rvcb="' + r + '|' + i + '"' + (mm && mm.on ? ' checked' : '') + (locked ? ' disabled' : '') + '>' + esc(name) + '</label>';
-          }).join('') + '</div>' +
-          on.map(function (i) {
-            var mm = rd[i];
-            return '<div class="mcard"><b>' + esc(revs[i]) + '</b>' + partsHTML(mm.parts, 'rv', r + '|' + i) +
-              '<textarea data-rvmemo="' + r + '|' + i + '" placeholder="복습 상세 메모: 페이지, 교재명, 문제 번호">' + esc(mm.memo) + '</textarea></div>';
-          }).join('') + '</div>';
-        }).join('') + '</div>';
-      } else {
-        h += '<div class="note">' + esc(subj) + '은(는) 복습 선택 영역이 없는 과목이에요.</div>';
-      }
-      var hwl = linkedTasks('hw');
-      var groups = {};
-      hwl.forEach(function (t) { var g = t.groupId || t.id; (groups[g] = groups[g] || []).push(t); });
-      h += '<div class="sec"><h3><span class="n">' + (n++) + '</span>과제</h3>' +
-        (hwl.length ? '<div class="linked">' + Object.keys(groups).map(function (g) {
-          var ts = groups[g], t0 = ts[0];
-          var dn = ts.filter(function (t) { return t.done; }).length;
-          return '<div class="li"><span style="flex:1">' + esc(t0.baseTitle || t0.title) + (ts.length > 1 ? ' <span class="small muted">' + ts.length + '번에 나눔 · ' + dn + '개 완료</span>' : (dn ? ' ✓' : '')) + '</span><span class="small muted">마감 ' + fmtMD(effDue(t0)) + '</span></div>';
-        }).join('') + '</div>' : '') +
-        hwRowsHTML(st.hw, subj, key) + '<div><button type="button" class="btn sm" data-addhw>+ 과제 추가</button></div></div>';
-    }
-    if (!flex) {
+    if (st.status === 'assess') {
       var asl = linkedTasks('assess');
-      h += '<div class="sec"><h3><span class="n">' + (n++) + '</span>수행평가</h3>' +
-        (asl.length ? '<div class="linked">' + asl.map(function (t) { return '<div class="li">' + (t.done ? '✓ ' : '') + '<span style="flex:1">' + esc(t.title) + '</span><span class="small muted">' + fmtMD(t.date) + '</span></div>'; }).join('') + '</div>' : '') +
-        st.as.map(function (r, i) {
-          return '<div class="newrow"><div class="grid2"><div class="field"><span>수행평가 날짜</span><div>' + dateBtn('data-asd="' + i + '"', r.date) + '</div></div>' +
-            '<label class="field"><span>수행평가 내용</span><input type="text" data-as="' + i + '" data-f="title" value="' + esc(r.title) + '"></label></div>' +
-            '<label class="field"><span>준비 메모 (선택)</span><input type="text" data-as="' + i + '" data-f="memo" value="' + esc(r.memo) + '"></label>' +
-            '<label class="cb' + (r.only ? ' on' : '') + '"><input type="checkbox" data-as="' + i + '" data-f="only"' + (r.only ? ' checked' : '') + '> 그날 이 과목 수업 대신 수행평가를 봐요 · 차시를 세지 않아요</label>' +
-            '<div><button type="button" class="btn sm ghost" data-rmas="' + i + '">이 줄 지우기</button></div></div>';
-        }).join('') + '<div><button type="button" class="btn sm" data-addas>+ 수행평가 추가</button></div>' +
-        '<p class="note">수행평가 전날에 대비 할 일이 자동으로 생겨요.</p></div>';
+      h += '<p class="note">수행평가를 본 날이라 차시를 세지 않아요. 수행평가 내용은 과제·수행평가 화면에서 관리해요.</p>';
+      bodyEl.innerHTML = h; return;
     }
+    var prev = prevLearned(subj, key, s.date);
+    var ph = prev ? '지난 수업 ' + fmtMD(prev.date) + ' · ' + prev.learned : '단원, 개념';
+    h += '<div class="sec"><h3><span class="n">' + (n++) + '</span>수업 내용</h3><textarea data-bind="learned" placeholder="' + esc(ph) + '">' + esc(st.learned) + '</textarea></div>';
+    if (rs.length) {
+      h += '<div class="sec"><h3><span class="n">' + (n++) + '</span>복습</h3>' + rs.map(function (r, ri) {
+        var rd = st.rounds[ri];
+        var on = r.items.map(function (x, i) { return rd[i] && rd[i].on ? i : -1; }).filter(function (i) { return i >= 0; });
+        return '<div class="round">' + (rs.length > 1 ? '<h4>' + esc(r.label) + '</h4>' : '') + '<div class="checks">' + r.items.map(function (name, i) {
+          var mm = rd[i];
+          var locked = mm && mm.parts.some(function (p) { return p.done; });
+          return '<label class="cb' + (mm && mm.on ? ' on' : '') + (locked ? ' locked' : '') + '"><input type="checkbox" data-rvcb="' + ri + '|' + i + '"' + (mm && mm.on ? ' checked' : '') + (locked ? ' disabled' : '') + '>' + esc(name) + '</label>';
+        }).join('') + '</div>' +
+        on.map(function (i) { return '<div class="mcard"><b>' + esc(r.items[i]) + '</b>' + partsHTML(rd[i].parts, 'rv', ri + '|' + i) + '</div>'; }).join('') + '</div>';
+      }).join('') + '</div>';
+    } else {
+      h += '<div class="note">' + esc(subj) + '은(는) 복습 선택 영역이 없는 과목이에요.</div>';
+    }
+    var hwl = linkedTasks('hw');
+    var groups = {};
+    hwl.forEach(function (t) { var g = t.groupId || t.id; (groups[g] = groups[g] || []).push(t); });
+    h += '<div class="sec"><h3><span class="n">' + (n++) + '</span>과제</h3>' +
+      (hwl.length ? '<div class="linked">' + Object.keys(groups).map(function (g) {
+        var ts = groups[g], t0 = ts[0];
+        var dn = ts.filter(function (t) { return t.done; }).length;
+        return '<div class="li"><span style="flex:1">' + esc(t0.baseTitle || t0.title) + (ts.length > 1 ? ' <span class="small muted">' + ts.length + '번에 나눔 · ' + dn + '개 완료</span>' : (dn ? ' ✓' : '')) + '</span><span class="small muted">마감 ' + fmtMD(effDue(t0)) + '</span></div>';
+      }).join('') + '</div>' : '') +
+      hwRowsHTML(st.hw, subj, key) + '<div><button type="button" class="btn sm" data-addhw>+ 과제 추가</button></div></div>';
     bodyEl.innerHTML = h;
   }
   draw();
@@ -1985,22 +2302,19 @@ function openSession(key) {
     if (el.dataset.bind) st[el.dataset.bind] = el.value;
     if (el.id === 'ss-chasi') st.chasiOverride = el.value;
     if (el.dataset.rvrange != null) { var a = el.dataset.rvrange.split('|'); st.rounds[a[0]][a[1]].parts[a[2]].range = el.value; }
-    if (el.dataset.rvmemo != null) { var b = el.dataset.rvmemo.split('|'); st.rounds[b[0]][b[1]].memo = el.value; }
     handleHwInput(el, st.hw);
-    if (el.dataset.as != null && el.type !== 'checkbox') st.as[el.dataset.as][el.dataset.f] = el.value;
   });
   m.el.addEventListener('change', function (e) {
     var el = e.target;
-    if (el.id === 'ss-subj') { st.subject = el.value; loadReviews(); draw(); }
+    if (el.id === 'ss-subj') { st.subject = el.value; if (st.status === 'cont' && st.subject !== '영어A') st.status = 'held'; loadReviews(); draw(); }
     else if (el.dataset.rvcb != null) {
       var a = el.dataset.rvcb.split('|');
       var rd = st.rounds[a[0]];
-      if (el.checked) { if (!rd[a[1]]) rd[a[1]] = { on: true, memo: '', parts: [{ date: '', range: '' }] }; else { rd[a[1]].on = true; if (!rd[a[1]].parts.length) rd[a[1]].parts.push({ date: '', range: '' }); } }
+      if (el.checked) { if (!rd[a[1]]) rd[a[1]] = { on: true, parts: [{ date: '', range: '' }] }; else { rd[a[1]].on = true; if (!rd[a[1]].parts.length) rd[a[1]].parts.push({ date: '', range: '' }); } }
       else if (rd[a[1]]) rd[a[1]].on = false;
       draw();
     }
     else if (el.name === 'ss-cr') st.cancelReviews = el.value;
-    else if (el.dataset.as != null && el.dataset.f === 'only') { st.as[el.dataset.as].only = el.checked; draw(); }
   });
   m.el.addEventListener('click', async function (e) {
     var b = e.target.closest('button'); if (!b) return;
@@ -2008,8 +2322,9 @@ function openSession(key) {
     if (b.dataset.st) { st.status = b.dataset.st; draw(); return; }
     if (b.dataset.rvpick != null) {
       a = b.dataset.rvpick.split('|');
+      var r0 = roundsOf(st.subject)[a[0]];
       var p = st.rounds[a[0]][a[1]].parts[a[2]];
-      var v = await openDayPicker((+a[0] + 1) + '차 복습 · ' + revOf(st.subject)[a[1]], p.date || addDays(s.date, 1));
+      var v = await openDayPicker((roundsOf(st.subject).length > 1 ? r0.label + ' · ' : '') + r0.items[a[1]], p.date || addDays(s.date, 1));
       if (v) { p.date = v; draw(); }
       return;
     }
@@ -2023,25 +2338,21 @@ function openSession(key) {
     }
     if (handleHwClick(b, st.hw, draw)) return;
     if (b.hasAttribute('data-addhw')) { st.hw.push(newHwRow()); draw(); return; }
-    if (b.hasAttribute('data-addas')) { st.as.push({ date: '', title: '', memo: '', only: true }); draw(); return; }
-    if (b.dataset.rmas != null) { st.as.splice(+b.dataset.rmas, 1); draw(); return; }
-    if (b.dataset.asd != null) { var r0 = st.as[b.dataset.asd]; var v2 = await openDayPicker('수행평가 날짜', r0.date); if (v2) { r0.date = v2; draw(); } return; }
     if (b.hasAttribute('data-move')) { openMoveSession(s); return; }
     if (b.hasAttribute('data-delocc')) { if (await deleteSessionOcc(s)) m.close(); return; }
     if (b.hasAttribute('data-save')) save();
   });
 
   function save() {
-    var revs = revOf(st.subject);
+    var rs = roundsOf(st.subject);
     var active = st.status === 'held' || st.status === 'cont';
     if (active) {
-      for (var r = 0; r < 3; r++) for (var i in st.rounds[r]) {
+      for (var r = 0; r < rs.length; r++) for (var i in st.rounds[r]) {
         var mm = st.rounds[r][i];
-        if (mm.on && mm.parts.some(function (p) { return !p.date; })) { toast((r + 1) + '차 ' + revs[i] + ' 복습 날짜를 골라 주세요.'); return; }
+        if (mm.on && mm.parts.some(function (p) { return !p.date; })) { toast((rs.length > 1 ? rs[r].label + ' ' : '') + rs[r].items[i] + ' 날짜를 골라 주세요.'); return; }
       }
       var err = validateHw(st.hw, st.subject); if (err) { toast(err); return; }
     }
-    if (!flex && st.status !== 'cancel') for (var x = 0; x < st.as.length; x++) if (st.as[x].title.trim() && !st.as[x].date) { toast('수행평가 날짜를 골라 주세요.'); return; }
     var co = st.chasiOverride !== '' && hasChasi(st.subject) ? Math.max(1, parseInt(st.chasiOverride, 10) || 1) : null;
     var cur = data.sessions.get(key) || {};
     var sdoc = Object.assign({}, docBase(s), cur, {
@@ -2056,14 +2367,14 @@ function openSession(key) {
     if (active) {
       var chasiNow = liveChasi(key);
       st.removed.forEach(function (id) { var t = data.tasks.get(id); if (t && !t.done) del('tasks', id); });
-      for (var rr = 0; rr < 3; rr++) {
+      rs.forEach(function (rdef, rr) {
         Object.keys(st.rounds[rr]).forEach(function (i) {
-          var mm = st.rounds[rr][i], name = revs[i];
+          var mm = st.rounds[rr][i], name = rdef.items[i];
           if (!mm.on) { mm.parts.forEach(function (p) { if (p.taskId && !p.done) del('tasks', p.taskId); }); return; }
           var parts = mm.parts.slice().sort(function (a, b) { return a.date.localeCompare(b.date); });
           var cnt = parts.length;
           parts.forEach(function (p, k) {
-            var f = { title: name + (cnt > 1 ? ' (' + (k + 1) + ')' : ''), memo: mm.memo, range: p.range || '', round: rr + 1, part: k + 1, partCount: cnt };
+            var f = { title: name + (cnt > 1 ? ' (' + (k + 1) + ')' : ''), range: p.range || '', round: rr + 1, part: k + 1, partCount: cnt };
             if (p.taskId) {
               var ex = data.tasks.get(p.taskId); if (!ex) return;
               if (!p.done && ex.date !== p.date) { f.date = p.date; f.order = Date.now() + k; }
@@ -2074,10 +2385,9 @@ function openSession(key) {
             }
           });
         });
-      }
+      });
       st.hw.forEach(function (r) { made += createHwFromRow(r, st.subject, key); });
     }
-    if (!flex && st.status !== 'cancel') st.as.forEach(function (r) { if (r.title.trim()) { createAssessment({ subject: st.subject, date: r.date, title: r.title.trim(), memo: r.memo, sessionKey: key, onlyAssess: r.only }); made++; } });
     toast('수업 기록을 저장했어요' + (made ? ' · 할 일 ' + made + '개 추가' : '') + '.');
     m.close();
   }
@@ -2188,7 +2498,7 @@ function openTTEditor() {
     if (b.dataset.rm) { var p = b.dataset.rm.split(':'); rows[p[0]].splice(+p[1], 1); draw(); return; }
     if (b.dataset.addrow) { var k = b.dataset.addrow; var last = rows[k][rows[k].length - 1]; rows[k].push({ p: String(last ? periodNum(last.p) + 1 : 1), s: SUBJECTS[0].name }); draw(); return; }
     if (!b.hasAttribute('data-ok')) return;
-    if (!from || from < START) { toast('적용 시작일은 10월 21일 이후로 골라 주세요.'); return; }
+    if (!from || from < START) { toast('적용 시작일은 ' + START_LABEL + ' 이후로 골라 주세요.'); return; }
     var ok = await confirmBox('새 시간표를 저장할까요?', fmtLong(from) + '부터 새 시간표가 적용돼요. 그 날짜 이후에 이미 적어 둔 수업 기록은 기록이 있는 것만 별도 수업으로 남아요.', [{ label: '취소', value: false, cls: 'ghost' }, { label: '저장', value: true, cls: 'primary' }]);
     if (!ok) return;
     var vid = 'v' + Date.now().toString(36);
@@ -2204,36 +2514,669 @@ function openTTEditor() {
     m.close();
   });
 }
-function openStudyEditor() {
-  var T = todayS();
-  var rows = '';
-  for (var i = 0; i < 14; i++) {
-    var d = addDays(T, -i);
-    if (d < START) break;
-    var r = data.study.get(d);
-    rows += '<div class="mrow" style="grid-template-columns:minmax(90px,1fr) auto"><span class="mname">' + fmtMD(d) + (r ? ' <span class="small muted">' + fmtMin(r.minutes) + '</span>' : ' <span class="small muted">미기록</span>') + '</span>' +
-      '<span class="hm"><input type="number" min="0" max="24" inputmode="numeric" data-sh="' + d + '" value="' + (r ? Math.floor(r.minutes / 60) : '') + '" aria-label="시간"><span class="small muted">H</span><input type="number" min="0" max="59" inputmode="numeric" data-sm="' + d + '" value="' + (r ? r.minutes % 60 : '') + '" aria-label="분"><span class="small muted">M</span></span></div>';
+/* ---------- 공부 기록 집계 ---------- */
+var FA = null;
+function nextHourMs(t) { var d = new Date(t); d.setMinutes(60, 0, 0); return d.getTime(); }
+function recDay(r) { return r.segs && r.segs.length ? studyDayOf(r.segs[0][0]) : r.day; }
+function focusAgg() {
+  if (FA) return FA;
+  var a = { byDay: {}, byDayCat: {}, byDayHour: {}, byTask: {}, longest: {}, first: {}, last: {}, recsByDay: {} };
+  function add(day, hour, cat, sec) {
+    a.byDay[day] = (a.byDay[day] || 0) + sec;
+    var c = a.byDayCat[day] || (a.byDayCat[day] = {});
+    c[cat] = (c[cat] || 0) + sec;
+    if (hour != null) { var h = a.byDayHour[day] || (a.byDayHour[day] = new Array(24).fill(0)); h[hour] += sec; }
   }
-  var m = openModal('날짜별 공부 시간', '<p class="note" style="margin:0">최근 2주를 한 번에 고칠 수 있어요. 비워 두면 기록하지 않은 날로 남고, 0을 넣으면 0분으로 기록돼요. 더 이전 날짜는 캘린더에서 그 날을 눌러 기록하세요.</p>' + (rows || '<div class="empty">10월 21일부터 기록할 수 있어요</div>'),
-    '<button class="btn ghost" data-mclose>취소</button><button class="btn primary" data-ok>저장</button>');
+  data.focus.forEach(function (r) {
+    var cat = r.cat || '기타';
+    var rd = recDay(r);
+    if (!rd) return;
+    (a.recsByDay[rd] = a.recsByDay[rd] || []).push(r);
+    if (r.segs && r.segs.length) {
+      r.segs.forEach(function (sg) {
+        var s = sg[0], e = sg[1];
+        if (!(e > s)) return;
+        var sd = studyDayOf(s);
+        var dur = (e - s) / 1000;
+        if (!(a.longest[sd] >= dur)) a.longest[sd] = dur;
+        for (var t = s; t < e;) {
+          var nx = Math.min(e, nextHourMs(t)), pdy = studyDayOf(t);
+          add(pdy, new Date(t).getHours(), cat, (nx - t) / 1000);
+          if (!(a.first[pdy] <= t)) a.first[pdy] = t;
+          if (!(a.last[pdy] >= nx)) a.last[pdy] = nx;
+          t = nx;
+        }
+      });
+    } else if (r.sec > 0) {
+      add(r.day, null, cat, r.sec);
+      if (!(a.longest[r.day] >= r.sec)) a.longest[r.day] = r.sec;
+    }
+    if (r.taskId) {
+      var bt = a.byTask[r.taskId] || (a.byTask[r.taskId] = { sec: 0, n: 0 });
+      bt.sec += recSec(r); bt.n++;
+    }
+  });
+  Object.keys(a.recsByDay).forEach(function (d) { a.recsByDay[d].sort(function (x, y) { return recStart(x) - recStart(y); }); });
+  FA = a;
+  return a;
+}
+function recSec(r) {
+  if (r.segs && r.segs.length) return r.segs.reduce(function (s, sg) { return s + Math.max(0, sg[1] - sg[0]); }, 0) / 1000;
+  return r.sec || 0;
+}
+function recStart(r) { return r.segs && r.segs.length ? r.segs[0][0] : 0; }
+function daySec(d) { return focusAgg().byDay[d] || 0; }
+function taskCat(t) { return t.kind === 'other' ? '기타' : catOf(t.subject); }
+function taskLabel(t) {
+  var c = taskChasi(t);
+  var tag = t.kind === 'other' ? (t.label || '기타') : (t.subject || '') + (c ? ' ' + c + '차시' : '');
+  return '[' + tag + '] ' + t.title;
+}
+function catTag(cat) { return '<span class="tag f-' + CAT_FAM[cat] + '">' + esc(cat) + '</span>'; }
+function focusListHTML(d) {
+  var recs = focusAgg().recsByDay[d] || [];
+  if (!recs.length) return '<div class="empty small">이날 공부 기록이 없어요</div>';
+  return '<div class="flist">' + recs.map(function (r) {
+    var when = r.segs && r.segs.length ? fmtClock(r.segs[0][0]) + '–' + fmtClock(r.segs[r.segs.length - 1][1]) : '시각 없음';
+    return '<div class="frow"><span class="ftime num">' + when + '</span>' + catTag(r.cat || '기타') +
+      '<span class="ftitle">' + esc(r.title || '과목별 자유 공부') + (r.manual ? ' <span class="st-chip">직접 입력</span>' : '') + '</span>' +
+      '<b class="num">' + fmtHMS(recSec(r)) + '</b><button class="icon-btn sm" data-act="focus-del" data-id="' + esc(r.id) + '" aria-label="이 기록 지우기">×</button></div>';
+  }).join('') + '</div>';
+}
+
+/* ---------- 차트 ---------- */
+function axisLab(m) { return m >= 60 && m % 60 === 0 ? (m / 60) + 'H' : Math.round(m) + 'M'; }
+function weekDays(ws) { var out = []; for (var i = 0; i < 7; i++) out.push(addDays(ws, i)); return out; }
+function dayLab(d) { var x = pd(d); return WK[x.getDay()] + ' ' + x.getDate(); }
+function chartDaily(ws) {
+  var ST = studyToday();
+  var days = weekDays(ws);
+  var tot = 0;
+  var items = days.map(function (d) { var s = daySec(d); tot += s; return { label: dayLab(d), v: d > ST ? null : s / 60, future: d > ST }; });
+  if (!tot) return '<div class="empty small">이 주에 기록된 공부 시간이 없어요</div>';
+  return barSVG(items, { minutes: true, fmt: function (m) { return fmtHMS(m * 60); }, label: '일간 공부 시간' });
+}
+function chartHourly(ws) {
+  var a = focusAgg();
+  var hours = []; for (var h = 6; h < 30; h++) hours.push(h % 24);
+  var sums = {}, tot = 0, noTime = 0;
+  weekDays(ws).forEach(function (d) {
+    var arr = a.byDayHour[d];
+    if (arr) arr.forEach(function (s, i) { sums[i] = (sums[i] || 0) + s; tot += s; });
+    noTime += (a.byDay[d] || 0) - (arr ? arr.reduce(function (x, y) { return x + y; }, 0) : 0);
+  });
+  if (!tot) return '<div class="empty small">이 주에 시각이 있는 공부 기록이 없어요</div>';
+  var items = hours.map(function (h) { return { label: h + '시', v: (sums[h] || 0) / 60 }; });
+  return barSVG(items, { minutes: true, fmt: function (m) { return fmtHMS(m * 60); }, label: '시간대별 공부 시간' }) +
+    (noTime > 1 ? '<p class="def">시작 시각 없이 직접 입력한 ' + fmtHMS(noTime) + '은 이 차트에서 빠져요.</p>' : '');
+}
+function chartCumulative(ws) {
+  var ST = studyToday();
+  var cum = 0, pts = [];
+  weekDays(ws).forEach(function (d) { cum += daySec(d); pts.push({ label: dayLab(d), v: d > ST ? null : cum }); });
+  if (!cum) return '<div class="empty small">이 주에 기록된 공부 시간이 없어요</div>';
+  return lineSVG(pts);
+}
+function lineSVG(pts) {
+  var W = 560, H = 210, padL = 44, padR = 20, padT = 22, padB = 30;
+  var mx = 0; pts.forEach(function (p) { if (p.v != null) mx = Math.max(mx, p.v); });
+  var mxH = Math.max(1, Math.ceil(mx / 3600)); if (mxH > 2 && mxH % 2) mxH++;
+  var top = mxH * 3600;
+  var x = function (i) { return padL + i * (W - padL - padR) / (pts.length - 1); };
+  var y = function (v) { return padT + (H - padT - padB) * (1 - v / top); };
+  var g = '';
+  [0, top / 2, top].forEach(function (t) {
+    g += '<line class="gl" x1="' + padL + '" x2="' + (W - padR) + '" y1="' + y(t) + '" y2="' + y(t) + '"/><text class="ax" x="' + (padL - 6) + '" y="' + (y(t) + 4) + '" text-anchor="end">' + axisLab(t / 60) + '</text>';
+  });
+  var line = pts.map(function (p, i) { return p.v == null ? null : x(i) + ',' + y(p.v); }).filter(Boolean);
+  var lastI = -1; pts.forEach(function (p, i) { if (p.v != null) lastI = i; });
+  if (line.length > 1) g += '<polygon class="l-area" points="' + x(0) + ',' + y(0) + ' ' + line.join(' ') + ' ' + x(lastI) + ',' + y(0) + '"/><polyline class="l-line" points="' + line.join(' ') + '"/>';
+  pts.forEach(function (p, i) {
+    if (p.v != null) g += '<circle class="l-dot' + (i === lastI ? ' end' : '') + '" cx="' + x(i) + '" cy="' + y(p.v) + '" r="' + (i === lastI ? 5 : 3.5) + '"><title>' + esc(fmtHMS(p.v)) + '</title></circle>';
+    g += '<text class="ax" x="' + x(i) + '" y="' + (H - 8) + '" text-anchor="middle">' + esc(p.label) + '</text>';
+  });
+  if (lastI >= 0) g += '<text class="vlab" x="' + Math.min(x(lastI), W - padR - 40) + '" y="' + (y(pts[lastI].v) - 10) + '" text-anchor="middle">' + esc(fmtHMS(pts[lastI].v)) + '</text>';
+  return '<div class="chart-wrap"><svg viewBox="0 0 ' + W + ' ' + H + '" style="width:100%;min-width:420px" role="img" aria-label="누적 공부 시간">' + g + '</svg></div>';
+}
+function chartCategory(days) {
+  var a = focusAgg(), sums = {}, tot = 0;
+  days.forEach(function (d) { var c = a.byDayCat[d]; if (c) Object.keys(c).forEach(function (k) { sums[k] = (sums[k] || 0) + c[k]; tot += c[k]; }); });
+  if (!tot) return '<div class="empty small">이 주에 기록된 공부 시간이 없어요</div>';
+  var ent = CATS.filter(function (c) { return sums[c] > 0; }).map(function (c) { return { cat: c, sec: sums[c] }; });
+  var R = 80, cx = 90, cy = 90, ang = -Math.PI / 2, paths = '';
+  ent.forEach(function (e) {
+    var fr = e.sec / tot;
+    if (fr >= 0.9999) { paths += '<circle cx="' + cx + '" cy="' + cy + '" r="' + R + '" style="fill:var(--' + CAT_FAM[e.cat] + '-fg)"/>'; return; }
+    var a2 = ang + fr * Math.PI * 2;
+    var x1 = cx + R * Math.cos(ang), y1 = cy + R * Math.sin(ang), x2 = cx + R * Math.cos(a2), y2 = cy + R * Math.sin(a2);
+    paths += '<path d="M' + cx + ' ' + cy + ' L' + x1.toFixed(2) + ' ' + y1.toFixed(2) + ' A' + R + ' ' + R + ' 0 ' + (fr > 0.5 ? 1 : 0) + ' 1 ' + x2.toFixed(2) + ' ' + y2.toFixed(2) + ' Z" style="fill:var(--' + CAT_FAM[e.cat] + '-fg)" class="pie-sl"><title>' + esc(e.cat + ' ' + fmtHMS(e.sec)) + '</title></path>';
+    ang = a2;
+  });
+  return '<div class="pie"><svg viewBox="0 0 180 180" width="180" height="180" role="img" aria-label="과목별 공부 시간">' + paths + '</svg>' +
+    '<div class="pie-leg">' + ent.map(function (e) {
+      return '<div><i style="background:var(--' + CAT_FAM[e.cat] + '-fg)"></i><span>' + esc(e.cat) + '</span><b class="num">' + fmtHMS(e.sec) + '</b><span class="muted num">' + Math.round(e.sec / tot * 100) + '%</span></div>';
+    }).join('') + '</div></div>';
+}
+var WEEK_GOAL_SEC = 35 * 3600;
+function chartGoal(ws) {
+  var tot = 0; weekDays(ws).forEach(function (d) { tot += daySec(d); });
+  var pct = tot / WEEK_GOAL_SEC * 100;
+  return '<div class="goal"><div class="goal-top"><b class="num">' + Math.floor(pct) + '%</b><span class="num">' + fmtHMS(tot) + ' / 35H</span></div>' +
+    '<div class="goalbar" role="img" aria-label="주간 목표 달성률 ' + Math.floor(pct) + '%"><i style="width:' + Math.min(100, pct) + '%"></i></div>' +
+    '<div class="small muted">' + fmtMD(ws) + ' ~ ' + fmtMD(addDays(ws, 6)) + (tot < WEEK_GOAL_SEC ? ' · 남은 시간 ' + fmtHMS(WEEK_GOAL_SEC - tot) : ' · 목표 달성') + '</div></div>';
+}
+function heatLevel(sec) { if (sec < 1) return 0; if (sec < 7200) return 1; if (sec < 14400) return 2; if (sec < 21600) return 3; if (sec < 28800) return 4; return 5; }
+function chartHeatmap(month, act) {
+  var first = month + '-01', start = weekStartOf(first), ST = studyToday();
+  var html = ['월', '화', '수', '목', '금', '토', '일'].map(function (w) { return '<span class="hm-wd">' + w + '</span>'; }).join('');
+  for (var i = 0; i < 42; i++) {
+    var d = addDays(start, i);
+    if (i >= 35 && d.slice(0, 7) !== month) break;
+    if (d.slice(0, 7) !== month) { html += '<span class="hm-cell blank"></span>'; continue; }
+    var s = daySec(d);
+    html += '<button type="button" class="hm-cell hm' + heatLevel(s) + (d === ST ? ' today' : '') + '"' + (act ? ' data-act="' + act + '" data-date="' + d + '"' : '') + ' title="' + esc(fmtMD(d) + ' ' + (s ? fmtHMS(s) : '기록 없음')) + '"><span class="num">' + pd(d).getDate() + '</span></button>';
+  }
+  return '<div class="hm">' + html + '</div><div class="hm-leg"><span>적게</span>' + [0, 1, 2, 3, 4, 5].map(function (l) { return '<i class="hm' + l + '"></i>'; }).join('') + '<span>많이</span><span class="muted">· 2H 단위</span></div>';
+}
+var HOME_CHARTS = [['daily', '일간 공부 시간'], ['hourly', '시간대별 공부 시간'], ['cumulative', '누적 공부 시간'], ['category', '과목별 공부 시간'], ['goal', '주간 목표 달성률'], ['heatmap', '월간 공부 달력']];
+function homeChartHTML(k) {
+  var ws = weekStartOf(studyToday());
+  if (k === 'hourly') return chartHourly(ws);
+  if (k === 'cumulative') return chartCumulative(ws);
+  if (k === 'category') return chartCategory(weekDays(ws));
+  if (k === 'goal') return chartGoal(ws);
+  if (k === 'heatmap') return chartHeatmap(studyToday().slice(0, 7), 'goday');
+  return chartDaily(ws);
+}
+
+/* ---------- 집중 타이머 ---------- */
+var TKEY = 'planner-timer';
+var tm = null;
+try { tm = JSON.parse(lsGet(TKEY) || 'null'); } catch (e) { tm = null; }
+var tmTick = null, wakeLock = null;
+function tmSave() { lsSet(TKEY, JSON.stringify(tm)); }
+function tmFocusMs() {
+  if (!tm) return 0;
+  var s = 0; tm.segs.forEach(function (x) { s += x[1] - x[0]; });
+  if (tm.phase === 'focus' && tm.cur) s += Date.now() - tm.cur;
+  return s;
+}
+async function keepAwake(on) {
+  try {
+    if (on) {
+      if (!wakeLock && navigator.wakeLock) { wakeLock = await navigator.wakeLock.request('screen'); wakeLock.addEventListener('release', function () { wakeLock = null; }); }
+    } else if (wakeLock) { await wakeLock.release(); wakeLock = null; }
+  } catch (e) {}
+}
+document.addEventListener('visibilitychange', function () {
+  if (document.visibilityState === 'visible' && tm && tm.phase !== 'result') { keepAwake(true); tmUpdate(); }
+});
+var ICON_PAUSE = '<svg viewBox="0 0 24 24"><rect x="6" y="5" width="4" height="14" rx="1"/><rect x="14" y="5" width="4" height="14" rx="1"/></svg>';
+var ICON_STOP = '<svg viewBox="0 0 24 24"><rect x="6" y="6" width="12" height="12" rx="1.5"/></svg>';
+var ICON_PLAY = '<svg viewBox="0 0 24 24"><path d="M8 5.5v13a1 1 0 0 0 1.5.86l10.5-6.5a1 1 0 0 0 0-1.72L9.5 4.64A1 1 0 0 0 8 5.5z"/></svg>';
+function timerRoot() {
+  var r = document.getElementById('timer-root');
+  if (!r) { r = document.createElement('div'); r.id = 'timer-root'; document.body.appendChild(r); }
+  return r;
+}
+function tmHeadHTML() {
+  var t = tm.target;
+  return '<div class="tm-head"><span class="tm-cat">' + esc(t.cat) + (t.subject && catOf(t.subject) === t.cat && t.subject !== t.cat ? ' · ' + esc(t.subject) : '') + '</span>' +
+    (t.title ? '<span class="tm-title">' + esc(t.title) + '</span>' : '<span class="tm-title">과목별 자유 공부</span>') + '</div>';
+}
+function showTimer() {
+  var root = timerRoot();
+  clearInterval(tmTick);
+  if (!tm) { root.innerHTML = ''; document.documentElement.classList.remove('tm-on'); keepAwake(false); return; }
+  document.documentElement.classList.add('tm-on');
+  if (tm.phase === 'focus') {
+    root.innerHTML = '<div class="tm focus" role="dialog" aria-label="집중 중">' + tmHeadHTML() + '<div class="tm-num num" id="tm-num">00:00</div>' +
+      '<div class="tm-btns"><button class="tm-btn" data-tm="pause" aria-label="일시 정지">' + ICON_PAUSE + '</button><button class="tm-btn" data-tm="stop" aria-label="멈춤">' + ICON_STOP + '</button></div></div>';
+    keepAwake(true);
+  } else if (tm.phase === 'break') {
+    root.innerHTML = '<div class="tm brk" role="dialog" aria-label="휴식 중"><div class="tm-head"><span class="tm-cat">휴식 중</span><span class="tm-title">이 시간은 공부 시간에 들어가지 않아요</span></div><div class="tm-num num" id="tm-num">00:00</div>' +
+      '<div class="tm-btns"><button class="tm-btn" data-tm="resume" aria-label="다시 시작">' + ICON_PLAY + '</button><button class="tm-btn" data-tm="stop" aria-label="멈춤">' + ICON_STOP + '</button></div></div>';
+    keepAwake(true);
+  } else {
+    keepAwake(false);
+    root.innerHTML = tmResultHTML();
+    return;
+  }
+  tmUpdate();
+  tmTick = setInterval(tmUpdate, 250);
+}
+function tmUpdate() {
+  var el = document.getElementById('tm-num');
+  if (!el || !tm) return;
+  var ms = tm.phase === 'focus' ? tmFocusMs() : tm.phase === 'break' ? Date.now() - tm.brk : 0;
+  var txt = fmtMMSS(ms);
+  if (el.textContent !== txt) el.textContent = txt;
+}
+function startTimer(target) {
+  var now = Date.now();
+  tm = { phase: 'focus', target: target, startedAt: now, segs: [], cur: now, brk: null, breakMs: 0 };
+  tmSave(); showTimer();
+}
+function tmPause() { var now = Date.now(); if (tm.cur) tm.segs.push([tm.cur, now]); tm.cur = null; tm.phase = 'break'; tm.brk = now; tmSave(); showTimer(); }
+function tmResume() { var now = Date.now(); tm.breakMs += now - tm.brk; tm.brk = null; tm.cur = now; tm.phase = 'focus'; tmSave(); showTimer(); }
+function tmStop() {
+  var now = Date.now();
+  if (tm.phase === 'focus' && tm.cur) tm.segs.push([tm.cur, now]);
+  if (tm.phase === 'break' && tm.brk) tm.breakMs += now - tm.brk;
+  tm.cur = null; tm.brk = null; tm.endedAt = now;
+  tm.segs = tm.segs.filter(function (s) { return s[1] - s[0] >= 1; });
+  var ms = tm.segs.reduce(function (s, x) { return s + x[1] - x[0]; }, 0);
+  tm.focusSec = ms / 1000;
+  if (ms >= 1000) {
+    var id = newId('fc');
+    put('focus', id, { start: tm.startedAt, end: now, segs: tm.segs, focusSec: Math.round(ms / 1000), breakSec: Math.round(tm.breakMs / 1000), cat: tm.target.cat, subject: tm.target.subject || null, taskId: tm.target.taskId || null, title: tm.target.title || null, manual: false });
+    tm.recId = id;
+  }
+  tm.phase = 'result';
+  tmSave(); showTimer();
+}
+function tmResultHTML() {
+  var t = tm.target;
+  var task = t.taskId ? data.tasks.get(t.taskId) : null;
+  var rows = [
+    ['공부 시작', fmtClock(tm.startedAt)],
+    ['공부 종료', fmtClock(tm.endedAt)],
+    ['휴식한 시간', fmtHMS(tm.breakMs / 1000)],
+    ['과목', t.cat + (t.subject && t.subject !== t.cat ? ' · ' + t.subject : '')],
+    ['연결된 할 일', t.title || '없음 · 과목별 자유 공부']
+  ];
+  if (t.taskId) {
+    var bt = focusAgg().byTask[t.taskId];
+    rows.push(['이 할 일 누적 공부 시간', bt ? fmtHMS(bt.sec) + ' · ' + bt.n + '번 공부' : '–']);
+    if (task) {
+      rows.push(['할 일 날짜', fmtLong(task.date)]);
+      if (task.kind === 'hw') rows.push(['과제 마감', fmtLong(effDue(task))]);
+      if (task.range) rows.push(['범위', task.range]);
+      rows.push(['완료 여부', task.done ? '완료' : '아직 안 함']);
+    } else rows.push(['할 일', '삭제된 할 일이에요']);
+  }
+  return '<div class="tm res" role="dialog" aria-label="공부 결과"><div class="res-card">' +
+    '<div class="res-label">이번에 집중한 시간</div><div class="res-big num">' + fmtHMS(tm.focusSec) + '</div>' +
+    (tm.focusSec < 1 ? '<p class="note">1초 미만이라 기록하지 않았어요.</p>' : '') +
+    '<dl class="res-rows">' + rows.map(function (r) { return '<div><dt>' + esc(r[0]) + '</dt><dd class="num">' + esc(r[1]) + '</dd></div>'; }).join('') + '</dl>' +
+    '<button class="btn primary res-done" data-tm="done">완료</button></div></div>';
+}
+document.addEventListener('click', function (e) {
+  var b = e.target.closest('[data-tm]');
+  if (!b || !tm) return;
+  var a = b.dataset.tm;
+  if (a === 'pause' && tm.phase === 'focus') tmPause();
+  else if (a === 'resume' && tm.phase === 'break') tmResume();
+  else if (a === 'stop' && tm.phase !== 'result') tmStop();
+  else if (a === 'done') { tm = null; try { localStorage.removeItem(TKEY); } catch (x) {} showTimer(); render(); }
+});
+
+function catGridHTML(sel, attr) {
+  return '<div class="catgrid">' + CATS.map(function (c) {
+    return '<button type="button" class="catbtn' + (sel === c ? ' on' : '') + '" ' + attr + '="' + c + '"><i style="background:var(--' + CAT_FAM[c] + '-fg)"></i>' + c + '</button>';
+  }).join('') + '</div>';
+}
+function taskPickHTML(list, sel, attr) {
+  if (!list.length) return '<div class="empty small">이날 할 일이 없어요. 과목을 골라 주세요.</div>';
+  return '<div class="picklist">' + list.map(function (t) {
+    var bt = focusAgg().byTask[t.id];
+    return '<button type="button" class="pick' + (sel === t.id ? ' on' : '') + (t.done ? ' pdone' : '') + '" ' + attr + '="' + esc(t.id) + '">' +
+      '<span class="tline">' + tagHTML(t) + (KIND_LABEL[t.kind] ? '<span class="kind k-' + t.kind + '">' + KIND_LABEL[t.kind] + '</span>' : '') + esc(t.title) + '</span>' +
+      (bt ? '<span class="tmeta">공부 ' + fmtHMS(bt.sec) + '</span>' : '') + '</button>';
+  }).join('') + '</div>';
+}
+function pickableTasks(d) { return dayTasks(d).filter(function (t) { return t.kind !== 'assess'; }); }
+function openTimerSetup(presetId) {
+  if (tm) { showTimer(); return; }
+  var day = studyToday();
+  var st = { mode: 'task', taskId: presetId || null, cat: null };
+  var list = pickableTasks(day);
+  if (presetId && !list.some(function (t) { return t.id === presetId; })) { var pt = data.tasks.get(presetId); if (pt) list = [pt].concat(list); }
+  if (!list.length) st.mode = 'cat';
+  var m = openModal('집중 시작', '<div id="ts"></div>', '<button class="btn ghost" data-mclose>취소</button><button class="btn primary" data-go>집중 시작</button>');
+  var box = $('#ts', m.el); box.style.display = 'contents';
+  function draw() {
+    box.innerHTML = '<div class="seg"><button type="button" data-tmode="task" aria-pressed="' + (st.mode === 'task') + '">오늘의 할 일</button><button type="button" data-tmode="cat" aria-pressed="' + (st.mode === 'cat') + '">과목별 자유 공부</button></div>' +
+      (st.mode === 'task' ? taskPickHTML(list, st.taskId, 'data-tpick') : catGridHTML(st.cat, 'data-tcat'));
+  }
+  draw();
   m.el.addEventListener('click', function (e) {
-    if (!e.target.closest('[data-ok]')) return;
-    var n = 0;
-    m.el.querySelectorAll('[data-sh]').forEach(function (hEl) {
-      var d = hEl.dataset.sh, mEl = m.el.querySelector('[data-sm="' + d + '"]');
-      var hv = hEl.value.trim(), mv = mEl.value.trim();
-      var ex = data.study.get(d);
-      if (hv === '' && mv === '') { if (ex) { del('study', d); n++; } return; }
-      var mins = (parseInt(hv, 10) || 0) * 60 + (parseInt(mv, 10) || 0);
-      if (!ex || ex.minutes !== mins) { put('study', d, { date: d, minutes: Math.max(0, Math.min(1440, mins)) }); n++; }
+    var b = e.target.closest('button'); if (!b) return;
+    if (b.dataset.tmode) { st.mode = b.dataset.tmode; draw(); return; }
+    if (b.dataset.tpick) { st.taskId = b.dataset.tpick; draw(); return; }
+    if (b.dataset.tcat) { st.cat = b.dataset.tcat; draw(); return; }
+    if (!b.hasAttribute('data-go')) return;
+    var target;
+    if (st.mode === 'task') {
+      var t = st.taskId && data.tasks.get(st.taskId);
+      if (!t) { toast('공부할 할 일을 골라 주세요.'); return; }
+      target = { taskId: t.id, cat: taskCat(t), subject: t.kind === 'other' ? null : t.subject, title: taskLabel(t) };
+    } else {
+      if (!st.cat) { toast('과목을 골라 주세요.'); return; }
+      target = { taskId: null, cat: st.cat, subject: null, title: null };
+    }
+    m.close();
+    startTimer(target);
+  });
+}
+function openManualAdd(date) {
+  var st = { day: date || studyToday(), mode: 'cat', taskId: null, cat: null };
+  var m = openModal('공부 시간 직접 입력', '<div id="mn"></div>', '<button class="btn ghost" data-mclose>취소</button><button class="btn primary" data-ok>저장</button>');
+  var box = $('#mn', m.el); box.style.display = 'contents';
+  var keep = { h: '', m: '', t: '' };
+  function draw() {
+    var list = pickableTasks(st.day);
+    box.innerHTML = '<p class="note" style="margin:0">타이머를 깜빡했을 때 쓰는 칸이에요. 오전 6시 전에 한 공부는 전날 공부로 적어요.</p>' +
+      '<label class="field"><span>날짜</span><input type="date" id="mn-d" value="' + st.day + '"></label>' +
+      '<div class="seg"><button type="button" data-mmode="task" aria-pressed="' + (st.mode === 'task') + '">할 일과 연결</button><button type="button" data-mmode="cat" aria-pressed="' + (st.mode === 'cat') + '">과목</button></div>' +
+      (st.mode === 'task' ? taskPickHTML(list, st.taskId, 'data-mpick') : catGridHTML(st.cat, 'data-mcat')) +
+      '<div class="grid2"><div class="field"><span>공부한 시간</span><span class="hm"><input type="number" inputmode="numeric" min="0" max="23" id="mn-h" placeholder="0" value="' + esc(keep.h) + '"><span class="small muted">H</span><input type="number" inputmode="numeric" min="0" max="59" id="mn-m" placeholder="0" value="' + esc(keep.m) + '"><span class="small muted">M</span></span></div>' +
+      '<label class="field"><span>시작 시각 (선택)</span><input type="time" id="mn-t" value="' + esc(keep.t) + '"></label></div>' +
+      '<p class="def">시작 시각을 적으면 시간대별 차트에도 들어가요.</p>';
+  }
+  draw();
+  m.el.addEventListener('input', function (e) { if (e.target.id === 'mn-h') keep.h = e.target.value; if (e.target.id === 'mn-m') keep.m = e.target.value; if (e.target.id === 'mn-t') keep.t = e.target.value; });
+  m.el.addEventListener('change', function (e) { if (e.target.id === 'mn-d' && e.target.value) { st.day = e.target.value; st.taskId = null; draw(); } if (e.target.id === 'mn-t') keep.t = e.target.value; });
+  m.el.addEventListener('click', function (e) {
+    var b = e.target.closest('button'); if (!b) return;
+    if (b.dataset.mmode) { st.mode = b.dataset.mmode; draw(); return; }
+    if (b.dataset.mpick) { st.taskId = b.dataset.mpick; draw(); return; }
+    if (b.dataset.mcat) { st.cat = b.dataset.mcat; draw(); return; }
+    if (!b.hasAttribute('data-ok')) return;
+    var sec = (parseInt(keep.h, 10) || 0) * 3600 + (parseInt(keep.m, 10) || 0) * 60;
+    if (sec <= 0) { toast('공부한 시간을 넣어 주세요.'); return; }
+    var rec = { manual: true, day: st.day, sec: sec, focusSec: sec, segs: [] };
+    if (st.mode === 'task') {
+      var t = st.taskId && data.tasks.get(st.taskId);
+      if (!t) { toast('연결할 할 일을 골라 주세요.'); return; }
+      Object.assign(rec, { taskId: t.id, cat: taskCat(t), subject: t.kind === 'other' ? null : t.subject, title: taskLabel(t) });
+    } else {
+      if (!st.cat) { toast('과목을 골라 주세요.'); return; }
+      Object.assign(rec, { taskId: null, cat: st.cat, subject: null, title: null });
+    }
+    if (keep.t) {
+      var hm = keep.t.split(':').map(Number);
+      var base = pd(st.day); if (hm[0] < 6) base.setDate(base.getDate() + 1);
+      base.setHours(hm[0], hm[1], 0, 0);
+      var s0 = base.getTime();
+      rec.segs = [[s0, s0 + sec * 1000]]; rec.start = s0; rec.end = s0 + sec * 1000;
+    }
+    put('focus', newId('fc'), rec);
+    toast(fmtMD(st.day) + ' 공부 시간 ' + fmtHMS(sec) + '을 더했어요.');
+    m.close();
+  });
+}
+
+/* ---------- 기숙사 짐 ---------- */
+function dormDoc() { var d = data.meta.get('dorm'); return { fixed: (d && d.fixed) ? d.fixed.slice() : [], weeks: (d && d.weeks) ? JSON.parse(JSON.stringify(d.weeks)) : {} }; }
+function dormItems(ws) {
+  var d = dormDoc(), w = d.weeks[ws] || {}, ck = w.checked || {};
+  return d.fixed.map(function (x) { return { id: x.id, text: x.text, fixed: true, done: !!ck[x.id] }; })
+    .concat((w.items || []).map(function (x) { return { id: x.id, text: x.text, fixed: false, done: !!ck[x.id] }; }));
+}
+function dormBtn(ws) {
+  var it = dormItems(ws), dn = it.filter(function (x) { return x.done; }).length;
+  return '<button type="button" class="dorm" data-act="dorm" data-ws="' + ws + '"><span>기숙사 짐</span><span class="num">' + (it.length ? dn + '/' + it.length : '+') + '</span></button>';
+}
+function openDorm(ws) {
+  var keepFixed = false;
+  var m = openModal('기숙사 짐 · ' + fmtMD(ws) + ' 주', '<div id="dm"></div>', '<button class="btn primary" data-mclose>닫기</button>');
+  var box = $('#dm', m.el); box.style.display = 'contents';
+  function save(d) { put('meta', 'dorm', { fixed: d.fixed, weeks: d.weeks }); }
+  function draw() {
+    var it = dormItems(ws);
+    box.innerHTML = (it.length ? '<ul class="dlist">' + it.map(function (x) {
+      return '<li class="' + (x.done ? 'done' : '') + '"><button type="button" class="chk" data-dck="' + x.id + '" aria-pressed="' + x.done + '" aria-label="챙김"><i>' + CHECK_SVG + '</i></button><span class="dtext">' + esc(x.text) + '</span>' +
+        (x.fixed ? '<span class="st-chip">매주</span>' : '') + '<button type="button" class="icon-btn sm" data-ddel="' + x.id + '" aria-label="지우기">×</button></li>';
+    }).join('') + '</ul>' : '<div class="empty small">아직 적은 짐이 없어요</div>') +
+      '<div class="newrow"><label class="field"><span>챙길 물건</span><input type="text" id="dm-t" placeholder="예: 체육복, 충전기"></label>' +
+      '<label class="cb' + (keepFixed ? ' on' : '') + '"><input type="checkbox" id="dm-f"' + (keepFixed ? ' checked' : '') + '> 매주 고정 · 체크는 주마다 새로 시작해요</label>' +
+      '<div><button type="button" class="btn sm" data-dadd>추가</button></div></div>';
+  }
+  draw();
+  m.el.addEventListener('change', function (e) { if (e.target.id === 'dm-f') { keepFixed = e.target.checked; e.target.closest('.cb').classList.toggle('on', keepFixed); } });
+  m.el.addEventListener('keydown', function (e) { if (e.target.id === 'dm-t' && e.key === 'Enter') { e.preventDefault(); m.el.querySelector('[data-dadd]').click(); } });
+  m.el.addEventListener('click', function (e) {
+    var b = e.target.closest('button'); if (!b) return;
+    var d = dormDoc(), w = d.weeks[ws] || (d.weeks[ws] = { items: [], checked: {} });
+    w.items = w.items || []; w.checked = w.checked || {};
+    if (b.hasAttribute('data-dadd')) {
+      var v = $('#dm-t', m.el).value.trim(); if (!v) { toast('물건 이름을 적어 주세요.'); return; }
+      var id = newId('dg');
+      if (keepFixed) d.fixed.push({ id: id, text: v }); else w.items.push({ id: id, text: v });
+      save(d); draw(); var inp = $('#dm-t', m.el); if (inp) inp.focus(); return;
+    }
+    if (b.dataset.dck) { var k = b.dataset.dck; if (w.checked[k]) delete w.checked[k]; else w.checked[k] = true; save(d); draw(); return; }
+    if (b.dataset.ddel) {
+      var k2 = b.dataset.ddel;
+      d.fixed = d.fixed.filter(function (x) { return x.id !== k2; });
+      w.items = w.items.filter(function (x) { return x.id !== k2; });
+      delete w.checked[k2]; save(d); draw(); return;
+    }
+  });
+}
+
+/* ---------- 첨부 파일 (아이패드 안 저장) ---------- */
+var FDB = (function () {
+  var dbp = null;
+  function open() {
+    if (dbp) return dbp;
+    dbp = new Promise(function (res, rej) {
+      var r = indexedDB.open('hyojoo-planner-files', 1);
+      r.onupgradeneeded = function () { r.result.createObjectStore('files', { keyPath: 'id' }); };
+      r.onsuccess = function () { res(r.result); };
+      r.onerror = function () { dbp = null; rej(r.error); };
     });
-    toast(n ? '공부 시간을 저장했어요.' : '바뀐 내용이 없어요.');
+    return dbp;
+  }
+  function run(mode, fn) {
+    return open().then(function (db) {
+      return new Promise(function (res, rej) {
+        var tx = db.transaction('files', mode), req = fn(tx.objectStore('files'));
+        tx.oncomplete = function () { res(req ? req.result : undefined); };
+        tx.onerror = function () { rej(tx.error); };
+        tx.onabort = function () { rej(tx.error); };
+      });
+    });
+  }
+  return {
+    put: function (rec) { return run('readwrite', function (s) { return s.put(rec); }); },
+    get: function (id) { return run('readonly', function (s) { return s.get(id); }); },
+    del: function (id) { return run('readwrite', function (s) { return s.delete(id); }); },
+    all: function () { return run('readonly', function (s) { return s.getAll(); }); }
+  };
+})();
+async function storeFiles(files) {
+  var out = [];
+  for (var i = 0; i < files.length; i++) {
+    var f = files[i];
+    var buf = await f.arrayBuffer();
+    var id = newId('f');
+    await FDB.put({ id: id, name: f.name, type: f.type || 'application/octet-stream', size: f.size, buf: buf });
+    out.push({ id: id, name: f.name, type: f.type || '', size: f.size });
+  }
+  return out;
+}
+function fileSize(n) { return n > 1048576 ? (n / 1048576).toFixed(1) + 'MB' : Math.max(1, Math.round(n / 1024)) + 'KB'; }
+function attChips(list) {
+  return (list || []).map(function (a) {
+    return '<button type="button" class="att" data-att="' + esc(a.id) + '"><span class="att-k">' + (/pdf/i.test(a.type) || /\.pdf$/i.test(a.name) ? 'PDF' : '사진') + '</span>' + esc(a.name) + ' <span class="muted small">' + fileSize(a.size) + '</span></button>';
+  }).join('');
+}
+function attachmentInUse(fid) {
+  var used = false;
+  data.tasks.forEach(function (t) { if ((t.attachments || []).some(function (a) { return a.id === fid; })) used = true; });
+  return used;
+}
+async function viewAttachment(fid, onRemove) {
+  var rec = null;
+  try { rec = await FDB.get(fid); } catch (e) {}
+  if (!rec) { toast('첨부 파일을 찾지 못했어요. 이 아이패드에 없는 파일일 수 있어요.'); return; }
+  var blob = new Blob([rec.buf], { type: rec.type });
+  var url = URL.createObjectURL(blob);
+  var isPdf = /pdf/i.test(rec.type) || /\.pdf$/i.test(rec.name);
+  var body = isPdf ? '<iframe class="pdfview" src="' + url + '" title="' + esc(rec.name) + '"></iframe><p class="def">PDF가 한 페이지만 보이면 "다른 앱으로 열기"를 눌러 파일이나 북스에서 보세요.</p>'
+    : '<img class="imgview" src="' + url + '" alt="' + esc(rec.name) + '">';
+  var m = openModal(esc(rec.name), body, (onRemove ? '<button class="btn danger" data-arm>첨부 삭제</button><span class="spacer"></span>' : '') + '<button class="btn" data-ashare>다른 앱으로 열기</button><button class="btn primary" data-mclose>닫기</button>',
+    { wide: true, onClose: function () { setTimeout(function () { URL.revokeObjectURL(url); }, 1000); } });
+  m.el.addEventListener('click', async function (e) {
+    if (e.target.closest('[data-ashare]')) {
+      try {
+        var file = new File([blob], rec.name, { type: rec.type });
+        if (navigator.canShare && navigator.canShare({ files: [file] })) await navigator.share({ files: [file] });
+        else { var a = document.createElement('a'); a.href = url; a.download = rec.name; document.body.appendChild(a); a.click(); a.remove(); }
+      } catch (x) { if (!(x && x.name === 'AbortError')) toast('다른 앱으로 보내지 못했어요.'); }
+    }
+    if (e.target.closest('[data-arm]')) {
+      var ok = await confirmBox('첨부를 지울까요?', '"' + rec.name + '"을(를) 이 수행평가에서 지워요.', [{ label: '취소', value: false, cls: 'ghost' }, { label: '지우기', value: true, cls: 'danger' }]);
+      if (ok) { m.close(); onRemove(); }
+    }
+  });
+}
+
+/* ---------- Apple 캘린더 파일 ---------- */
+function icsEsc(s) { return String(s || '').replace(/\\/g, '\\\\').replace(/\r?\n/g, '\\n').replace(/,/g, '\\,').replace(/;/g, '\\;'); }
+function buildICS(ev) {
+  var stamp = new Date().toISOString().replace(/[-:]/g, '').replace(/\.\d+Z$/, 'Z');
+  var L = ['BEGIN:VCALENDAR', 'VERSION:2.0', 'PRODID:-//hyojoo-planner//KO', 'CALSCALE:GREGORIAN', 'BEGIN:VEVENT', 'UID:' + ev.uid + '@hyojoo-planner', 'DTSTAMP:' + stamp, 'SUMMARY:' + icsEsc(ev.title)];
+  var d = ev.date.replace(/-/g, '');
+  if (ev.start) {
+    var st = ev.start.replace(':', '') + '00';
+    var en = ev.end ? ev.end.replace(':', '') + '00' : null;
+    var endDate = d;
+    if (!en) { var hh = (+ev.start.slice(0, 2) + 1); if (hh >= 24) { endDate = addDays(ev.date, 1).replace(/-/g, ''); hh -= 24; } en = pad(hh) + ev.start.slice(3, 5) + '00'; }
+    else if (ev.end < ev.start) endDate = addDays(ev.date, 1).replace(/-/g, '');
+    L.push('DTSTART:' + d + 'T' + st, 'DTEND:' + endDate + 'T' + en);
+  } else {
+    L.push('DTSTART;VALUE=DATE:' + d, 'DTEND;VALUE=DATE:' + addDays(ev.date, 1).replace(/-/g, ''));
+  }
+  if (ev.desc) L.push('DESCRIPTION:' + icsEsc(ev.desc));
+  L.push('END:VEVENT', 'END:VCALENDAR');
+  return L.join('\r\n') + '\r\n';
+}
+function openAddToCalendar(ev) {
+  var text = buildICS(ev);
+  var name = (ev.fileName || 'planner-event') + '.ics';
+  var blob = new Blob([text], { type: 'text/calendar;charset=utf-8' });
+  var url = URL.createObjectURL(blob);
+  var m = openModal('Apple 캘린더에 추가', '<p style="margin:0"><b>' + esc(ev.title) + '</b><br><span class="muted">' + fmtLong(ev.date) + (ev.start ? ' ' + esc(ev.start) + (ev.end ? '–' + esc(ev.end) : '') : ' · 하루 종일') + '</span></p>' +
+    '<p class="note" style="margin:0">"캘린더 열기"를 누르면 아이패드가 캘린더 추가 화면을 보여줘요. 거기서 추가를 누르면 캘린더에 들어가요. 아무 반응이 없으면 "파일로 보내기"에서 "파일에 저장"을 고르고, 파일 앱에서 그 파일을 열어 추가하세요.</p>' +
+    '<p class="def">한 번 넣은 일정은 플래너에서 날짜를 바꿔도 캘린더에 따라가지 않아요. 바뀌면 캘린더에서 지우고 다시 추가하세요.</p>',
+    '<button class="btn" data-ishare>파일로 보내기</button><span class="spacer"></span><button class="btn ghost" data-mclose>닫기</button><a class="btn primary" href="' + url + '" data-iopen>캘린더 열기</a>',
+    { onClose: function () { setTimeout(function () { URL.revokeObjectURL(url); }, 60000); } });
+  m.el.addEventListener('click', async function (e) {
+    if (e.target.closest('[data-ishare]')) {
+      try {
+        var file = new File([blob], name, { type: 'text/calendar' });
+        if (navigator.canShare && navigator.canShare({ files: [file] })) await navigator.share({ files: [file] });
+        else { var a = document.createElement('a'); a.href = url; a.download = name; document.body.appendChild(a); a.click(); a.remove(); }
+      } catch (x) { if (!(x && x.name === 'AbortError')) toast('파일을 보내지 못했어요.'); }
+    }
+  });
+}
+function assessCalEvent(t) {
+  return { uid: t.id, title: '[' + t.subject + '] ' + t.title + ' 수행평가', date: t.date, desc: t.memo || '', fileName: '수행평가-' + t.date };
+}
+
+/* ---------- 여러 개 선택 ---------- */
+function exitSel() { ui.selMode = false; ui.sel.clear(); }
+function selBar() {
+  var n = ui.sel.size;
+  return '<div class="selbar" role="toolbar" aria-label="선택한 할 일 관리"><b class="num">' + n + '개 선택</b><span class="spacer"></span>' +
+    '<button class="btn sm" data-act="bulk-move"' + (n ? '' : ' disabled') + '>날짜 이동</button>' +
+    '<button class="btn sm" data-act="bulk-done"' + (n ? '' : ' disabled') + '>완료</button>' +
+    '<button class="btn sm danger" data-act="bulk-del"' + (n ? '' : ' disabled') + '>삭제</button>' +
+    '<button class="btn sm ghost" data-act="selmode">끝내기</button></div>';
+}
+async function bulkMove() {
+  var ids = Array.from(ui.sel);
+  var first = data.tasks.get(ids[0]);
+  var nd = await pickDate(ids.length + '개를 어느 날로 옮길까요?', first ? addDays(first.date, 1) : todayS());
+  if (!nd) return;
+  var moved = 0, skipped = 0;
+  ids.forEach(function (id) {
+    var t = data.tasks.get(id); if (!t) return;
+    if (t.done) { skipped++; return; }
+    if (t.date !== nd) { moveTask(t, nd, true); moved++; }
+  });
+  exitSel(); render();
+  toast(fmtMD(nd) + '로 ' + moved + '개 옮겼어요' + (skipped ? ' · 완료한 ' + skipped + '개는 그대로 뒀어요' : '') + '.');
+}
+function bulkDone() {
+  var n = 0;
+  ui.sel.forEach(function (id) { var t = data.tasks.get(id); if (t && !t.done) { patch('tasks', id, { done: true, doneAt: nowISO() }); n++; } });
+  exitSel(); render();
+  toast(n + '개를 완료로 바꿨어요.');
+}
+async function bulkDelete() {
+  var ids = Array.from(ui.sel);
+  var ok = await confirmBox(ids.length + '개를 삭제할까요?', '삭제하면 되돌릴 수 없어요. 수행평가를 지우면 연결된 대비 할 일도 정리돼요. 이 할 일로 공부한 시간은 통계에 남아요.',
+    [{ label: '취소', value: false, cls: 'ghost' }, { label: '삭제', value: true, cls: 'danger' }]);
+  if (!ok) return;
+  ids.forEach(function (id) { var t = data.tasks.get(id); if (t) doDeleteTask(t); });
+  exitSel(); render();
+  toast(ids.length + '개를 삭제했어요.');
+}
+
+/* ---------- 복습 추가 ---------- */
+function recentClasses(subject, upto) {
+  var out = [];
+  for (var k = 0; k <= 70 && out.length < 10; k++) {
+    var d = addDays(upto, -k);
+    if (d < START) break;
+    var l = sessionsFor(d).filter(function (s) { return s.subject === subject && (s.status === 'held' || s.status === 'cont'); }).reverse();
+    out = out.concat(l);
+  }
+  return out.slice(0, 10);
+}
+function openNewReview(date) {
+  var st = { subject: '', key: '', picks: {}, date: date || todayS() };
+  var subs = SUBJECTS.filter(function (s) { return revOf(s.name).length; });
+  var m = openModal('복습 추가', '<div id="nr"></div>', '<button class="btn ghost" data-mclose>취소</button><button class="btn primary" data-ok>추가</button>');
+  var box = $('#nr', m.el); box.style.display = 'contents';
+  function draw() {
+    var h = '<label class="field"><span>과목</span><select id="nr-s"><option value="">과목 선택</option>' + subs.map(function (s) { return '<option' + (s.name === st.subject ? ' selected' : '') + '>' + esc(s.name) + '</option>'; }).join('') + '</select></label>';
+    if (st.subject) {
+      var cls = recentClasses(st.subject, st.date);
+      h += '<label class="field"><span>어느 수업의 복습인가요 · 고르면 수업 내용이 연결돼요</span><select id="nr-k"><option value="">연결 안 함</option>' + cls.map(function (s) {
+        return '<option value="' + esc(s.key) + '"' + (s.key === st.key ? ' selected' : '') + '>' + fmtMD(s.date) + (s.chasi ? ' ' + s.chasi + '차시' : '') + '</option>';
+      }).join('') + '</select></label>';
+      var rs = roundsOf(st.subject);
+      h += rs.map(function (r, ri) {
+        return '<div class="round">' + (rs.length > 1 ? '<h4>' + esc(r.label) + '</h4>' : '') + '<div class="checks">' + r.items.map(function (name, i) {
+          var k = ri + '|' + i, on = !!st.picks[k];
+          return '<label class="cb' + (on ? ' on' : '') + '"><input type="checkbox" data-nrc="' + k + '"' + (on ? ' checked' : '') + '>' + esc(name) + '</label>';
+        }).join('') + '</div></div>';
+      }).join('');
+      h += '<div class="field"><span>복습할 날짜</span><div>' + dateBtn('data-nrd', st.date) + '</div></div>';
+    } else h += '<p class="note">과목을 고르면 복습 방법이 나와요.</p>';
+    box.innerHTML = h;
+  }
+  draw();
+  m.el.addEventListener('change', function (e) {
+    var el = e.target;
+    if (el.id === 'nr-s') { st.subject = el.value; st.picks = {}; var c = st.subject ? recentClasses(st.subject, st.date) : []; st.key = c[0] ? c[0].key : ''; draw(); }
+    else if (el.id === 'nr-k') st.key = el.value;
+    else if (el.dataset.nrc) { if (el.checked) st.picks[el.dataset.nrc] = true; else delete st.picks[el.dataset.nrc]; el.closest('.cb').classList.toggle('on', el.checked); }
+  });
+  m.el.addEventListener('click', async function (e) {
+    var b = e.target.closest('button'); if (!b) return;
+    if (b.hasAttribute('data-nrd')) { var v = await openDayPicker('복습할 날짜', st.date); if (v) { st.date = v; draw(); } return; }
+    if (!b.hasAttribute('data-ok')) return;
+    var ks = Object.keys(st.picks);
+    if (!st.subject || !ks.length) { toast('과목과 복습 방법을 골라 주세요.'); return; }
+    var rs = roundsOf(st.subject), chasi = st.key ? liveChasi(st.key) : null;
+    ks.forEach(function (k, n) {
+      var p = k.split('|'), name = rs[+p[0]].items[+p[1]];
+      createTask({ id: 'rv_' + (st.key || 'free') + '_' + (+p[0] + 1) + '_' + Date.now().toString(36) + n, kind: 'review', subject: st.subject, method: name, title: name, round: +p[0] + 1, date: st.date, sessionKey: st.key || null, chasi: chasi, order: Date.now() + n });
+    });
+    toast(fmtMD(st.date) + '에 복습 ' + ks.length + '개를 추가했어요.');
     m.close();
   });
 }
 
 /* ---------- 클릭 처리 ---------- */
-function go(view) { ui.view = view; lsSet('planner-view', view === 'day' ? 'calendar' : view); render(); window.scrollTo(0, 0); }
+function go(view) { if (view === 'timer') { openTimerSetup(); return; } if (view !== ui.view) exitSel(); ui.view = view; lsSet('planner-view', view === 'day' ? 'calendar' : view); render(); window.scrollTo(0, 0); }
 var ACT = {
   nav: function (el) { go(el.dataset.view); },
   toggle: function (el) { toggleDone(el.closest('[data-id]').dataset.id); },
@@ -2247,7 +3190,30 @@ var ACT = {
   'add-class': function (el) { openAddClass(el.dataset.date); },
   'new-hw': function () { openNewHw(); }, 'new-assess': function () { openNewAssess(); },
   'new-other': function () { openNewOther(); }, 'new-event': function () { openEvent(null); },
-  'exam-edit': openExamEditor, 'tt-edit': openTTEditor, 'study-edit': openStudyEditor,
+  'exam-edit': openExamEditor, 'tt-edit': openTTEditor,
+  'timer-open': function () { openTimerSetup(); },
+  'manual-add': function (el) { openManualAdd(el.dataset.date); },
+  'focus-del': async function (el) {
+    var r = data.focus.get(el.dataset.id); if (!r) return;
+    var ok = await confirmBox('공부 기록을 지울까요?', fmtHMS(recSec(r)) + ' · ' + (r.title || r.cat + ' 자유 공부') + '\n지우면 할 일 옆 공부 시간과 모든 통계에서 함께 빠져요.', [{ label: '취소', value: false, cls: 'ghost' }, { label: '지우기', value: true, cls: 'danger' }]);
+    if (ok) { del('focus', r.id); toast('공부 기록을 지웠어요.'); }
+  },
+  'backup-dismiss': function () { lsSet('planner-backup-dismiss', todayS()); render(); },
+  dorm: function (el) { openDorm(el.dataset.ws); },
+  selmode: function () { if (ui.selMode) exitSel(); else ui.selMode = true; render(); },
+  sel: function (el) { var id = el.closest('[data-id]').dataset.id; if (ui.sel.has(id)) ui.sel.delete(id); else ui.sel.add(id); render(); },
+  'bulk-move': bulkMove, 'bulk-done': bulkDone, 'bulk-del': bulkDelete,
+  calk: function (el) { ui.calKind = el.dataset.v; if (ui.calKind === 'event') ui.calSubj = 'all'; render(); },
+  cals: function (el) { ui.calSubj = el.dataset.v; render(); },
+  'stat-day': function (el) { ui.stats.day = el.dataset.date; render(); },
+  'sd-prev': function () { ui.stats.day = addDays(ui.stats.day || studyToday(), -1); render(); },
+  'sd-next': function () { ui.stats.day = addDays(ui.stats.day || studyToday(), 1); render(); },
+  'sd-today': function () { ui.stats.day = null; render(); },
+  'sw-prev': function () { ui.stats.week = addDays(ui.stats.week || weekStartOf(studyToday()), -7); render(); },
+  'sw-next': function () { ui.stats.week = addDays(ui.stats.week || weekStartOf(studyToday()), 7); render(); },
+  'sw-now': function () { ui.stats.week = null; render(); },
+  'sm-prev': function () { var d = pd((ui.stats.month || studyToday().slice(0, 7)) + '-01'); d.setMonth(d.getMonth() - 1); ui.stats.month = ds(d).slice(0, 7); render(); },
+  'sm-next': function () { var d = pd((ui.stats.month || studyToday().slice(0, 7)) + '-01'); d.setMonth(d.getMonth() + 1); ui.stats.month = ds(d).slice(0, 7); render(); },
   'week-prev': function () { ui.week = addDays(ui.week, -7); render(); }, 'week-next': function () { ui.week = addDays(ui.week, 7); render(); }, 'week-now': function () { ui.week = weekStartOf(todayS()); render(); },
   'tt-prev': function () { ui.ttWeek = addDays(ui.ttWeek, -7); render(); }, 'tt-next': function () { ui.ttWeek = addDays(ui.ttWeek, 7); render(); }, 'tt-now': function () { ui.ttWeek = weekStartOf(todayS()); render(); },
   'month-prev': function () { var d = pd(ui.month + '-01'); d.setMonth(d.getMonth() - 1); ui.month = ds(d).slice(0, 7); render(); },
@@ -2255,26 +3221,16 @@ var ACT = {
   'month-now': function () { ui.month = todayS().slice(0, 7); render(); },
   'day-prev': function () { ui.day = addDays(ui.day, -1); render(); }, 'day-next': function () { ui.day = addDays(ui.day, 1); render(); }, 'day-today': function () { ui.day = todayS(); render(); },
   hwf: function (el) { ui.hwFilter = el.dataset.v; render(); },
-  calf: function (el) { ui.calFilter = el.dataset.v; render(); },
   'stat-preset': function (el) { ui.stats.preset = el.dataset.v; render(); },
-  'study-save': function (el) {
-    var d = el.dataset.date, p = el.dataset.idp;
-    var hv = $('#' + p + 'h').value.trim(), mv = $('#' + p + 'm').value.trim();
-    if (hv === '' && mv === '') { toast('시간이나 분을 넣어 주세요. 0분이면 0을 넣으면 돼요.'); return; }
-    var mins = Math.max(0, Math.min(1440, (parseInt(hv, 10) || 0) * 60 + (parseInt(mv, 10) || 0)));
-    document.activeElement && document.activeElement.blur && document.activeElement.blur();
-    put('study', d, { date: d, minutes: mins });
-    toast(fmtMD(d) + ' 공부 시간 ' + fmtMin(mins) + ' 저장했어요.');
-  },
-  'study-clear': function (el) { del('study', el.dataset.date); toast('기록을 지웠어요. 이 날은 미기록으로 표시돼요.'); },
   'alerts-save': function () {
     var ns = getSettings();
     ns.alerts = { review: $('#al-review').checked, hw: $('#al-hw').checked, assess: $('#al-assess').checked, times: [$('#al-t1').value || '08:00', $('#al-t2').value || '18:30'] };
     saveSettings(ns); toast('알림 설정을 저장했어요.');
   },
   backup: async function () {
-    var out = { exportedAt: nowISO() };
+    var out = { exportedAt: nowISO(), version: 2 };
     COLS.forEach(function (c) { out[c] = Array.from(data[c].values()); });
+    try { out.files = (await FDB.all()).map(function (f) { return { id: f.id, name: f.name, type: f.type, size: f.size, b64: bufToB64(f.buf) }; }); } catch (e) { out.files = []; }
     var name = '학습플래너-백업-' + todayS() + '.json';
     var text = JSON.stringify(out, null, 1);
     if (SOLO) {
@@ -2320,20 +3276,35 @@ document.addEventListener('change', function (e) {
   else if (el.id === 'st-to' && el.value) { ui.stats.to = el.value; render(); }
   else if (/^al-(review|hw|assess)$/.test(el.id)) el.closest('.cb').classList.toggle('on', el.checked);
   else if (el.id === 'restore-in' && el.files && el.files[0]) { restoreFrom(el.files[0]); el.value = ''; }
+  else if (el.id === 'home-chart') { var ns = getSettings(); ns.homeChart = el.value; el.blur(); saveSettings(ns); }
 });
 
+function bufToB64(buf) {
+  var bytes = new Uint8Array(buf), out = '', CH = 0x8000;
+  for (var i = 0; i < bytes.length; i += CH) out += String.fromCharCode.apply(null, bytes.subarray(i, i + CH));
+  return btoa(out);
+}
+function b64ToBuf(b64) {
+  var s = atob(b64 || ''), bytes = new Uint8Array(s.length);
+  for (var i = 0; i < s.length; i++) bytes[i] = s.charCodeAt(i);
+  return bytes.buffer;
+}
 function restoreFrom(file) {
   var rd = new FileReader();
   rd.onload = async function () {
     var o;
     try { o = JSON.parse(rd.result); } catch (e) { toast('백업 파일을 읽지 못했어요. 이 플래너에서 저장한 .json 파일인지 확인해 주세요.'); return; }
     if (!o || !Array.isArray(o.tasks) || !Array.isArray(o.sessions)) { toast('이 플래너의 백업 파일이 아니에요.'); return; }
-    var cnt = o.tasks.length + ' 할 일, ' + o.sessions.length + ' 수업 기록, ' + (o.events || []).length + ' 일정, ' + (o.study || []).length + '일 공부 시간';
+    var cnt = o.tasks.length + ' 할 일, ' + o.sessions.length + ' 수업 기록, ' + (o.events || []).length + ' 일정, ' + (o.focus || []).length + ' 공부 기록, 첨부 ' + (o.files || []).length + '개';
     var ok = await confirmBox('백업 파일을 불러올까요?', '지금 이 아이패드의 기록이 백업 파일 내용으로 바뀌어요.\n백업 파일: ' + cnt + (o.exportedAt ? '\n만든 때: ' + o.exportedAt.slice(0, 10) : ''),
       [{ label: '취소', value: false, cls: 'ghost' }, { label: '불러오기', value: true, cls: 'primary' }]);
     if (!ok) return;
     COLS.forEach(function (c) { data[c] = new Map((o[c] || []).filter(function (x) { return x && x.id; }).map(function (x) { return [x.id, x]; })); reindex(c); });
-    invalidateTL(); saveLocal(); lsSet('planner-seeded', '1'); render();
+    FA = null; invalidateTL(); saveLocal();
+    var fails = 0;
+    for (var i = 0; i < (o.files || []).length; i++) { var f = o.files[i]; try { await FDB.put({ id: f.id, name: f.name, type: f.type, size: f.size, buf: b64ToBuf(f.b64) }); } catch (e) { fails++; } }
+    render();
+    if (fails) toast('첨부 ' + fails + '개는 불러오지 못했어요.');
     toast('백업 파일을 불러왔어요.');
   };
   rd.readAsText(file);
@@ -2412,7 +3383,7 @@ lastHM = hmNow();
 /* ---------- 시작 ---------- */
 renderShell();
 render();
-initStore();
+initStore().then(function () { if (tm) showTimer(); });
 })();
 </script>
 </body>
