@@ -522,6 +522,19 @@ html.tm-on,html.tm-on body{overflow:hidden}
 .res-rows dt{color:var(--ink3)}
 .res-rows dd{margin:0;text-align:right;overflow-wrap:anywhere}
 .res-done{min-height:50px;font-size:16px}
+
+/* v4 */
+.tmemo{display:block;font-size:12.5px;color:var(--ink2);margin-top:3px;white-space:pre-wrap;overflow-wrap:anywhere;line-height:1.45}
+.task.done .tmemo{color:var(--ink3)}
+.week .dcol{flex:0 0 calc((100% - 24px) / 3);max-width:none;min-width:260px}
+.dleft{min-width:0;flex:1}
+.drow{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.dsubj{border:0;background:none;padding:2px 0;display:inline-flex;flex-wrap:wrap;gap:4px;align-items:center;min-height:30px;font-size:12px}
+.dsubj .tag{font-size:12px;padding:1px 6px}
+.dsadd{color:var(--ink3);font-size:12.5px;border:1px dashed var(--line2);border-radius:7px;padding:1px 7px}
+.dsubj:hover .dsadd{color:var(--ink2)}
+.cbwrap{display:flex;align-items:center;gap:4px;min-width:0}
+.cbwrap .cb{flex:1;min-width:0}
 </style>
 </head>
 <body>
@@ -589,8 +602,10 @@ var DEFAULT_SETTINGS = {
   alerts: { review: true, hw: true, assess: true, times: ['08:00', '18:30'] }
 };
 
-function famOf(n) { var s = SUBJ.get(n); return s ? s.fam : 'gy'; }
-function roundsOf(n) { var s = SUBJ.get(n); return s && s.rev ? REV_ROUNDS[s.rev].map(function (r) { return { label: r[0], items: r[1] }; }) : []; }
+var CAT_REV = { '국어': 'kor', '영어': 'eng', '수학': 'math', '사회': 'soc', '과학': 'sci', '역사': 'his' };
+function famOf(n) { if (CAT_FAM[n]) return CAT_FAM[n]; var s = SUBJ.get(n); return s ? s.fam : 'gy'; }
+function revGroup(n) { if (CAT_REV[n]) return CAT_REV[n]; var s = SUBJ.get(n); return s && s.rev ? s.rev : null; }
+function roundsOf(n) { var g = revGroup(n); return g ? REV_ROUNDS[g].map(function (r) { return { label: r[0], items: r[1] }; }) : []; }
 function revOf(n) { var out = []; roundsOf(n).forEach(function (r) { out = out.concat(r.items); }); return out; }
 /* 공부 시간 묶음 */
 var CATS = ['국어','영어','수학','과학','사회','역사','기타'];
@@ -1041,7 +1056,7 @@ function render() {
 /* ---------- 할 일 표시 ---------- */
 var KIND_LABEL = { hw: '과제', assess: '수행평가', prep: '수행 대비' };
 function taskChasi(t) {
-  if (t.kind !== 'review') return null;
+  if (t.kind !== 'review' || !t.showChasi) return null;
   var c = liveChasi(t.sessionKey);
   return c != null ? c : (t.chasi || null);
 }
@@ -1066,7 +1081,6 @@ function taskRow(t, opt) {
   if (t.kind === 'hw') { var du = effDue(t); if (du && (opt.showDate || du !== t.date)) meta.push('마감 ' + fmtMD(du)); }
   var fsec = focusAgg().byTask[t.id];
   if (fsec) meta.push('공부 ' + fmtHMS(fsec.sec));
-  if (t.memo) meta.push('메모 있음');
   if (t.sourceId) meta.push('다시 하기');
   if ((t.attachments || []).length) meta.push('첨부 ' + t.attachments.length);
   var kl = KIND_LABEL[t.kind];
@@ -1075,12 +1089,12 @@ function taskRow(t, opt) {
     return '<li class="task selmode' + (t.done ? ' done' : '') + (on ? ' picked' : '') + '" data-id="' + esc(t.id) + '">' +
       '<button class="chk selbox" data-act="sel" aria-label="선택" aria-pressed="' + on + '"><i>' + CHECK_SVG + '</i></button>' +
       '<button class="tmain" data-act="sel"><span class="tline">' + tagHTML(t) + (kl ? '<span class="kind k-' + t.kind + '">' + kl + '</span>' : '') +
-      '<span class="ttl">' + esc(t.title) + '</span></span>' + (meta.length ? '<span class="tmeta">' + esc(meta.join(' · ')) + '</span>' : '') + '</button></li>';
+      '<span class="ttl">' + esc(t.title) + '</span></span>' + (meta.length ? '<span class="tmeta">' + esc(meta.join(' · ')) + '</span>' : '') + (t.memo && t.memo.trim() ? '<span class="tmemo">' + esc(t.memo.trim()) + '</span>' : '') + '</button></li>';
   }
   return '<li class="task' + (t.done ? ' done' : '') + '" data-id="' + esc(t.id) + '">' +
     '<button class="chk" data-act="toggle" aria-label="' + (t.done ? '완료 취소' : '완료') + '" aria-pressed="' + !!t.done + '"><i>' + CHECK_SVG + '</i></button>' +
     '<button class="tmain" data-act="open"><span class="tline">' + tagHTML(t) + (kl ? '<span class="kind k-' + t.kind + '">' + kl + '</span>' : '') +
-    '<span class="ttl">' + esc(t.title) + '</span></span>' + (meta.length ? '<span class="tmeta">' + esc(meta.join(' · ')) + '</span>' : '') + '</button>' +
+    '<span class="ttl">' + esc(t.title) + '</span></span>' + (meta.length ? '<span class="tmeta">' + esc(meta.join(' · ')) + '</span>' : '') + (t.memo && t.memo.trim() ? '<span class="tmemo">' + esc(t.memo.trim()) + '</span>' : '') + '</button>' +
     (opt.drag !== false && !t.done ? '<span class="grip" data-grip role="button" aria-label="끌어서 순서 바꾸기">⋮⋮</span>' : '') +
     '</li>';
 }
@@ -1101,7 +1115,7 @@ function dayCard(d, opt) {
   var ts = dayTasks(d);
   var done = ts.filter(function (t) { return t.done; }).length;
   return '<section class="daycard' + (d === T ? ' today' : '') + (d < T ? ' past' : '') + '">' +
-    '<div class="dhead"><div><div class="dnum num">' + dt.getDate() + '</div><div class="dname">' + WK_EN[dt.getDay()] + '</div></div>' +
+    '<div class="dhead"><div class="dleft"><div class="drow"><div class="dnum num">' + dt.getDate() + '</div>' + dayFocusHTML(d) + '</div><div class="dname">' + WK_EN[dt.getDay()] + '</div></div>' +
     '<div class="dbadges">' + (d === T ? '<span class="today-badge">오늘</span>' : '') + (isExam(d) ? '<span class="exam-badge">★ 시험</span>' : '') + '</div></div>' +
     dayList(d, opt) +
     '<div class="dfoot"><span class="count num">' + (ts.length ? done + ' / ' + ts.length + ' 완료' : '') + '</span>' +
@@ -1293,7 +1307,7 @@ function calItems(d, kind, subj) {
     if (kind === 'hw' && t.kind !== 'hw') return false;
     if (kind === 'review' && t.kind !== 'review') return false;
     if (kind === 'assess' && t.kind !== 'assess' && t.kind !== 'prep') return false;
-    if (subj !== 'all' && (t.kind === 'other' || t.subject !== subj)) return false;
+    if (subj !== 'all' && (t.kind === 'other' || catOf(t.subject) !== subj)) return false;
     return true;
   });
   return evs.concat(ts.map(function (t) {
@@ -1330,7 +1344,7 @@ function calFilterRow() {
   var kinds = '<div class="seg" role="group" aria-label="종류">' + CAL_KINDS.map(function (x) { return '<button type="button" data-act="calk" data-v="' + x[0] + '" aria-pressed="' + (k === x[0]) + '">' + x[1] + '</button>'; }).join('') + '</div>';
   var b = function (v, label, fam) { return '<button type="button" data-act="cals" data-v="' + esc(v) + '" aria-pressed="' + (sj === v) + '"' + (k === 'event' && v !== 'all' ? ' disabled' : '') + '>' + (fam ? '<i class="cdot" style="background:var(--' + fam + '-fg)"></i>' : '') + esc(label) + '</button>'; };
   var subs = '<div class="calf" role="group" aria-label="과목">' + b('all', '모든 과목') +
-    SUBJECTS.filter(function (s) { return s.name !== '체육' && s.name !== '미술'; }).map(function (s) { return b(s.name, s.name, s.fam); }).join('') + '</div>';
+    ['국어', '수학', '영어', '사회', '과학', '역사'].map(function (c) { return b(c, c, CAT_FAM[c]); }).join('') + '</div>';
   return '<div class="calfilters">' + kinds + subs + '</div>';
 }
 function calFilterNote() {
@@ -1520,7 +1534,7 @@ function vStats() {
     if (t.kind === 'review') { subj[t.subject] = subj[t.subject] || [0, 0]; subj[t.subject][1]++; if (t.done) subj[t.subject][0]++; }
   });
   var seg = function (v, l) { return '<button data-act="stat-preset" data-v="' + v + '" aria-pressed="' + (ui.stats.preset === v) + '">' + l + '</button>'; };
-  var subjRows = SUBJECTS.filter(function (s) { return subj[s.name]; }).map(function (s) {
+  var subjRows = ['국어', '수학', '영어', '사회', '과학', '역사'].map(function (c) { return { name: c, fam: CAT_FAM[c] }; }).concat(SUBJECTS).filter(function (s) { return subj[s.name]; }).map(function (s) {
     var x = subj[s.name]; var p = Math.round(x[0] / x[1] * 100);
     return '<div class="hbar"><span class="tag f-' + s.fam + '">' + esc(s.name) + '</span><span class="track"><i style="width:' + p + '%;background:var(--' + s.fam + '-fg)"></i></span><span class="num small">' + x[0] + '/' + x[1] + '</span></div>';
   }).join('');
@@ -1890,6 +1904,7 @@ function openEditTask(t) {
   if (k === 'hw') f += '<label class="field"><span>마감 날짜</span><input type="date" id="et-due" value="' + esc(effDue(t)) + '"></label>';
   if (t.range != null && k !== 'other' && k !== 'assess') f += '<label class="field"><span>범위</span><input type="text" id="et-range" value="' + esc(t.range || '') + '"></label>';
   f += '<label class="field"><span>' + (k === 'assess' ? '이 날짜' : k === 'hw' ? '할 날짜 (목록에 표시)' : k === 'other' ? '마감 날짜' : '날짜') + '</span><input type="date" id="et-date" value="' + esc(t.date) + '"></label></div>';
+  if (k === 'review' && t.sessionKey) f += '<label class="cb' + (t.showChasi ? ' on' : '') + '"><input type="checkbox" id="et-sc"' + (t.showChasi ? ' checked' : '') + '> 차시 표시 · 끄면 [' + esc(t.subject) + ']로만 보여요</label>';
   f += '<label class="field"><span>' + (k === 'assess' ? '준비 메모' : '상세 메모') + '</span><textarea id="et-memo" placeholder="페이지, 교재명, 문제 번호, 추가 설명">' + esc(t.memo || '') + '</textarea></label>';
   f += labelDatalist();
   var m = openModal('수정', f, '<button class="btn ghost" data-mclose>취소</button><button class="btn primary" data-ok>저장</button>');
@@ -1902,6 +1917,7 @@ function openEditTask(t) {
     if ($('#et-subj', m.el)) p.subject = $('#et-subj', m.el).value;
     if ($('#et-due', m.el)) { var nd0 = $('#et-due', m.el).value; if (nd0 && nd0 !== effDue(cur)) { p.dueDate = nd0; p.dueAuto = false; } }
     if ($('#et-range', m.el)) p.range = $('#et-range', m.el).value;
+    if ($('#et-sc', m.el)) p.showChasi = $('#et-sc', m.el).checked;
     var nd = $('#et-date', m.el).value || cur.date;
     if (k === 'assess') {
       var gp = { baseTitle: title || cur.baseTitle || cur.title, subject: p.subject || cur.subject, memo: p.memo };
@@ -2200,11 +2216,18 @@ function openSession(key) {
   var st = {
     subject: s.subject, status: flex ? 'held' : s.status, learned: doc.learned || '', reason: doc.cancelReason || '',
     chasiOverride: doc.chasiOverride != null ? String(doc.chasiOverride) : '',
-    rounds: [], removed: [], hw: [], cancelReviews: 'keep'
+    rounds: [], removed: [], hw: [], cancelReviews: 'keep', customs: [], showChasi: false
   };
+  function sessRounds() { var rs = roundsOf(st.subject); return rs.length ? rs.concat([{ label: '직접 작성', items: st.customs, custom: true }]) : rs; }
   if (st.status === 'cont' && st.subject !== '영어A') st.status = 'held';
   function loadReviews() {
-    var rs = roundsOf(st.subject);
+    st.customs = customList(st.subject); st.showChasi = false;
+    data.tasks.forEach(function (t) {
+      if (t.sessionKey !== key || t.kind !== 'review') return;
+      if (t.showChasi) st.showChasi = true;
+      if (t.custom && st.customs.indexOf(t.method) < 0 && revOf(st.subject).indexOf(t.method) < 0) st.customs.push(t.method);
+    });
+    var rs = sessRounds();
     st.rounds = rs.map(function () { return {}; }); st.removed = [];
     data.tasks.forEach(function (t) {
       if (t.sessionKey !== key || t.kind !== 'review') return;
@@ -2235,7 +2258,7 @@ function openSession(key) {
   function draw() {
     var subj = st.subject;
     var fam = famOf(subj);
-    var rs = roundsOf(subj);
+    var rs = sessRounds();
     var numbered = hasChasi(subj);
     var tl = sessionByKey(key);
     var chasiShown = tl && tl.chasi;
@@ -2270,15 +2293,20 @@ function openSession(key) {
     var ph = prev ? '지난 수업 ' + fmtMD(prev.date) + ' · ' + prev.learned : '단원, 개념';
     h += '<div class="sec"><h3><span class="n">' + (n++) + '</span>수업 내용</h3><textarea data-bind="learned" placeholder="' + esc(ph) + '">' + esc(st.learned) + '</textarea></div>';
     if (rs.length) {
-      h += '<div class="sec"><h3><span class="n">' + (n++) + '</span>복습</h3>' + rs.map(function (r, ri) {
+      h += '<div class="sec"><h3><span class="n">' + (n++) + '</span>복습</h3>' +
+        (numbered ? '<label class="cb' + (st.showChasi ? ' on' : '') + '"><input type="checkbox" id="ss-showc"' + (st.showChasi ? ' checked' : '') + '> 할 일에 차시 표시 · 끄면 [' + esc(subj) + ']로만 보여요</label>' : '') + rs.map(function (r, ri) {
         var rd = st.rounds[ri];
         var on = r.items.map(function (x, i) { return rd[i] && rd[i].on ? i : -1; }).filter(function (i) { return i >= 0; });
-        return '<div class="round">' + (rs.length > 1 ? '<h4>' + esc(r.label) + '</h4>' : '') + '<div class="checks">' + r.items.map(function (name, i) {
+        var cards = on.map(function (i) { return '<div class="mcard"><b>' + esc(r.items[i]) + '</b>' + partsHTML(rd[i].parts, 'rv', ri + '|' + i) + '</div>'; }).join('');
+        if (r.custom) {
+          var ch = customRoundHTML(r.items, function (i) { return !!(rd[i] && rd[i].on); }, 'ss').replace(/data-sscb="(\d+)"/g, function (x, i) { return 'data-rvcb="' + ri + '|' + i + '"'; });
+          return ch.replace(/<\/div>$/, cards + '</div>');
+        }
+        return '<div class="round">' + '<h4>' + esc(r.label) + '</h4>' + '<div class="checks">' + r.items.map(function (name, i) {
           var mm = rd[i];
           var locked = mm && mm.parts.some(function (p) { return p.done; });
           return '<label class="cb' + (mm && mm.on ? ' on' : '') + (locked ? ' locked' : '') + '"><input type="checkbox" data-rvcb="' + ri + '|' + i + '"' + (mm && mm.on ? ' checked' : '') + (locked ? ' disabled' : '') + '>' + esc(name) + '</label>';
-        }).join('') + '</div>' +
-        on.map(function (i) { return '<div class="mcard"><b>' + esc(r.items[i]) + '</b>' + partsHTML(rd[i].parts, 'rv', ri + '|' + i) + '</div>'; }).join('') + '</div>';
+        }).join('') + '</div>' + cards + '</div>';
       }).join('') + '</div>';
     } else {
       h += '<div class="note">' + esc(subj) + '은(는) 복습 선택 영역이 없는 과목이에요.</div>';
@@ -2315,16 +2343,36 @@ function openSession(key) {
       draw();
     }
     else if (el.name === 'ss-cr') st.cancelReviews = el.value;
+    else if (el.id === 'ss-showc') { st.showChasi = el.checked; el.closest('.cb').classList.toggle('on', el.checked); }
   });
+  m.el.addEventListener('keydown', function (e) { if (e.target.id === 'ss-cin' && e.key === 'Enter') { e.preventDefault(); var bb = m.el.querySelector('[data-cadd]'); if (bb) bb.click(); } });
   m.el.addEventListener('click', async function (e) {
     var b = e.target.closest('button'); if (!b) return;
     var a;
     if (b.dataset.st) { st.status = b.dataset.st; draw(); return; }
+    if (b.hasAttribute('data-cadd')) {
+      var nm = ($('#ss-cin', m.el).value || '').trim();
+      if (!nm) { toast('복습 이름을 적어 주세요.'); return; }
+      var ci = sessRounds().length - 1, ix = st.customs.indexOf(nm);
+      if (ix < 0) { st.customs.push(nm); ix = st.customs.length - 1; saveCustomList(st.subject, customList(st.subject).concat(customList(st.subject).indexOf(nm) < 0 ? [nm] : [])); }
+      var rdc = st.rounds[ci];
+      if (!rdc[ix]) rdc[ix] = { on: true, parts: [{ date: '', range: '' }] }; else rdc[ix].on = true;
+      draw(); return;
+    }
+    if (b.dataset.crm != null) {
+      var rmn = b.dataset.crm, ci2 = sessRounds().length - 1, k0 = st.customs.indexOf(rmn);
+      if (k0 < 0) return;
+      var old = st.rounds[ci2], nw = {};
+      Object.keys(old).forEach(function (k) { k = +k; if (k < k0) nw[k] = old[k]; else if (k > k0) nw[k - 1] = old[k]; });
+      st.customs.splice(k0, 1); st.rounds[ci2] = nw;
+      saveCustomList(st.subject, customList(st.subject).filter(function (x) { return x !== rmn; }));
+      draw(); return;
+    }
     if (b.dataset.rvpick != null) {
       a = b.dataset.rvpick.split('|');
-      var r0 = roundsOf(st.subject)[a[0]];
+      var r0 = sessRounds()[a[0]];
       var p = st.rounds[a[0]][a[1]].parts[a[2]];
-      var v = await openDayPicker((roundsOf(st.subject).length > 1 ? r0.label + ' · ' : '') + r0.items[a[1]], p.date || addDays(s.date, 1));
+      var v = await openDayPicker(r0.label + ' · ' + r0.items[a[1]], p.date || addDays(s.date, 1));
       if (v) { p.date = v; draw(); }
       return;
     }
@@ -2344,7 +2392,7 @@ function openSession(key) {
   });
 
   function save() {
-    var rs = roundsOf(st.subject);
+    var rs = sessRounds();
     var active = st.status === 'held' || st.status === 'cont';
     if (active) {
       for (var r = 0; r < rs.length; r++) for (var i in st.rounds[r]) {
@@ -2367,6 +2415,7 @@ function openSession(key) {
     if (active) {
       var chasiNow = liveChasi(key);
       st.removed.forEach(function (id) { var t = data.tasks.get(id); if (t && !t.done) del('tasks', id); });
+      data.tasks.forEach(function (t) { if (t.sessionKey === key && t.kind === 'review' && !!t.showChasi !== !!st.showChasi) patch('tasks', t.id, { showChasi: !!st.showChasi }); });
       rs.forEach(function (rdef, rr) {
         Object.keys(st.rounds[rr]).forEach(function (i) {
           var mm = st.rounds[rr][i], name = rdef.items[i];
@@ -2374,7 +2423,7 @@ function openSession(key) {
           var parts = mm.parts.slice().sort(function (a, b) { return a.date.localeCompare(b.date); });
           var cnt = parts.length;
           parts.forEach(function (p, k) {
-            var f = { title: name + (cnt > 1 ? ' (' + (k + 1) + ')' : ''), range: p.range || '', round: rr + 1, part: k + 1, partCount: cnt };
+            var f = { title: name + (cnt > 1 ? ' (' + (k + 1) + ')' : ''), range: p.range || '', round: rr + 1, part: k + 1, partCount: cnt, showChasi: !!st.showChasi, custom: !!rdef.custom };
             if (p.taskId) {
               var ex = data.tasks.get(p.taskId); if (!ex) return;
               if (!p.done && ex.date !== p.date) { f.date = p.date; f.order = Date.now() + k; }
@@ -3129,18 +3178,50 @@ function recentClasses(subject, upto) {
   }
   return out.slice(0, 10);
 }
+/* ---------- 직접 작성한 복습 선택지 ---------- */
+function customList(subject) {
+  var g = revGroup(subject);
+  var c = getSettings().customReviews || {};
+  return g && c[g] ? c[g].slice() : [];
+}
+function saveCustomList(subject, list) {
+  var g = revGroup(subject); if (!g) return;
+  var ns = getSettings();
+  ns.customReviews = Object.assign({}, ns.customReviews || {});
+  ns.customReviews[g] = list;
+  saveSettings(ns);
+}
+function customRoundHTML(items, onMap, prefix) {
+  return '<div class="round"><h4>직접 작성</h4>' +
+    (items.length ? '<div class="checks">' + items.map(function (name, i) {
+      var on = onMap(i);
+      return '<span class="cbwrap"><label class="cb' + (on ? ' on' : '') + '"><input type="checkbox" data-' + prefix + 'cb="' + i + '"' + (on ? ' checked' : '') + '>' + esc(name) + '</label>' +
+        (on ? '' : '<button type="button" class="icon-btn sm" data-crm="' + esc(name) + '" aria-label="' + esc(name) + ' 선택지 지우기">×</button>') + '</span>';
+    }).join('') + '</div>' : '') +
+    '<div class="part"><input type="text" id="' + prefix + '-cin" placeholder="새 복습 이름 · 예: 오답노트"><button type="button" class="btn sm" data-cadd>추가</button></div>' +
+    '<p class="def">추가한 이름은 이 과목의 선택지로 남아서 다음에도 고를 수 있어요. ×는 선택지에서만 지우고, 이미 만든 할 일은 그대로예요.</p></div>';
+}
+
+/* ---------- 복습 추가 ---------- */
+var CAT6 = ['국어', '수학', '영어', '사회', '과학', '역사'];
 function openNewReview(date) {
-  var st = { subject: '', key: '', picks: {}, date: date || todayS() };
+  var st = { subject: '', key: '', picks: {}, cpicks: {}, customs: [], date: date || todayS(), showChasi: false };
   var subs = SUBJECTS.filter(function (s) { return revOf(s.name).length; });
   var m = openModal('복습 추가', '<div id="nr"></div>', '<button class="btn ghost" data-mclose>취소</button><button class="btn primary" data-ok>추가</button>');
   var box = $('#nr', m.el); box.style.display = 'contents';
+  function isCat(n) { return CAT6.indexOf(n) >= 0; }
   function draw() {
-    var h = '<label class="field"><span>과목</span><select id="nr-s"><option value="">과목 선택</option>' + subs.map(function (s) { return '<option' + (s.name === st.subject ? ' selected' : '') + '>' + esc(s.name) + '</option>'; }).join('') + '</select></label>';
+    var h = '<label class="field"><span>과목</span><select id="nr-s"><option value="">과목 선택</option>' +
+      '<optgroup label="과목 전체 · [국어]처럼 표시">' + CAT6.map(function (c) { return '<option' + (c === st.subject ? ' selected' : '') + '>' + c + '</option>'; }).join('') + '</optgroup>' +
+      '<optgroup label="세부 과목">' + subs.map(function (s) { return '<option' + (s.name === st.subject ? ' selected' : '') + '>' + esc(s.name) + '</option>'; }).join('') + '</optgroup></select></label>';
     if (st.subject) {
-      var cls = recentClasses(st.subject, st.date);
-      h += '<label class="field"><span>어느 수업의 복습인가요 · 고르면 수업 내용이 연결돼요</span><select id="nr-k"><option value="">연결 안 함</option>' + cls.map(function (s) {
-        return '<option value="' + esc(s.key) + '"' + (s.key === st.key ? ' selected' : '') + '>' + fmtMD(s.date) + (s.chasi ? ' ' + s.chasi + '차시' : '') + '</option>';
-      }).join('') + '</select></label>';
+      if (!isCat(st.subject)) {
+        var cls = recentClasses(st.subject, st.date);
+        h += '<label class="field"><span>어느 수업의 복습인가요 · 고르면 수업 내용이 연결돼요</span><select id="nr-k"><option value="">연결 안 함</option>' + cls.map(function (s) {
+          return '<option value="' + esc(s.key) + '"' + (s.key === st.key ? ' selected' : '') + '>' + fmtMD(s.date) + (s.chasi ? ' ' + s.chasi + '차시' : '') + '</option>';
+        }).join('') + '</select></label>';
+        if (st.key) h += '<label class="cb' + (st.showChasi ? ' on' : '') + '"><input type="checkbox" id="nr-sc"' + (st.showChasi ? ' checked' : '') + '> 할 일에 차시 표시 · [' + esc(st.subject) + ' 7차시]처럼</label>';
+      }
       var rs = roundsOf(st.subject);
       h += rs.map(function (r, ri) {
         return '<div class="round">' + (rs.length > 1 ? '<h4>' + esc(r.label) + '</h4>' : '') + '<div class="checks">' + r.items.map(function (name, i) {
@@ -3148,6 +3229,7 @@ function openNewReview(date) {
           return '<label class="cb' + (on ? ' on' : '') + '"><input type="checkbox" data-nrc="' + k + '"' + (on ? ' checked' : '') + '>' + esc(name) + '</label>';
         }).join('') + '</div></div>';
       }).join('');
+      h += customRoundHTML(st.customs, function (i) { return !!st.cpicks[st.customs[i]]; }, 'nr');
       h += '<div class="field"><span>복습할 날짜</span><div>' + dateBtn('data-nrd', st.date) + '</div></div>';
     } else h += '<p class="note">과목을 고르면 복습 방법이 나와요.</p>';
     box.innerHTML = h;
@@ -3155,23 +3237,74 @@ function openNewReview(date) {
   draw();
   m.el.addEventListener('change', function (e) {
     var el = e.target;
-    if (el.id === 'nr-s') { st.subject = el.value; st.picks = {}; var c = st.subject ? recentClasses(st.subject, st.date) : []; st.key = c[0] ? c[0].key : ''; draw(); }
-    else if (el.id === 'nr-k') st.key = el.value;
+    if (el.id === 'nr-s') {
+      st.subject = el.value; st.picks = {}; st.cpicks = {}; st.customs = st.subject ? customList(st.subject) : [];
+      var c = st.subject && !isCat(st.subject) ? recentClasses(st.subject, st.date) : []; st.key = c[0] ? c[0].key : ''; draw();
+    }
+    else if (el.id === 'nr-k') { st.key = el.value; draw(); }
+    else if (el.id === 'nr-sc') { st.showChasi = el.checked; el.closest('.cb').classList.toggle('on', el.checked); }
     else if (el.dataset.nrc) { if (el.checked) st.picks[el.dataset.nrc] = true; else delete st.picks[el.dataset.nrc]; el.closest('.cb').classList.toggle('on', el.checked); }
+    else if (el.dataset.nrcb != null) { var nm = st.customs[+el.dataset.nrcb]; if (el.checked) st.cpicks[nm] = true; else delete st.cpicks[nm]; draw(); }
   });
+  m.el.addEventListener('keydown', function (e) { if (e.target.id === 'nr-cin' && e.key === 'Enter') { e.preventDefault(); m.el.querySelector('[data-cadd]').click(); } });
   m.el.addEventListener('click', async function (e) {
     var b = e.target.closest('button'); if (!b) return;
     if (b.hasAttribute('data-nrd')) { var v = await openDayPicker('복습할 날짜', st.date); if (v) { st.date = v; draw(); } return; }
+    if (b.hasAttribute('data-cadd')) {
+      var nm = ($('#nr-cin', m.el).value || '').trim();
+      if (!nm) { toast('복습 이름을 적어 주세요.'); return; }
+      if (st.customs.indexOf(nm) < 0) { st.customs.push(nm); saveCustomList(st.subject, st.customs); }
+      st.cpicks[nm] = true; draw(); return;
+    }
+    if (b.dataset.crm != null) {
+      var rm = b.dataset.crm;
+      st.customs = st.customs.filter(function (x) { return x !== rm; }); delete st.cpicks[rm];
+      saveCustomList(st.subject, st.customs); draw(); return;
+    }
     if (!b.hasAttribute('data-ok')) return;
-    var ks = Object.keys(st.picks);
-    if (!st.subject || !ks.length) { toast('과목과 복습 방법을 골라 주세요.'); return; }
-    var rs = roundsOf(st.subject), chasi = st.key ? liveChasi(st.key) : null;
-    ks.forEach(function (k, n) {
+    var ks = Object.keys(st.picks), cs = Object.keys(st.cpicks);
+    if (!st.subject || !(ks.length + cs.length)) { toast('과목과 복습 방법을 골라 주세요.'); return; }
+    var rs = roundsOf(st.subject), key = isCat(st.subject) ? '' : st.key, chasi = key ? liveChasi(key) : null;
+    var base = { kind: 'review', subject: st.subject, date: st.date, sessionKey: key || null, chasi: chasi, showChasi: !!(key && st.showChasi) };
+    var n = 0;
+    ks.forEach(function (k) {
       var p = k.split('|'), name = rs[+p[0]].items[+p[1]];
-      createTask({ id: 'rv_' + (st.key || 'free') + '_' + (+p[0] + 1) + '_' + Date.now().toString(36) + n, kind: 'review', subject: st.subject, method: name, title: name, round: +p[0] + 1, date: st.date, sessionKey: st.key || null, chasi: chasi, order: Date.now() + n });
+      createTask(Object.assign({ id: 'rv_' + (key || 'free') + '_' + (+p[0] + 1) + '_' + Date.now().toString(36) + n, method: name, title: name, round: +p[0] + 1, order: Date.now() + n }, base)); n++;
     });
-    toast(fmtMD(st.date) + '에 복습 ' + ks.length + '개를 추가했어요.');
+    cs.forEach(function (name) {
+      createTask(Object.assign({ id: 'rv_' + (key || 'free') + '_c_' + Date.now().toString(36) + n, method: name, title: name, round: rs.length + 1, custom: true, order: Date.now() + n }, base)); n++;
+    });
+    toast(fmtMD(st.date) + '에 복습 ' + n + '개를 추가했어요.');
     m.close();
+  });
+}
+
+/* ---------- 날짜별 공부 과목 ---------- */
+function dayFocusList(d) { var doc = data.meta.get('dayfocus'); return doc && doc.days && doc.days[d] ? doc.days[d].slice() : []; }
+function dayFocusHTML(d) {
+  var l = dayFocusList(d);
+  return '<button type="button" class="dsubj" data-act="dsubj" data-date="' + d + '" aria-label="이날 공부할 과목 고르기">' +
+    (l.length ? l.map(function (c) { return '<span class="tag f-' + CAT_FAM[c] + '">' + c + '</span>'; }).join('') : '<span class="dsadd">+ 과목</span>') + '</button>';
+}
+function openDayFocus(d) {
+  var m = openModal(fmtMD(d) + ' 공부할 과목', '<div id="dfz"></div>', '<button class="btn primary" data-mclose>완료</button>');
+  var box = $('#dfz', m.el); box.style.display = 'contents';
+  function draw() {
+    var l = dayFocusList(d);
+    box.innerHTML = '<p class="note" style="margin:0">고른 과목이 주간 할 일의 날짜 옆에 작게 표시돼요. 다시 누르면 빠져요.</p><div class="catgrid">' + CAT6.map(function (c) {
+      return '<button type="button" class="catbtn' + (l.indexOf(c) >= 0 ? ' on' : '') + '" data-dfc="' + c + '"><i style="background:var(--' + CAT_FAM[c] + '-fg)"></i>' + c + '</button>';
+    }).join('') + '</div>';
+  }
+  draw();
+  m.el.addEventListener('click', function (e) {
+    var b = e.target.closest('[data-dfc]'); if (!b) return;
+    var doc = data.meta.get('dayfocus'), days = Object.assign({}, doc && doc.days ? doc.days : {});
+    var l = (days[d] || []).slice(), c = b.dataset.dfc;
+    if (l.indexOf(c) >= 0) l = l.filter(function (x) { return x !== c; }); else l.push(c);
+    l.sort(function (a, b2) { return CAT6.indexOf(a) - CAT6.indexOf(b2); });
+    if (l.length) days[d] = l; else delete days[d];
+    put('meta', 'dayfocus', { days: days });
+    draw();
   });
 }
 
@@ -3200,6 +3333,7 @@ var ACT = {
   },
   'backup-dismiss': function () { lsSet('planner-backup-dismiss', todayS()); render(); },
   dorm: function (el) { openDorm(el.dataset.ws); },
+  dsubj: function (el) { openDayFocus(el.dataset.date); },
   selmode: function () { if (ui.selMode) exitSel(); else ui.selMode = true; render(); },
   sel: function (el) { var id = el.closest('[data-id]').dataset.id; if (ui.sel.has(id)) ui.sel.delete(id); else ui.sel.add(id); render(); },
   'bulk-move': bulkMove, 'bulk-done': bulkDone, 'bulk-del': bulkDelete,
